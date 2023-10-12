@@ -1,0 +1,16 @@
+[
+  {
+    "objectID": "about.html",
+    "href": "about.html",
+    "title": "About",
+    "section": "",
+    "text": "About this site"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ML Handbook",
+    "section": "",
+    "text": "About the Project\nWelcome to our Machine Learning Techniques project, an initiative born out of the desire to bridge the gap between theoretical knowledge and practical application in the field of machine learning.\nOur Mission\nWe aim to empower students with the skills and insights they need to navigate the complex landscape of real-world datasets and machine learning models. By integrating synthetic datasets, textbook examples, and real-world data from various domains, we provide a comprehensive test bed for exploration and learning.\nWhat We Offer\n\nEnd-to-End Colab Notebooks: Over a four-month period, we will release a collection of practical Colab notebooks, each covering different aspects of machine learning, from data preprocessing to model implementation.\nCompanion Reports: Alongside the notebooks, we provide in-depth articles that dive into the inner workings of the models, demystifying their behavior and encouraging critical thinking.\nOpen Sourcing: In the fourth month, we’ll make all the content accessible through a user-friendly platform, facilitating navigation and utilization.\n\nOur Commitment\nWe maintain a high standard of quality by subjecting our work to scrutiny by experienced professionals and validating our methods through reputable references in textbooks and journals.\nImpact\nOur project equips students with the skills to manage diverse datasets, enhance data presentation, make informed model selections, and participate effectively in Kaggle competitions. We empower them to approach data processing intuitively and with confidence.\nJoin us on this journey to transform machine learning theory into real-world proficiency. Let’s explore the world of data together!"
+  }
+]
