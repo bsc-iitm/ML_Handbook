@@ -4,7 +4,15 @@ project:
 
 website:
   page-navigation: true
-  title: "ML_Handbook"
+  title: "ML Handbook"
+  description: "Unlock the practical side of Machine Learning with hands-on Colab notebooks and in-depth reports, making ML education accessible and insightful."
+
+  site-url: "https://bsc-iitm.github.io/ML_Handbook/"
+
+  repo-url: https://github.com/bsc-iitm/ML_Handbook
+  repo-actions: [edit, issue]
+
+  open-graph: true
 
   page-footer:
     right: "This page is built with ❤️ and [Quarto](https://quarto.org/)."
@@ -17,8 +25,8 @@ website:
     align: center
     tools:
       - icon: github
-        href: https://github.com/sta210-s22
-        text: "GitHub organization"
+        href: https://github.com/bsc-iitm/ML_Handbook
+        text: "GitHub Repo"
 
     style: "docked"
     search: true
