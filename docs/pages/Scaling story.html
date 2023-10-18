@@ -6,9 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Sherry Thomas">
 
-<title>ML Handbook - Comprehensive Study on the Impact of Feature Scaling on Classification Models</title>
+<title>ML Handbook - The Tale of Feature Scaling and Its Influence on Classification Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +63,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../pages/Scaling story.html" rel="next">
-<link href="../index.html" rel="prev">
+<link href="../pages/Scaling.html" rel="prev">
 <link href="../images/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -102,24 +100,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
-  <script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<meta property="og:title" content="ML Handbook - Comprehensive Study on the Impact of Feature Scaling on Classification Models">
+<meta property="og:title" content="ML Handbook - The Tale of Feature Scaling and Its Influence on Classification Models">
 <meta property="og:description" content="">
 <meta property="og:site-name" content="ML Handbook">
 </head>
@@ -133,7 +117,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/Scaling.html">Content</a></li><li class="breadcrumb-item"><a href="../pages/Scaling.html">Scaling</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/Scaling.html">Content</a></li><li class="breadcrumb-item"><a href="../pages/Scaling story.html">Scaling as a Story</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -190,13 +174,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/Scaling.html" class="sidebar-item-text sidebar-link active">
+  <a href="../pages/Scaling.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Scaling</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/Scaling story.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/Scaling story.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Scaling as a Story</span></a>
   </div>
 </li>
@@ -212,11 +196,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#importing-necessary-libraries" id="toc-importing-necessary-libraries" class="nav-link" data-scroll-target="#importing-necessary-libraries">Importing Necessary Libraries</a></li>
-  <li><a href="#loading-the-wine-dataset" id="toc-loading-the-wine-dataset" class="nav-link" data-scroll-target="#loading-the-wine-dataset">Loading the Wine Dataset</a></li>
-  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a></li>
-  <li><a href="#feature-scaling-methods" id="toc-feature-scaling-methods" class="nav-link" data-scroll-target="#feature-scaling-methods">Feature Scaling Methods</a>
+  <li><a href="#prologue" id="toc-prologue" class="nav-link active" data-scroll-target="#prologue">Prologue</a></li>
+  <li><a href="#chapter-1-gathering-the-tools" id="toc-chapter-1-gathering-the-tools" class="nav-link" data-scroll-target="#chapter-1-gathering-the-tools">Chapter 1: Gathering the Tools</a></li>
+  <li><a href="#chapter-2-unveiling-the-wine-dataset" id="toc-chapter-2-unveiling-the-wine-dataset" class="nav-link" data-scroll-target="#chapter-2-unveiling-the-wine-dataset">Chapter 2: Unveiling the Wine Dataset</a></li>
+  <li><a href="#chapter-3-preparing-for-the-journey-data-preprocessing" id="toc-chapter-3-preparing-for-the-journey-data-preprocessing" class="nav-link" data-scroll-target="#chapter-3-preparing-for-the-journey-data-preprocessing">Chapter 3: Preparing for the Journey (Data Preprocessing)</a></li>
+  <li><a href="#chapter-4-the-many-faces-of-feature-scaling" id="toc-chapter-4-the-many-faces-of-feature-scaling" class="nav-link" data-scroll-target="#chapter-4-the-many-faces-of-feature-scaling">Chapter 4: The Many Faces of Feature Scaling</a>
   <ul class="collapse">
   <li><a href="#standard-scaler" id="toc-standard-scaler" class="nav-link" data-scroll-target="#standard-scaler">1. Standard Scaler</a></li>
   <li><a href="#min-max-scaler" id="toc-min-max-scaler" class="nav-link" data-scroll-target="#min-max-scaler">2. Min-max Scaler</a></li>
@@ -224,32 +208,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#robust-scaler" id="toc-robust-scaler" class="nav-link" data-scroll-target="#robust-scaler">4. Robust Scaler</a></li>
   <li><a href="#quantile-transformer" id="toc-quantile-transformer" class="nav-link" data-scroll-target="#quantile-transformer">5. Quantile Transformer</a></li>
   </ul></li>
-  <li><a href="#classification-models" id="toc-classification-models" class="nav-link" data-scroll-target="#classification-models">Classification Models</a></li>
-  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
-  <li><a href="#evaluation-of-results" id="toc-evaluation-of-results" class="nav-link" data-scroll-target="#evaluation-of-results">Evaluation of Results</a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
+  <li><a href="#chapter-5-the-battle-of-classification-models" id="toc-chapter-5-the-battle-of-classification-models" class="nav-link" data-scroll-target="#chapter-5-the-battle-of-classification-models">Chapter 5: The Battle of Classification Models</a></li>
+  <li><a href="#chapter-6-the-aftermath-results-and-discussion" id="toc-chapter-6-the-aftermath-results-and-discussion" class="nav-link" data-scroll-target="#chapter-6-the-aftermath-results-and-discussion">Chapter 6: The Aftermath (Results and Discussion)</a></li>
+  <li><a href="#chapter-7-interpreting-the-aftermath-evaluation-of-results" id="toc-chapter-7-interpreting-the-aftermath-evaluation-of-results" class="nav-link" data-scroll-target="#chapter-7-interpreting-the-aftermath-evaluation-of-results">Chapter 7: Interpreting the Aftermath (Evaluation of Results)</a></li>
+  <li><a href="#chapter-8-pondering-the-implications-discussion" id="toc-chapter-8-pondering-the-implications-discussion" class="nav-link" data-scroll-target="#chapter-8-pondering-the-implications-discussion">Chapter 8: Pondering the Implications (Discussion)</a></li>
+  <li><a href="#chapter-9-the-moral-of-the-story-conclusion" id="toc-chapter-9-the-moral-of-the-story-conclusion" class="nav-link" data-scroll-target="#chapter-9-the-moral-of-the-story-conclusion">Chapter 9: The Moral of the Story (Conclusion)</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/Scaling.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/Scaling story.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Comprehensive Study on the Impact of Feature Scaling on Classification Models</h1>
+<h1 class="title">The Tale of Feature Scaling and Its Influence on Classification Models</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Sherry Thomas </p>
-          </div>
-  </div>
     
   
     
@@ -258,9 +236,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>In the realm of machine learning, feature scaling is a crucial preprocessing step that can significantly influence the performance of classification models. It involves transforming the data to a common scale, ensuring that no single feature dominates the learning process due to its range of values. This notebook presents an exhaustive exploration of the impact of various feature scaling methods on classification models. We will focus on five commonly used techniques:</p>
+<section id="prologue" class="level2">
+<h2 class="anchored" data-anchor-id="prologue">Prologue</h2>
+<p>In the mystical realm of machine learning, feature scaling is a vital ritual performed by data scientists. This ritual, often considered as a preprocessing step, involves transforming the data to a common scale to ensure that no single feature dominates the learning process. In the absence of this ritual, models with distance-based algorithms can get skewed by features with larger scales.</p>
+<p>In this tale, we shall journey through the impact of various feature scaling methods on classification models, focusing on five commonly used techniques:</p>
 <ol type="1">
 <li>Standard Scaler</li>
 <li>Min-max Scaler</li>
@@ -268,12 +247,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Robust Scaler</li>
 <li>Quantile Transformer</li>
 </ol>
-<p>We will use the Wine dataset from scikit-learn, a frequently employed dataset for classification tasks, to demonstrate the effects of these scaling methods. The Wine dataset contains information about different wines and their classification into one of three classes.</p>
+<p>Our adventure will revolve around the Wine dataset from scikit-learn, a commonly employed dataset for classification tasks, to demonstrate the effects of these scaling methods. The Wine dataset contains information about different wines and their classification into one of three classes.</p>
 </section>
-<section id="importing-necessary-libraries" class="level2">
-<h2 class="anchored" data-anchor-id="importing-necessary-libraries">Importing Necessary Libraries</h2>
-<p>Before we begin, we need to import the required libraries for data manipulation, visualization, and machine learning.</p>
-<div class="cell" data-execution_count="12">
+<section id="chapter-1-gathering-the-tools" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-1-gathering-the-tools">Chapter 1: Gathering the Tools</h2>
+<p>To embark on our journey, we first need to gather the necessary tools. In our case, these tools are various libraries for data manipulation, visualization, and machine learning.</p>
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -285,10 +264,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="loading-the-wine-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="loading-the-wine-dataset">Loading the Wine Dataset</h2>
-<p>We start by loading the Wine dataset and inspecting its structure.</p>
-<div class="cell" data-execution_count="13">
+<section id="chapter-2-unveiling-the-wine-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-2-unveiling-the-wine-dataset">Chapter 2: Unveiling the Wine Dataset</h2>
+<p>Our adventure begins with the Wine dataset. Let’s load the dataset and inspect its structure.</p>
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the Wine dataset</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>wine <span class="op">=</span> load_wine()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -297,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of the dataset</span></span>
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>wine_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="13">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <div>
 
 
@@ -415,10 +394,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The Wine dataset consists of various features related to wine properties and a ‘target’ column indicating the class of the wine.</p>
 </section>
-<section id="data-preprocessing" class="level2">
-<h2 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h2>
-<p>Before we proceed with feature scaling, we need to split the data into training and testing sets. Additionally, to make our study more robust and thorough, we will create a noisy version of the Wine dataset by adding random noise to the feature values. This noisy dataset will introduce variations that can better showcase the effects of different scaling methods on classification model performance.</p>
-<div class="cell" data-execution_count="14">
+<section id="chapter-3-preparing-for-the-journey-data-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-3-preparing-for-the-journey-data-preprocessing">Chapter 3: Preparing for the Journey (Data Preprocessing)</h2>
+<p>Before we proceed with feature scaling, we need to split the data into training and testing sets. To make our journey more challenging and interesting, we will create a noisy version of the Wine dataset by adding random noise to the feature values. This noisy dataset will introduce variations that can better showcase the effects of different scaling methods on classification model performance.</p>
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the data into features (X) and target (y)</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> wine.data</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> wine.target</span>
@@ -432,16 +411,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>X_train_noisy, X_test_noisy, y_train, y_test <span class="op">=</span> train_test_split(X_noisy, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="feature-scaling-methods" class="level2">
-<h2 class="anchored" data-anchor-id="feature-scaling-methods">Feature Scaling Methods</h2>
+<section id="chapter-4-the-many-faces-of-feature-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-4-the-many-faces-of-feature-scaling">Chapter 4: The Many Faces of Feature Scaling</h2>
+<p>In this chapter, we will explore five different feature scaling methods and their mathematical foundations.</p>
 <section id="standard-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="standard-scaler">1. Standard Scaler</h3>
-<p>The Standard Scaler (<span class="math inline">SS</span>) transforms the data so that it has a mean (<span class="math inline">\mu</span>) of 0 and a standard deviation (<span class="math inline">\sigma</span>) of 1. This method assumes that the data is normally distributed. The transformation is given by:</p>
-<p><span class="math display">
-SS(x) = \frac{x - \mu}{\sigma}
-</span></p>
-<p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">\mu</span> is the mean of the feature vector, and <span class="math inline">\sigma</span> is the standard deviation of the feature vector.</p>
-<div class="cell" data-execution_count="15">
+<p>The Standard Scaler, also known as Z-score normalization, transforms the data so that it has a mean (<span class="math inline">\(\mu\)</span>) of 0 and a standard deviation (<span class="math inline">\(\sigma\)</span>) of 1. The transformation is defined by the equation:</p>
+<p><span class="math display">\[z = \frac{x - \mu}{\sigma}\]</span></p>
+<p>This method assumes that the data is normally distributed. If the data is not normally distributed, this scaler could distort the data distribution, leading to suboptimal results.</p>
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the Standard Scaler</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>standard_scaler <span class="op">=</span> StandardScaler()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -454,12 +432,10 @@ SS(x) = \frac{x - \mu}{\sigma}
 </section>
 <section id="min-max-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="min-max-scaler">2. Min-max Scaler</h3>
-<p>The Min-max Scaler (<span class="math inline">MMS</span>) scales the data to a specific range, typically between 0 and 1. It is suitable for data that does not follow a normal distribution. The transformation is given by:</p>
-<p><span class="math display">
-MMS(x) = \frac{x - x_{min}}{x_{max} - x_{min}}
-</span></p>
-<p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">x_{min}</span> is the smallest value in the feature vector, and <span class="math inline">x_{max}</span> is the largest value in the feature vector.</p>
-<div class="cell" data-execution_count="16">
+<p>The Min-max Scaler, also known as normalization, scales the data to a specific range, typically between 0 and 1. The transformation is defined by the equation:</p>
+<p><span class="math display">\[x_{norm} = \frac{x - x_{min}}{x_{max} - x_{min}}\]</span></p>
+<p>It is suitable for data that does not follow a normal distribution. However, it is sensitive to outliers.</p>
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the Min-max Scaler</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>min_max_scaler <span class="op">=</span> MinMaxScaler()</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -472,12 +448,10 @@ MMS(x) = \frac{x - x_{min}}{x_{max} - x_{min}}
 </section>
 <section id="maximum-absolute-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="maximum-absolute-scaler">3. Maximum Absolute Scaler</h3>
-<p>The Maximum Absolute Scaler (<span class="math inline">MAS</span>) scales the data based on the maximum absolute value, making the largest value in each feature equal to 1. It does not shift/center the data, and thus does not destroy any sparsity. The transformation is given by:</p>
-<p><span class="math display">
-MAS(x) = \frac{x}{|x_{max}|}
-</span></p>
-<p>where <span class="math inline">x</span> is the original feature vector, and <span class="math inline">x_{max, abs}</span> is the maximum absolute value in the feature vector.</p>
-<div class="cell" data-execution_count="17">
+<p>The Maximum Absolute Scaler scales the data based on the maximum absolute value, making the largest value in each feature equal to 1. The transformation is defined by the equation:</p>
+<p><span class="math display">\[x_{scaled} = \frac{x}{|x_{max}|}\]</span></p>
+<p>It does not distort the data and keeps zero values at zero, making it suitable for sparse data.</p>
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the Maximum Absolute Scaler</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>max_abs_scaler <span class="op">=</span> MaxAbsScaler()</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -490,12 +464,10 @@ MAS(x) = \frac{x}{|x_{max}|}
 </section>
 <section id="robust-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="robust-scaler">4. Robust Scaler</h3>
-<p>The Robust Scaler (<span class="math inline">RS</span>) scales the data using the median (<span class="math inline">Q_2</span>) and the interquartile range (<span class="math inline">IQR</span>, <span class="math inline">Q_3 - Q_1</span>), making it robust to outliers. The transformation is given by:</p>
-<p><span class="math display">
-RS(x) = \frac{x - Q_2}{IQR}
-</span></p>
-<p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">Q_2</span> is the median of the feature vector, and <span class="math inline">IQR</span> is the interquartile range of the feature vector.</p>
-<div class="cell" data-execution_count="18">
+<p>The Robust Scaler scales the data using the median and the interquartile range (IQR), making it robust to outliers. The transformation is defined by the equation:</p>
+<p><span class="math display">\[x_{scaled} = \frac{x - Q1}{Q3 - Q1}\]</span></p>
+<p>Where <span class="math inline">\(Q1\)</span> and <span class="math inline">\(Q3\)</span> are the first and third quartiles, respectively.</p>
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the Robust Scaler</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>robust_scaler <span class="op">=</span> RobustScaler()</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -508,11 +480,11 @@ RS(x) = \frac{x - Q_2}{IQR}
 </section>
 <section id="quantile-transformer" class="level3">
 <h3 class="anchored" data-anchor-id="quantile-transformer">5. Quantile Transformer</h3>
-<p>The Quantile Transformer (<span class="math inline">QT</span>) applies a non-linear transformation to the data, mapping it to a uniform or normal distribution. This method can be helpful when the data is not normally distributed. It computes the cumulative distribution function (CDF) of the data to place each value within the range of the distribution. The transformation is given by:</p>
-<p><span class="math display">
+<p>The Quantile Transformer (<span class="math inline">\(QT\)</span>) applies a non-linear transformation to the data, mapping it to a uniform or normal distribution. This method can be helpful when the data is not normally distributed. It computes the cumulative distribution function (CDF) of the data to place each value within the range of the distribution. The transformation is given by:</p>
+<p><span class="math display">\[
 QT(x) = F^{-1}(F(x))
-</span></p>
-<p>where <span class="math inline">F(x)</span> is the cumulative distribution function of the data, and <span class="math inline">F^{-1}</span> is the inverse function of <span class="math inline">F</span>.</p>
+\]</span></p>
+<p>where <span class="math inline">\(F(x)\)</span> is the cumulative distribution function of the data, and <span class="math inline">\(F^{-1}\)</span> is the inverse function of <span class="math inline">\(F\)</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the Quantile Transformer</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>quantile_transformer <span class="op">=</span> QuantileTransformer(output_distribution<span class="op">=</span><span class="st">'normal'</span>)</span>
@@ -525,10 +497,10 @@ QT(x) = F^{-1}(F(x))
 </div>
 </section>
 </section>
-<section id="classification-models" class="level2">
-<h2 class="anchored" data-anchor-id="classification-models">Classification Models</h2>
-<p>We will now compare the performance of two classification models, Random Forest and Support Vector Machine (SVM), on the different scaled datasets. For each scaling method, we will train and evaluate both models.</p>
-<div class="cell" data-execution_count="20">
+<section id="chapter-5-the-battle-of-classification-models" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-5-the-battle-of-classification-models">Chapter 5: The Battle of Classification Models</h2>
+<p>In this chapter, we will witness the battle of two classification models, Random Forest and Support Vector Machine (SVM), as they compete on the different scaled datasets. For each scaling method, we will train and evaluate both models.</p>
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the Random Forest classifier</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>rf_classifier <span class="op">=</span> RandomForestClassifier(random_state<span class="op">=</span><span class="dv">42</span>)</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -560,14 +532,14 @@ QT(x) = F^{-1}(F(x))
 <span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    accuracy_scores.append([scaler_name, rf_accuracy, svm_accuracy])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="results-and-discussion" class="level2">
-<h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
-<p>Let’s analyze the results of our experiment and discuss the impact of different scaling methods on classification models.</p>
-<div class="cell" data-execution_count="21">
+<section id="chapter-6-the-aftermath-results-and-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-6-the-aftermath-results-and-discussion">Chapter 6: The Aftermath (Results and Discussion)</h2>
+<p>The battle is over. Let’s analyze the aftermath of our experiment and discuss the impact of different scaling methods on the classification models.</p>
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame to display the results</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.DataFrame(accuracy_scores, columns<span class="op">=</span>[<span class="st">'Scaling Method'</span>, <span class="st">'Random Forest Accuracy'</span>, <span class="st">'SVM Accuracy'</span>])</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="21">
+<div class="cell-output cell-output-display" data-execution_count="10">
 <div>
 
 
@@ -624,28 +596,30 @@ QT(x) = F^{-1}(F(x))
 </div>
 </div>
 </section>
-<section id="evaluation-of-results" class="level2">
-<h2 class="anchored" data-anchor-id="evaluation-of-results">Evaluation of Results</h2>
+<section id="chapter-7-interpreting-the-aftermath-evaluation-of-results" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-7-interpreting-the-aftermath-evaluation-of-results">Chapter 7: Interpreting the Aftermath (Evaluation of Results)</h2>
+<p>The results of our grand experiment have been revealed. It’s time to interpret what they mean for our journey.</p>
 <p>The output from the notebook provides accuracy scores for two classification models, Random Forest and Support Vector Machine (SVM), using different feature scaling methods. Here’s a summary of the results:</p>
 <ul>
-<li><p><strong>No Scaling</strong>: Without any scaling, the Random Forest model achieved perfect accuracy (1.0), while the SVM model’s accuracy was significantly lower (approximately 0.8056). This disparity demonstrates the influence of feature scaling on SVM, which is sensitive to the range of feature values.</p></li>
-<li><p><strong>Standard Scaler</strong>: The Standard Scaler, which assumes a normal distribution of data, yielded perfect accuracy (1.0) for both models. This indicates that the features in the Wine dataset are likely normally distributed, and the scaling effectively standardized the data, leading to improved SVM performance.</p></li>
-<li><p><strong>Min-max Scaler</strong>, <strong>Maximum Absolute Scaler</strong>, <strong>Robust Scaler</strong>, and <strong>Quantile Transformer</strong>: These methods also resulted in perfect accuracy (1.0) for both models. These results demonstrate that scaling the data to a specific range (Min-max Scaler and Maximum Absolute Scaler), making the scaling robust to outliers (Robust Scaler), or applying a non-linear transformation to map data to a uniform or normal distribution (Quantile Transformer) can significantly improve the performance of SVM. It’s worth noting that the Random Forest’s performance remained consistently high regardless of the scaling method, which is consistent with its insensitivity to the scale of features.</p></li>
+<li><p><strong>No Scaling</strong>: With no scaling applied, Random Forest achieved perfect accuracy (1.0), while SVM achieved an accuracy of approximately 0.8056. This shows that even without scaling, some models like Random Forest can perform well. However, SVM, being a distance-based algorithm, suffered due to the lack of scaling.</p></li>
+<li><p><strong>Standard Scaler</strong>, <strong>Min-max Scaler</strong>, <strong>Maximum Absolute Scaler</strong>, <strong>Robust Scaler</strong>, and <strong>Quantile Transformer</strong>: For all these scaling methods, both Random Forest and SVM achieved perfect accuracy (1.0). This indicates that these scaling methods worked exceptionally well for the Wine dataset, improving the SVM’s performance significantly compared to when no scaling was applied.</p></li>
 </ul>
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>In conclusion, this notebook provides a comprehensive study on the impact of feature scaling on classification models. It demonstrates that the choice of feature scaling method can significantly influence the performance of a model, especially for models like SVM that are sensitive to the range of feature values.</p>
-<p>Without scaling, SVM’s performance was significantly lower compared to other methods. However, with the application of different scaling methods, SVM’s performance improved drastically, achieving perfect accuracy. This highlights the importance of feature scaling in preprocessing, particularly when using models sensitive to the scale of input features.</p>
-<p>The Standard Scaler, Min-max Scaler, Maximum Absolute Scaler, Robust Scaler, and Quantile Transformer all proved to be effective for the noisy Wine dataset. However, the effectiveness of a scaling method can vary based on the characteristics of the dataset and the specific machine learning model being used.</p>
-<p>When working with real-world datasets, it’s essential to experiment with different scaling techniques and select the one that best fits the data’s distribution and the requirements of the machine learning model. This decision should be data-driven and based on a thorough understanding of the data’s characteristics.</p>
-<p>This experiment underscores the importance of feature scaling as a preprocessing step and the need to consider the specific scaling method in the broader context of machine learning tasks.</p>
+<section id="chapter-8-pondering-the-implications-discussion" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-8-pondering-the-implications-discussion">Chapter 8: Pondering the Implications (Discussion)</h2>
+<p>The results of our experiment have provided us with some valuable insights into the impact of different feature scaling methods on classification models. Here are some key observations:</p>
+<ol type="1">
+<li><p><strong>No Scaling</strong>: Some models, like Random Forest, can handle unscaled data well. However, for distance-based algorithms like SVM, scaling is crucial to achieve optimal performance.</p></li>
+<li><p><strong>Standard Scaler</strong>, <strong>Min-max Scaler</strong>, <strong>Maximum Absolute Scaler</strong>, <strong>Robust Scaler</strong>, and <strong>Quantile Transformer</strong>: All these scaling methods led to perfect accuracy for both Random Forest and SVM. This demonstrates their effectiveness in ensuring all features contribute equally to the model’s learning process.</p></li>
+</ol>
+<p>The results also underscore the importance of understanding the mathematical foundations of each scaling method. Each method has its strengths, weaknesses, and assumptions, which can influence its effectiveness on different datasets and models.</p>
 </section>
-<section id="reference" class="level2">
-<h2 class="anchored" data-anchor-id="reference">Reference</h2>
-<ul>
-<li><a href="https://arxiv.org/pdf/2212.12343.pdf">“The choice of scaling technique matters for classification performance”</a> by Lucas B.V. de Amorima, b, George D.C. Cavalcantia, Rafael M.O. Cruz</li>
-</ul>
+<section id="chapter-9-the-moral-of-the-story-conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="chapter-9-the-moral-of-the-story-conclusion">Chapter 9: The Moral of the Story (Conclusion)</h2>
+<p>As our tale draws to a close, the moral of the story becomes clear: the choice of feature scaling method is a crucial decision in the context of classification models. The impact of scaling methods on performance can vary significantly, as seen in our experiment.</p>
+<p>When working with real-world datasets, it’s essential to experiment with different scaling techniques and select the one that aligns with the data’s distribution and the requirements of the machine learning model. This decision should be guided by a thorough understanding of the data’s characteristics and the mathematical foundations of the scaling methods.</p>
+<p>Our experiment also highlights the importance of feature scaling as a preprocessing step and the need to consider the specific scaling method in the broader context of machine learning tasks. It reminds us that in the realm of machine learning, every decision, no matter how small, can have far-reaching implications.</p>
+<p>And so, our tale ends here, but the lessons we learned will guide us in our future adventures in the vast and mysterious realm of machine learning. Until next time!</p>
 
 
 </section>
@@ -1001,14 +975,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../index.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">About</span>
+      <a href="../pages/Scaling.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Scaling</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../pages/Scaling story.html" class="pagination-link">
-        <span class="nav-page-text">Scaling as a Story</span> <i class="bi bi-arrow-right-short"></i>
-      </a>
   </div>
 </nav>
 </div> <!-- /content -->

@@ -41,6 +41,8 @@ website:
         contents:
           - href: ./pages/Scaling.ipynb
             text: Scaling
+          - href: ./pages/Scaling story.ipynb
+            text: Scaling as a Story
 
 format:
   html:

@@ -4,6 +4,27 @@
 
 $font-family: "Atkinson Hyperlegible", sans-serif;
 
+// Base document colors
+$body-bg: #f2d5b8;
+$body-color: black;
+$link-color: #1d1105;
+
+$light: #1d1105;
+
+// Navigation element colors
+$footer-bg: #e3a465;
+$navbar-bg: #e09a54;
+$sidebar-bg: #e09a54;
+
+// Code blocks
+$code-block-bg-alpha: -.8;
+
+// Bootstrap popovers
+$popover-bg: #f8e9d9;
+
+// Bootstrap inputs
+$input-bg: #f8e9d9;
+
 /*-- scss:rules --*/
 
 .render-commit-push {
