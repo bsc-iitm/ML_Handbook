@@ -3,6 +3,7 @@ project:
   output-dir: docs
 
 website:
+  favicon: "images/logo.png"
   page-navigation: true
   title: "ML Handbook"
   description: "Unlock the practical side of Machine Learning with hands-on Colab notebooks and in-depth reports, making ML education accessible and insightful."
