@@ -36,6 +36,10 @@ website:
         contents:
           - href: index.qmd
             text: About
+      - section: "Content"
+        contents:
+          - href: ./pages/Scaling.ipynb
+            text: Scaling
 
 format:
   html:
