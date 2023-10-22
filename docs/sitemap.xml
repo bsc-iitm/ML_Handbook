@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling story.html</loc>
-    <lastmod>2023-10-18T16:44:56.901Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
-    <lastmod>2023-10-18T16:44:55.452Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/index.html</loc>
-    <lastmod>2023-10-18T16:44:55.110Z</lastmod>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
+    <lastmod>2023-10-22T14:44:44.246Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling.html</loc>
-    <lastmod>2023-10-18T16:44:56.199Z</lastmod>
+    <lastmod>2023-10-22T14:44:41.538Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/index.html</loc>
+    <lastmod>2023-10-22T14:44:40.494Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
+    <lastmod>2023-10-22T14:44:40.815Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset.html</loc>
+    <lastmod>2023-10-22T14:44:42.742Z</lastmod>
   </url>
 </urlset>

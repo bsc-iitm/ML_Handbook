@@ -39,10 +39,8 @@ website:
             text: About
       - section: "Content"
         contents:
-          - href: ./pages/Scaling.ipynb
+          - href: ./pages/Scaling multi-dataset multi-algo.ipynb
             text: Scaling
-          - href: ./pages/Scaling story.ipynb
-            text: Scaling as a Story
 
 format:
   html:
