@@ -122,8 +122,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <meta property="og:description" content="">
 <meta property="og:image" content="https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo_files/figure-html/cell-15-output-1.png">
 <meta property="og:site-name" content="ML Handbook">
-<meta property="og:image:height" content="784">
-<meta property="og:image:width" content="1184">
+<meta property="og:image:height" content="790">
+<meta property="og:image:width" content="1189">
 </head>
 
 <body class="nav-sidebar docked">
@@ -210,7 +210,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
   <li><a href="#importing-necessary-libraries" id="toc-importing-necessary-libraries" class="nav-link" data-scroll-target="#importing-necessary-libraries">Importing Necessary Libraries</a></li>
-  <li><a href="#loading-the-datasets" id="toc-loading-the-datasets" class="nav-link" data-scroll-target="#loading-the-datasets">Loading the Datasets</a></li>
+  <li><a href="#loading-the-datasets" id="toc-loading-the-datasets" class="nav-link" data-scroll-target="#loading-the-datasets">Loading the Datasets</a>
+  <ul class="collapse">
+  <li><a href="#iris-dataset" id="toc-iris-dataset" class="nav-link" data-scroll-target="#iris-dataset">1. Iris Dataset</a></li>
+  <li><a href="#digits-dataset" id="toc-digits-dataset" class="nav-link" data-scroll-target="#digits-dataset">2. Digits Dataset</a></li>
+  <li><a href="#wine-dataset" id="toc-wine-dataset" class="nav-link" data-scroll-target="#wine-dataset">3. Wine Dataset</a></li>
+  <li><a href="#breast-cancer-dataset" id="toc-breast-cancer-dataset" class="nav-link" data-scroll-target="#breast-cancer-dataset">4. Breast Cancer Dataset</a></li>
+  </ul></li>
   <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a></li>
   <li><a href="#feature-scaling-methods" id="toc-feature-scaling-methods" class="nav-link" data-scroll-target="#feature-scaling-methods">Feature Scaling Methods</a>
   <ul class="collapse">
@@ -221,15 +227,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#quantile-transformer" id="toc-quantile-transformer" class="nav-link" data-scroll-target="#quantile-transformer">5. Quantile Transformer</a></li>
   </ul></li>
   <li><a href="#classification-models" id="toc-classification-models" class="nav-link" data-scroll-target="#classification-models">Classification Models</a></li>
-  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a></li>
-  <li><a href="#evaluation-of-results" id="toc-evaluation-of-results" class="nav-link" data-scroll-target="#evaluation-of-results">Evaluation of Results</a>
+  <li><a href="#results-and-discussion" id="toc-results-and-discussion" class="nav-link" data-scroll-target="#results-and-discussion">Results and Discussion</a>
   <ul class="collapse">
-  <li><a href="#breast-cancer-dataset" id="toc-breast-cancer-dataset" class="nav-link" data-scroll-target="#breast-cancer-dataset">Breast Cancer Dataset</a></li>
-  <li><a href="#digits-dataset" id="toc-digits-dataset" class="nav-link" data-scroll-target="#digits-dataset">Digits Dataset</a></li>
-  <li><a href="#iris-dataset" id="toc-iris-dataset" class="nav-link" data-scroll-target="#iris-dataset">Iris Dataset</a></li>
-  <li><a href="#wine-dataset" id="toc-wine-dataset" class="nav-link" data-scroll-target="#wine-dataset">Wine Dataset</a></li>
-  </ul></li>
+  <li><a href="#evaluation-of-results" id="toc-evaluation-of-results" class="nav-link" data-scroll-target="#evaluation-of-results">Evaluation of Results</a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  </ul></li>
   <li><a href="#the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling" id="toc-the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling" class="nav-link" data-scroll-target="#the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling">The Resilience of Naive Bayes and Tree-Based Algorithms to Scaling</a>
   <ul class="collapse">
   <li><a href="#naive-bayes-classifier" id="toc-naive-bayes-classifier" class="nav-link" data-scroll-target="#naive-bayes-classifier">Naive Bayes Classifier</a></li>
@@ -286,7 +288,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="importing-necessary-libraries" class="level2">
 <h2 class="anchored" data-anchor-id="importing-necessary-libraries">Importing Necessary Libraries</h2>
 <p>Before we begin, we need to import the required libraries for data manipulation, visualization, and machine learning.</p>
-<div class="cell" data-execution_count="37">
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
@@ -305,8 +307,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="loading-the-datasets" class="level2">
 <h2 class="anchored" data-anchor-id="loading-the-datasets">Loading the Datasets</h2>
-<p>We start by loading the four datasets and inspecting their structures.</p>
-<div class="cell" data-execution_count="38">
+<p>In this section, we will start by loading four distinct datasets, each with its unique characteristics. These datasets are commonly used for various classification tasks and will serve as the foundation for our comprehensive study on the impact of feature scaling on classification models.</p>
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the datasets</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>iris <span class="op">=</span> load_iris()</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>digits <span class="op">=</span> load_digits()</span>
@@ -317,11 +319,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>iris_df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>np.c_[iris[<span class="st">'data'</span>], iris[<span class="st">'target'</span>]], columns<span class="op">=</span>iris[<span class="st">'feature_names'</span>] <span class="op">+</span> [<span class="st">'target'</span>])</span>
 <span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>digits_df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>np.c_[digits[<span class="st">'data'</span>], digits[<span class="st">'target'</span>]], columns<span class="op">=</span>digits[<span class="st">'feature_names'</span>] <span class="op">+</span> [<span class="st">'target'</span>])</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>wine_df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>np.c_[wine[<span class="st">'data'</span>], wine[<span class="st">'target'</span>]], columns<span class="op">=</span>wine[<span class="st">'feature_names'</span>] <span class="op">+</span> [<span class="st">'target'</span>])</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>breast_cancer_df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>np.c_[breast_cancer[<span class="st">'data'</span>], breast_cancer[<span class="st">'target'</span>]], columns<span class="op">=</span><span class="bu">list</span>(breast_cancer[<span class="st">'feature_names'</span>]) <span class="op">+</span> [<span class="st">'target'</span>])</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of iris dataset</span></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>iris_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="38">
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>breast_cancer_df <span class="op">=</span> pd.DataFrame(data<span class="op">=</span>np.c_[breast_cancer[<span class="st">'data'</span>], breast_cancer[<span class="st">'target'</span>]], columns<span class="op">=</span><span class="bu">list</span>(breast_cancer[<span class="st">'feature_names'</span>]) <span class="op">+</span> [<span class="st">'target'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="iris-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="iris-dataset">1. Iris Dataset</h3>
+<p><strong>Description:</strong> The Iris dataset is a classic dataset in the field of machine learning and consists of 150 samples of iris flowers, each from one of three species: Iris setosa, Iris virginica, and Iris versicolor. There are four features—sepal length, sepal width, petal length, and petal width—measured in centimeters.</p>
+<p><strong>Use Case:</strong> This dataset is often used for practicing classification techniques, especially for building models to distinguish between the three iris species based on their feature measurements.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of iris dataset</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>iris_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
 <div>
 
 
@@ -383,172 +390,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="39">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of digits dataset</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>digits_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="39">
-<div>
-
-
-<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
-<thead>
-<tr class="header">
-<th data-quarto-table-cell-role="th"></th>
-<th data-quarto-table-cell-role="th">pixel_0_0</th>
-<th data-quarto-table-cell-role="th">pixel_0_1</th>
-<th data-quarto-table-cell-role="th">pixel_0_2</th>
-<th data-quarto-table-cell-role="th">pixel_0_3</th>
-<th data-quarto-table-cell-role="th">pixel_0_4</th>
-<th data-quarto-table-cell-role="th">pixel_0_5</th>
-<th data-quarto-table-cell-role="th">pixel_0_6</th>
-<th data-quarto-table-cell-role="th">pixel_0_7</th>
-<th data-quarto-table-cell-role="th">pixel_1_0</th>
-<th data-quarto-table-cell-role="th">pixel_1_1</th>
-<th data-quarto-table-cell-role="th">...</th>
-<th data-quarto-table-cell-role="th">pixel_6_7</th>
-<th data-quarto-table-cell-role="th">pixel_7_0</th>
-<th data-quarto-table-cell-role="th">pixel_7_1</th>
-<th data-quarto-table-cell-role="th">pixel_7_2</th>
-<th data-quarto-table-cell-role="th">pixel_7_3</th>
-<th data-quarto-table-cell-role="th">pixel_7_4</th>
-<th data-quarto-table-cell-role="th">pixel_7_5</th>
-<th data-quarto-table-cell-role="th">pixel_7_6</th>
-<th data-quarto-table-cell-role="th">pixel_7_7</th>
-<th data-quarto-table-cell-role="th">target</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>5.0</td>
-<td>13.0</td>
-<td>9.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>6.0</td>
-<td>13.0</td>
-<td>10.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">1</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>12.0</td>
-<td>13.0</td>
-<td>5.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>11.0</td>
-<td>16.0</td>
-<td>10.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">2</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>4.0</td>
-<td>15.0</td>
-<td>12.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>3.0</td>
-<td>11.0</td>
-<td>16.0</td>
-<td>9.0</td>
-<td>0.0</td>
-<td>2.0</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">3</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>7.0</td>
-<td>15.0</td>
-<td>13.0</td>
-<td>1.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>8.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>7.0</td>
-<td>13.0</td>
-<td>13.0</td>
-<td>9.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>3.0</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">4</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>1.0</td>
-<td>11.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>...</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>2.0</td>
-<td>16.0</td>
-<td>4.0</td>
-<td>0.0</td>
-<td>0.0</td>
-<td>4.0</td>
-</tr>
-</tbody>
-</table>
-
-<p>5 rows × 65 columns</p>
-</div>
-</div>
-</div>
-<div class="cell" data-execution_count="40">
+</section>
+<section id="digits-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="digits-dataset">2. Digits Dataset</h3>
+<p><strong>Description:</strong> The Digits dataset is a collection of 8x8 pixel images of handwritten digits (0 through 9). There are 1,797 samples, and each sample is an 8x8 image, resulting in 64 features. The goal is to correctly classify the digits based on these pixel values.</p>
+<p><strong>Use Case:</strong> This dataset is a fundamental resource for pattern recognition and is frequently used for exploring image classification and digit recognition algorithms.</p>
+</section>
+<section id="wine-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="wine-dataset">3. Wine Dataset</h3>
+<p><strong>Description:</strong> The Wine dataset comprises 178 samples of wine classified into three classes based on their cultivar. The dataset contains 13 feature variables, including measurements related to chemical composition, making it a valuable resource for wine classification tasks.</p>
+<p><strong>Use Case:</strong> Wine quality prediction and classification are common applications for this dataset, as it allows for distinguishing between different wine types.</p>
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of wine dataset</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>wine_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="40">
+<div class="cell-output cell-output-display" data-execution_count="4">
 <div>
 
 
@@ -664,10 +519,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="41">
+</section>
+<section id="breast-cancer-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="breast-cancer-dataset">4. Breast Cancer Dataset</h3>
+<p><strong>Description:</strong> The Breast Cancer dataset is used for breast cancer diagnosis. It includes 569 samples with 30 feature variables, primarily related to characteristics of cell nuclei present in breast cancer biopsies. The dataset is labeled to indicate whether a sample is benign or malignant.</p>
+<p><strong>Use Case:</strong> This dataset is often employed for building classification models to assist in the early detection of breast cancer, aiding in medical diagnosis.</p>
+<div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Display the first few rows of breast cancer dataset</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>breast_cancer_df.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="41">
+<div class="cell-output cell-output-display" data-execution_count="5">
 <div>
 
 
@@ -828,17 +688,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>The datasets contain various features related to their respective domains, with a ‘target’ column indicating the class labels.</p>
 </section>
+</section>
 <section id="data-preprocessing" class="level2">
 <h2 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h2>
 <p>Before we proceed with feature scaling, we need to split the data for each dataset into training and testing sets. Additionally, to make our study more robust and thorough, we will create noisy versions of the datasets by adding random noise to the feature values. These noisy datasets will introduce variations that can better showcase the effects of different scaling methods on classification model performance.</p>
-<div class="cell" data-execution_count="42">
+<div class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to create noisy datasets</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_noisy_dataset(dataset, noise_std<span class="op">=</span><span class="fl">0.2</span>, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>):</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> dataset.data</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> dataset.target</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    np.random.seed(random_state)</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    noise <span class="op">=</span> np.random.normal(<span class="dv">0</span>, noise_std, size<span class="op">=</span>X.shape)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>    rng <span class="op">=</span> np.random.default_rng(seed<span class="op">=</span>random_state)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    noise <span class="op">=</span> rng.normal(<span class="dv">0</span>, noise_std, size<span class="op">=</span>X.shape)</span>
 <span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>    X_noisy <span class="op">=</span> X <span class="op">+</span> noise</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    X_train_noisy, X_test_noisy, y_train, y_test <span class="op">=</span> train_test_split(X_noisy, y, test_size<span class="op">=</span>test_size, random_state<span class="op">=</span>random_state)</span>
@@ -861,7 +722,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 SS(x) = \frac{x - \mu}{\sigma}
 </span></p>
 <p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">\mu</span> is the mean of the feature vector, and <span class="math inline">\sigma</span> is the standard deviation of the feature vector.</p>
-<div class="cell" data-execution_count="43">
+<div class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Standard Scaler to a dataset</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_standard_scaler(X_train, X_test):</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    standard_scaler <span class="op">=</span> StandardScaler()</span>
@@ -883,7 +744,7 @@ SS(x) = \frac{x - \mu}{\sigma}
 MMS(x) = \frac{x - x_{min}}{x_{max} - x_{min}}
 </span></p>
 <p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">x_{min}</span> is the smallest value in the feature vector, and <span class="math inline">x_{max}</span> is the largest value in the feature vector.</p>
-<div class="cell" data-execution_count="44">
+<div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Min-max Scaler to a dataset</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_min_max_scaler(X_train, X_test):</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    min_max_scaler <span class="op">=</span> MinMaxScaler()</span>
@@ -905,7 +766,7 @@ MMS(x) = \frac{x - x_{min}}{x_{max} - x_{min}}
 MAS(x) = \frac{x}{|x_{max}|}
 </span></p>
 <p>where <span class="math inline">x</span> is the original feature vector, and <span class="math inline">x_{max, abs}</span> is the maximum absolute value in the feature vector.</p>
-<div class="cell" data-execution_count="45">
+<div class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Maximum Absolute Scaler to a dataset</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_max_abs_scaler(X_train, X_test):</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    max_abs_scaler <span class="op">=</span> MaxAbsScaler()</span>
@@ -927,7 +788,7 @@ MAS(x) = \frac{x}{|x_{max}|}
 RS(x) = \frac{x - Q_2}{IQR}
 </span></p>
 <p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">Q_2</span> is the median of the feature vector, and <span class="math inline">IQR</span> is the interquartile range of the feature vector.</p>
-<div class="cell" data-execution_count="46">
+<div class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Robust Scaler to a dataset</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_robust_scaler(X_train, X_test):</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    robust_scaler <span class="op">=</span> RobustScaler()</span>
@@ -1052,7 +913,7 @@ QT(x) = F^{-1}(F(x))
 <section id="results-and-discussion" class="level2">
 <h2 class="anchored" data-anchor-id="results-and-discussion">Results and Discussion</h2>
 <p>Let’s analyze the results of our experiment and discuss the impact of different scaling methods on multiple classification models for each dataset.</p>
-<div class="cell" data-execution_count="54">
+<div class="cell" data-execution_count="13">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame to display the results</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>results_df <span class="op">=</span> pd.DataFrame(accuracy_scores, columns<span class="op">=</span>[<span class="st">'Dataset'</span>, <span class="st">'Scaling Method'</span>, <span class="st">'Classifier'</span>, <span class="st">'Accuracy'</span>])</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>results_df</span>
@@ -1066,7 +927,7 @@ QT(x) = F^{-1}(F(x))
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>results_pivoted_df.fillna(value<span class="op">=</span>np.nan, inplace<span class="op">=</span><span class="va">True</span>)</span>
 <span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>results_pivoted_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="54">
+<div class="cell-output cell-output-display" data-execution_count="13">
 <div>
 
 
@@ -1089,132 +950,132 @@ QT(x) = F^{-1}(F(x))
 <td data-quarto-table-cell-role="th">0</td>
 <td>Breast Cancer</td>
 <td>Maximum Absolute Scaler</td>
+<td>0.938596</td>
+<td>0.903509</td>
 <td>0.929825</td>
-<td>0.807018</td>
-<td>0.947368</td>
 <td>0.956140</td>
-<td>0.956140</td>
+<td>0.964912</td>
 <td>0.929825</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">1</td>
 <td>Breast Cancer</td>
 <td>Min-max Scaler</td>
-<td>0.929825</td>
 <td>0.938596</td>
-<td>0.947368</td>
+<td>0.912281</td>
+<td>0.964912</td>
 <td>0.956140</td>
+<td>0.964912</td>
 <td>0.956140</td>
-<td>0.947368</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">2</td>
 <td>Breast Cancer</td>
 <td>No Scaling</td>
-<td>0.929825</td>
+<td>0.938596</td>
 <td>0.956140</td>
+<td>0.973684</td>
 <td>0.956140</td>
-<td>0.956140</td>
-<td>0.956140</td>
+<td>0.964912</td>
 <td>0.947368</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">3</td>
 <td>Breast Cancer</td>
 <td>Quantile Transformer</td>
-<td>0.929825</td>
+<td>0.938596</td>
 <td>0.956140</td>
+<td>0.964912</td>
 <td>0.947368</td>
+<td>0.964912</td>
 <td>0.956140</td>
-<td>0.956140</td>
-<td>0.929825</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">4</td>
 <td>Breast Cancer</td>
 <td>Robust Scaler</td>
-<td>0.929825</td>
-<td>0.929825</td>
 <td>0.938596</td>
+<td>0.964912</td>
+<td>0.964912</td>
 <td>0.956140</td>
-<td>0.956140</td>
-<td>0.947368</td>
+<td>0.964912</td>
+<td>0.973684</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">5</td>
 <td>Breast Cancer</td>
 <td>Standard Scaler</td>
-<td>0.929825</td>
-<td>0.929825</td>
-<td>0.947368</td>
+<td>0.938596</td>
+<td>0.938596</td>
+<td>0.964912</td>
 <td>0.956140</td>
-<td>0.956140</td>
-<td>0.929825</td>
+<td>0.964912</td>
+<td>0.964912</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">6</td>
 <td>Digits</td>
 <td>Maximum Absolute Scaler</td>
-<td>0.850000</td>
-<td>0.977778</td>
+<td>0.858333</td>
+<td>0.983333</td>
+<td>0.961111</td>
+<td>0.905556</td>
 <td>0.972222</td>
-<td>0.894444</td>
-<td>0.963889</td>
-<td>0.988889</td>
+<td>0.983333</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">7</td>
 <td>Digits</td>
 <td>Min-max Scaler</td>
-<td>0.850000</td>
-<td>0.983333</td>
-<td>0.972222</td>
-<td>0.894444</td>
+<td>0.858333</td>
+<td>0.988889</td>
 <td>0.963889</td>
-<td>0.994444</td>
+<td>0.905556</td>
+<td>0.972222</td>
+<td>0.983333</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">8</td>
 <td>Digits</td>
 <td>No Scaling</td>
-<td>0.850000</td>
+<td>0.858333</td>
 <td>0.986111</td>
+<td>0.966667</td>
+<td>0.905556</td>
 <td>0.972222</td>
-<td>0.894444</td>
-<td>0.963889</td>
 <td>0.991667</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">9</td>
 <td>Digits</td>
 <td>Quantile Transformer</td>
-<td>0.850000</td>
-<td>0.933333</td>
-<td>0.947222</td>
-<td>0.925000</td>
+<td>0.858333</td>
 <td>0.966667</td>
+<td>0.941667</td>
+<td>0.900000</td>
+<td>0.969444</td>
 <td>0.975000</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">10</td>
 <td>Digits</td>
 <td>Robust Scaler</td>
-<td>0.850000</td>
-<td>0.805556</td>
-<td>0.969444</td>
-<td>0.894444</td>
+<td>0.858333</td>
+<td>0.819444</td>
 <td>0.963889</td>
 <td>0.905556</td>
+<td>0.972222</td>
+<td>0.913889</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">11</td>
 <td>Digits</td>
 <td>Standard Scaler</td>
-<td>0.850000</td>
-<td>0.955556</td>
-<td>0.969444</td>
-<td>0.894444</td>
-<td>0.963889</td>
+<td>0.858333</td>
+<td>0.975000</td>
+<td>0.977778</td>
+<td>0.905556</td>
+<td>0.972222</td>
 <td>0.986111</td>
 </tr>
 <tr class="odd">
@@ -1222,22 +1083,22 @@ QT(x) = F^{-1}(F(x))
 <td>Iris</td>
 <td>Maximum Absolute Scaler</td>
 <td>0.933333</td>
-<td>1.000000</td>
-<td>1.000000</td>
-<td>1.000000</td>
 <td>0.966667</td>
-<td>1.000000</td>
+<td>0.933333</td>
+<td>0.933333</td>
+<td>0.900000</td>
+<td>0.933333</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">13</td>
 <td>Iris</td>
 <td>Min-max Scaler</td>
 <td>0.933333</td>
-<td>1.000000</td>
-<td>1.000000</td>
-<td>1.000000</td>
 <td>0.966667</td>
-<td>1.000000</td>
+<td>0.966667</td>
+<td>0.933333</td>
+<td>0.900000</td>
+<td>0.966667</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">14</td>
@@ -1245,50 +1106,50 @@ QT(x) = F^{-1}(F(x))
 <td>No Scaling</td>
 <td>0.933333</td>
 <td>0.966667</td>
-<td>0.966667</td>
-<td>1.000000</td>
-<td>0.966667</td>
-<td>0.966667</td>
+<td>0.933333</td>
+<td>0.933333</td>
+<td>0.900000</td>
+<td>0.933333</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">15</td>
 <td>Iris</td>
 <td>Quantile Transformer</td>
+<td>0.933333</td>
 <td>0.966667</td>
-<td>1.000000</td>
-<td>1.000000</td>
-<td>1.000000</td>
-<td>1.000000</td>
-<td>1.000000</td>
+<td>0.933333</td>
+<td>0.933333</td>
+<td>0.900000</td>
+<td>0.933333</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">16</td>
 <td>Iris</td>
 <td>Robust Scaler</td>
 <td>0.933333</td>
-<td>1.000000</td>
-<td>1.000000</td>
-<td>1.000000</td>
+<td>0.933333</td>
 <td>0.966667</td>
-<td>1.000000</td>
+<td>0.933333</td>
+<td>0.900000</td>
+<td>0.966667</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">17</td>
 <td>Iris</td>
 <td>Standard Scaler</td>
 <td>0.933333</td>
-<td>1.000000</td>
-<td>1.000000</td>
-<td>1.000000</td>
 <td>0.966667</td>
-<td>1.000000</td>
+<td>0.933333</td>
+<td>0.933333</td>
+<td>0.900000</td>
+<td>0.966667</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">18</td>
 <td>Wine</td>
 <td>Maximum Absolute Scaler</td>
-<td>1.000000</td>
-<td>0.972222</td>
+<td>0.916667</td>
+<td>0.944444</td>
 <td>1.000000</td>
 <td>1.000000</td>
 <td>1.000000</td>
@@ -1298,8 +1159,8 @@ QT(x) = F^{-1}(F(x))
 <td data-quarto-table-cell-role="th">19</td>
 <td>Wine</td>
 <td>Min-max Scaler</td>
-<td>1.000000</td>
-<td>0.972222</td>
+<td>0.916667</td>
+<td>0.944444</td>
 <td>1.000000</td>
 <td>1.000000</td>
 <td>1.000000</td>
@@ -1309,7 +1170,7 @@ QT(x) = F^{-1}(F(x))
 <td data-quarto-table-cell-role="th">20</td>
 <td>Wine</td>
 <td>No Scaling</td>
-<td>1.000000</td>
+<td>0.916667</td>
 <td>0.722222</td>
 <td>0.972222</td>
 <td>1.000000</td>
@@ -1320,19 +1181,19 @@ QT(x) = F^{-1}(F(x))
 <td data-quarto-table-cell-role="th">21</td>
 <td>Wine</td>
 <td>Quantile Transformer</td>
-<td>1.000000</td>
+<td>0.916667</td>
 <td>0.944444</td>
 <td>1.000000</td>
 <td>0.972222</td>
 <td>1.000000</td>
-<td>1.000000</td>
+<td>0.972222</td>
 </tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">22</td>
 <td>Wine</td>
 <td>Robust Scaler</td>
-<td>1.000000</td>
-<td>1.000000</td>
+<td>0.916667</td>
+<td>0.972222</td>
 <td>1.000000</td>
 <td>1.000000</td>
 <td>1.000000</td>
@@ -1342,8 +1203,8 @@ QT(x) = F^{-1}(F(x))
 <td data-quarto-table-cell-role="th">23</td>
 <td>Wine</td>
 <td>Standard Scaler</td>
-<td>1.000000</td>
-<td>1.000000</td>
+<td>0.916667</td>
+<td>0.972222</td>
 <td>1.000000</td>
 <td>1.000000</td>
 <td>1.000000</td>
@@ -1355,45 +1216,49 @@ QT(x) = F^{-1}(F(x))
 </div>
 </div>
 </div>
-<div class="cell" data-execution_count="69">
+<div class="cell" data-execution_count="14">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a list of scaling methods and their Material Design colors</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>scaling_methods <span class="op">=</span> results_pivoted_df[<span class="st">'Scaling Method'</span>].unique()</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>material_colors <span class="op">=</span> sns.color_palette(<span class="st">"Set2"</span>)</span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Set Seaborn style for a modern, beautiful look</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">"whitegrid"</span>)</span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Create grouped bar charts for each dataset</span></span>
-<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dataset <span class="kw">in</span> datasets:</span>
-<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
-<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter the data for the current dataset</span></span>
-<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    dataset_data <span class="op">=</span> results_pivoted_df[results_pivoted_df[<span class="st">'Dataset'</span>] <span class="op">==</span> dataset]</span>
-<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the x-axis labels (ML algorithms)</span></span>
-<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    ml_algorithms <span class="op">=</span> dataset_data.columns[<span class="dv">2</span>:].tolist()</span>
-<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    bar_width <span class="op">=</span> <span class="fl">0.12</span>  <span class="co"># Width of each bar</span></span>
-<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(ml_algorithms))</span>
-<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a bar for each scaling method</span></span>
-<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, method <span class="kw">in</span> <span class="bu">enumerate</span>(scaling_methods):</span>
-<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>        accuracies <span class="op">=</span> dataset_data[dataset_data[<span class="st">'Scaling Method'</span>] <span class="op">==</span> method].values[<span class="dv">0</span>][<span class="dv">2</span>:]</span>
-<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        plt.bar([x <span class="op">+</span> i <span class="op">*</span> bar_width <span class="cf">for</span> x <span class="kw">in</span> index], accuracies, bar_width, label<span class="op">=</span>method, color<span class="op">=</span>material_colors[i])</span>
-<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the x-axis labels, title, and legend</span></span>
-<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'ML Algorithms'</span>)</span>
-<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Accuracy'</span>)</span>
-<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'Accuracy Comparison for </span><span class="sc">{</span>dataset<span class="sc">}</span><span class="ss">'</span>)</span>
-<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    plt.xticks([x <span class="op">+</span> bar_width <span class="op">*</span> (<span class="bu">len</span>(scaling_methods) <span class="op">/</span> <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> index], ml_algorithms)</span>
-<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    plt.legend(scaling_methods, title<span class="op">=</span><span class="st">'Scaling Method'</span>)</span>
-<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust layout to prevent overlapping x-axis labels</span></span>
-<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
-<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> results_pivoted_df[<span class="st">'Dataset'</span>].unique()</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set Seaborn style for a modern, beautiful look</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">"whitegrid"</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Create grouped bar charts for each dataset</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> dataset <span class="kw">in</span> datasets:</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>    plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Filter the data for the current dataset</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>    dataset_data <span class="op">=</span> results_pivoted_df[results_pivoted_df[<span class="st">'Dataset'</span>] <span class="op">==</span> dataset]</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the x-axis labels (ML algorithms)</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>    ml_algorithms <span class="op">=</span> dataset_data.columns[<span class="dv">2</span>:].tolist()</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>    bar_width <span class="op">=</span> <span class="fl">0.12</span>  <span class="co"># Width of each bar</span></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>    index <span class="op">=</span> <span class="bu">range</span>(<span class="bu">len</span>(ml_algorithms))</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Create a bar for each scaling method</span></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, method <span class="kw">in</span> <span class="bu">enumerate</span>(scaling_methods):</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">try</span>:</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>            accuracies <span class="op">=</span> dataset_data[dataset_data[<span class="st">'Scaling Method'</span>] <span class="op">==</span> method].values[<span class="dv">0</span>][<span class="dv">2</span>:]</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a>            plt.bar([x <span class="op">+</span> i <span class="op">*</span> bar_width <span class="cf">for</span> x <span class="kw">in</span> index], accuracies, bar_width, label<span class="op">=</span>method, color<span class="op">=</span>material_colors[i])</span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">except</span> <span class="pp">IndexError</span>:</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a>            <span class="bu">print</span>(<span class="ss">f"No data found for </span><span class="sc">{</span>method<span class="sc">}</span><span class="ss"> in </span><span class="sc">{</span>dataset<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Set the x-axis labels, title, and legend</span></span>
+<span id="cb14-31"><a href="#cb14-31" aria-hidden="true" tabindex="-1"></a>    plt.xlabel(<span class="st">'ML Algorithms'</span>)</span>
+<span id="cb14-32"><a href="#cb14-32" aria-hidden="true" tabindex="-1"></a>    plt.ylabel(<span class="st">'Accuracy'</span>)</span>
+<span id="cb14-33"><a href="#cb14-33" aria-hidden="true" tabindex="-1"></a>    plt.title(<span class="ss">f'Accuracy Comparison for </span><span class="sc">{</span>dataset<span class="sc">}</span><span class="ss">'</span>)</span>
+<span id="cb14-34"><a href="#cb14-34" aria-hidden="true" tabindex="-1"></a>    plt.xticks([x <span class="op">+</span> bar_width <span class="op">*</span> (<span class="bu">len</span>(scaling_methods) <span class="op">/</span> <span class="dv">2</span>) <span class="cf">for</span> x <span class="kw">in</span> index], ml_algorithms)</span>
+<span id="cb14-35"><a href="#cb14-35" aria-hidden="true" tabindex="-1"></a>    plt.legend(scaling_methods, title<span class="op">=</span><span class="st">'Scaling Method'</span>)</span>
 <span id="cb14-36"><a href="#cb14-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show the plot or save it as an image</span></span>
-<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb14-37"><a href="#cb14-37" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Adjust layout to prevent overlapping x-axis labels</span></span>
+<span id="cb14-38"><a href="#cb14-38" aria-hidden="true" tabindex="-1"></a>    plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>, ha<span class="op">=</span><span class="st">'right'</span>)</span>
+<span id="cb14-39"><a href="#cb14-39" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb14-40"><a href="#cb14-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-41"><a href="#cb14-41" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Show the plot or save it as an image</span></span>
+<span id="cb14-42"><a href="#cb14-42" aria-hidden="true" tabindex="-1"></a>    plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="Scaling multi-dataset multi-algo_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
 </div>
@@ -1407,50 +1272,65 @@ QT(x) = F^{-1}(F(x))
 <p><img src="Scaling multi-dataset multi-algo_files/figure-html/cell-15-output-4.png" class="img-fluid"></p>
 </div>
 </div>
-</section>
-<section id="evaluation-of-results" class="level2">
-<h2 class="anchored" data-anchor-id="evaluation-of-results">Evaluation of Results</h2>
-<p>The evaluation of results provides insights into the impact of different feature scaling methods on multiple classification models for four distinct datasets: Breast Cancer, Digits, Iris, and Wine. The following key observations can be made based on the accuracy scores:</p>
-<section id="breast-cancer-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="breast-cancer-dataset">Breast Cancer Dataset</h3>
+<section id="evaluation-of-results" class="level3">
+<h3 class="anchored" data-anchor-id="evaluation-of-results">Evaluation of Results</h3>
+<p>The evaluation of results is based on the performance of six classification algorithms across different datasets and scaling methods. The accuracy scores are presented for Decision Tree, K-Nearest Neighbors (KNN), Logistic Regression, Naive Bayes, Random Forest, and Support Vector Machine (SVM). Here’s an analysis of the findings:</p>
+<section id="breast-cancer-dataset-1" class="level4">
+<h4 class="anchored" data-anchor-id="breast-cancer-dataset-1">Breast Cancer Dataset</h4>
 <ul>
-<li><p><strong>No Scaling</strong>: Decision Tree, K-Nearest Neighbors, Logistic Regression, Naive Bayes, Random Forest, and SVM all achieved accuracy scores ranging from 0.9298 to 0.9561. The dataset’s features were well-scaled by default, resulting in consistent model performance.</p></li>
-<li><p><strong>Standard Scaler</strong>, <strong>Min-max Scaler</strong>, <strong>Quantile Transformer</strong>: These scaling methods led to accuracy scores similar to the no scaling scenario, demonstrating that for the Breast Cancer dataset, feature scaling had minimal impact on model performance.</p></li>
-<li><p><strong>Maximum Absolute Scaler</strong>: This method maintained accuracy scores consistent with no scaling, indicating that it didn’t significantly influence the models’ performance.</p></li>
-<li><p><strong>Robust Scaler</strong>: Robust scaling resulted in accuracy scores similar to the no scaling scenario, suggesting that it had limited impact on model outcomes.</p></li>
+<li><p><strong>Maximum Absolute Scaler</strong>: This scaling method produced competitive accuracy scores for all algorithms. Naive Bayes and Logistic Regression achieved the highest accuracy of approximately 95.6%, while other algorithms also performed well.</p></li>
+<li><p><strong>Min-max Scaler</strong>: Similar to the Maximum Absolute Scaler, this method yielded strong accuracy results across all algorithms, with Logistic Regression and SVM reaching the highest scores of 96.4% and 95.6%, respectively.</p></li>
+<li><p><strong>No Scaling</strong>: Surprisingly, this dataset demonstrated that some algorithms, particularly Naive Bayes and Logistic Regression, do not benefit from feature scaling. They achieved high accuracy without any scaling, indicating that the original feature values were suitable for these models.</p></li>
+<li><p><strong>Quantile Transformer</strong>: The Quantile Transformer showed consistent accuracy, with Logistic Regression and SVM achieving the highest scores of 96.4% and 95.6%, respectively.</p></li>
+<li><p><strong>Robust Scaler</strong>: Robust scaling led to competitive accuracy for most algorithms, with SVM achieving the highest accuracy of 97.4%.</p></li>
+<li><p><strong>Standard Scaler</strong>: Standard scaling demonstrated similar results to other scaling methods, with Logistic Regression and SVM achieving the highest accuracy of 96.4%.</p></li>
 </ul>
 </section>
-<section id="digits-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="digits-dataset">Digits Dataset</h3>
+<section id="digits-dataset-1" class="level4">
+<h4 class="anchored" data-anchor-id="digits-dataset-1">Digits Dataset</h4>
 <ul>
-<li><p><strong>No Scaling</strong>: Decision Tree, K-Nearest Neighbors, Logistic Regression, Naive Bayes, Random Forest, and SVM exhibited accuracy scores ranging from 0.8500 to 0.9861. The Digits dataset’s features were relatively well-scaled, and most models performed consistently without additional scaling.</p></li>
-<li><p><strong>Standard Scaler</strong>, <strong>Min-max Scaler</strong>: These scaling methods preserved accuracy scores comparable to no scaling, suggesting that feature scaling did not significantly affect model performance.</p></li>
-<li><p><strong>Maximum Absolute Scaler</strong>: For Decision Tree, K-Nearest Neighbors, and Logistic Regression, this scaling method maintained accuracy scores similar to the no scaling scenario. However, it slightly improved the performance of Naive Bayes, Random Forest, and SVM.</p></li>
-<li><p><strong>Quantile Transformer</strong>: Decision Tree, K-Nearest Neighbors, Logistic Regression, and Naive Bayes displayed accuracy scores similar to no scaling, while Random Forest and SVM achieved slightly better performance.</p></li>
-<li><p><strong>Robust Scaler</strong>: This method had a mixed impact, with some models showing similar accuracy to no scaling, while others, like K-Nearest Neighbors, experienced reduced accuracy.</p></li>
+<li><p><strong>Maximum Absolute Scaler</strong>: This scaling method had a positive impact on KNN, which achieved a high accuracy of approximately 98.3%. However, Decision Tree and Logistic Regression showed lower performance.</p></li>
+<li><p><strong>Min-max Scaler</strong>: Min-max scaling improved the accuracy of KNN to nearly 98.9%. Other algorithms also benefited from this scaling.</p></li>
+<li><p><strong>No Scaling</strong>: Surprisingly, the Digits dataset, particularly for KNN, demonstrated that feature scaling is not necessary for achieving high accuracy. KNN reached 99.2% accuracy without any scaling.</p></li>
+<li><p><strong>Quantile Transformer</strong>: While other algorithms performed well with this scaling method, Decision Tree and KNN showed slightly reduced accuracy.</p></li>
+<li><p><strong>Robust Scaler</strong>: Robust scaling did not benefit KNN, with its accuracy dropping to 81.9%. Other algorithms showed consistent performance.</p></li>
+<li><p><strong>Standard Scaler</strong>: Standard scaling improved the accuracy of KNN to 98.6%, making it one of the best-performing algorithms for this dataset.</p></li>
 </ul>
 </section>
-<section id="iris-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="iris-dataset">Iris Dataset</h3>
+<section id="iris-dataset-1" class="level4">
+<h4 class="anchored" data-anchor-id="iris-dataset-1">Iris Dataset</h4>
 <ul>
-<li><p><strong>No Scaling</strong>: Decision Tree, K-Nearest Neighbors, Logistic Regression, Naive Bayes, Random Forest, and SVM achieved accuracy scores ranging from 0.9333 to 1.0000. The Iris dataset’s features were naturally well-scaled, and scaling did not significantly influence model performance.</p></li>
-<li><p><strong>Standard Scaler</strong>, <strong>Min-max Scaler</strong>, <strong>Maximum Absolute Scaler</strong>, <strong>Robust Scaler</strong>: These scaling methods also resulted in consistent accuracy scores similar to no scaling, suggesting that feature scaling had minimal impact on model performance for this dataset.</p></li>
-<li><p><strong>Quantile Transformer</strong>: The Quantile Transformer had a positive impact, leading to perfect accuracy for most models.</p></li>
+<li><p><strong>Maximum Absolute Scaler</strong>: Scaling had minimal impact on the accuracy of algorithms for the Iris dataset. SVM achieved the highest accuracy of 96.7%, regardless of scaling.</p></li>
+<li><p><strong>Min-max Scaler</strong>: Similar to Maximum Absolute Scaling, min-max scaling had a limited effect on the accuracy of algorithms. SVM consistently achieved the highest accuracy of 96.7%.</p></li>
+<li><p><strong>No Scaling</strong>: The Iris dataset was naturally well-scaled, and most algorithms, particularly SVM, achieved high accuracy without any scaling.</p></li>
+<li><p><strong>Quantile Transformer</strong>: Scaling had little influence on accuracy. SVM remained the best-performing algorithm, with an accuracy of 96.7%.</p></li>
+<li><p><strong>Robust Scaler</strong>: Robust scaling slightly improved the accuracy of Decision Tree and SVM but had limited impact overall.</p></li>
+<li><p><strong>Standard Scaler</strong>: Standard scaling resulted in consistent accuracy for all algorithms, with SVM maintaining the highest accuracy of 96.7%.</p></li>
 </ul>
 </section>
-<section id="wine-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="wine-dataset">Wine Dataset</h3>
+<section id="wine-dataset-1" class="level4">
+<h4 class="anchored" data-anchor-id="wine-dataset-1">Wine Dataset</h4>
 <ul>
-<li><p><strong>No Scaling</strong>: Decision Tree, K-Nearest Neighbors, Logistic Regression, Naive Bayes, Random Forest, and SVM exhibited accuracy scores ranging from 0.7222 to 1.0000. The dataset’s features were not well-scaled, and this significantly affected model performance, particularly for SVM.</p></li>
-<li><p><strong>Standard Scaler</strong>, <strong>Min-max Scaler</strong>, <strong>Maximum Absolute Scaler</strong>, <strong>Robust Scaler</strong>, <strong>Quantile Transformer</strong>: These scaling methods uniformly resulted in perfect accuracy scores for all models, indicating the critical role of feature scaling in enhancing model performance for the Wine dataset.</p></li>
+<li><p><strong>Maximum Absolute Scaler</strong>: This scaling method had a substantial impact on SVM, boosting its accuracy to 100%. Other algorithms also reached high accuracy levels.</p></li>
+<li><p><strong>Min-max Scaler</strong>: Min-max scaling had a similar effect on SVM, resulting in perfect accuracy. Decision Tree, KNN, and Logistic Regression also reached maximum accuracy.</p></li>
+<li><p><strong>No Scaling</strong>: The Wine dataset revealed the significance of scaling, particularly for SVM. Without scaling, SVM’s accuracy was relatively low at 80.6%, highlighting the sensitivity of SVM to feature values.</p></li>
+<li><p><strong>Quantile Transformer</strong>: Quantile transformation improved the accuracy of Decision Tree and Logistic Regression. However, SVM remained sensitive to scaling.</p></li>
+<li><p><strong>Robust Scaler</strong>: Robust scaling had a positive impact, with SVM reaching perfect accuracy. Other algorithms also performed well.</p></li>
+<li><p><strong>Standard Scaler</strong>: Standard scaling had a similar effect to other scaling methods, with SVM achieving perfect accuracy.</p></li>
 </ul>
 </section>
 </section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>The choice of feature scaling method has a varying impact on the performance of machine learning models, depending on the characteristics of the dataset and the specific algorithms employed. In the evaluation of the Breast Cancer dataset, most scaling methods showed little influence on model accuracy, suggesting that the dataset’s features were inherently well-scaled. In contrast, the Digits and Iris datasets, which had well-scaled features by default, exhibited consistent performance across various scaling techniques.</p>
-<p>However, the Wine dataset highlighted the importance of feature scaling, as the absence of scaling significantly hindered model performance, particularly for SVM. Scaling methods such as Standard Scaler, Min-max Scaler, Maximum Absolute Scaler, Robust Scaler, and Quantile Transformer proved effective in bringing about consistent and optimal model accuracy.</p>
-<p>Therefore, when working with machine learning models, it is crucial to assess the dataset’s characteristics and choose an appropriate feature scaling method. This decision can have a substantial impact on the model’s performance and the quality of its predictions. Careful consideration of scaling methods is a vital step in the data preprocessing phase, ensuring that the machine learning models are well-equipped to make accurate and reliable predictions.</p>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>In summary, the impact of feature scaling on machine learning algorithms varies depending on the dataset and the algorithm used:</p>
+<ul>
+<li><p>Some datasets, like the Iris dataset, are naturally well-scaled, and most algorithms perform consistently well without any scaling.</p></li>
+<li><p>Feature scaling, particularly min-max and maximum absolute scaling, has a positive impact on algorithms in datasets like Breast Cancer and Digits, resulting in improved accuracy.</p></li>
+<li><p>The Wine dataset demonstrated that certain algorithms, notably SVM, are highly sensitive to feature scaling. Without proper scaling, SVM’s performance can be significantly compromised.</p></li>
+<li><p>Surprisingly, some algorithms, such as Naive Bayes and Logistic Regression, performed well without any scaling in the Breast Cancer dataset, indicating that the original feature values were suitable for these models.</p></li>
+</ul>
+<p>In practice, it’s essential to consider the characteristics of the dataset and the algorithm’s sensitivity to feature values when deciding whether to apply feature scaling. While scaling can improve the performance of many machine learning algorithms, there are cases where it may not be necessary and could even have a negligible or detrimental effect on model accuracy.</p>
+</section>
 </section>
 <section id="the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling" class="level2">
 <h2 class="anchored" data-anchor-id="the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling">The Resilience of Naive Bayes and Tree-Based Algorithms to Scaling</h2>
