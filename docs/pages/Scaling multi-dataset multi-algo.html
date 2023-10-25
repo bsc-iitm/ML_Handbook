@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Sherry Thomas">
 
 <title>ML Handbook - Comprehensive Study on the Impact of Feature Scaling on Classification Models</title>
 <style>
@@ -100,8 +101,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 <meta property="og:title" content="ML Handbook - Comprehensive Study on the Impact of Feature Scaling on Classification Models">
 <meta property="og:description" content="">
@@ -215,6 +230,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#wine-dataset" id="toc-wine-dataset" class="nav-link" data-scroll-target="#wine-dataset">Wine Dataset</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling" id="toc-the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling" class="nav-link" data-scroll-target="#the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling">The Resilience of Naive Bayes and Tree-Based Algorithms to Scaling</a>
+  <ul class="collapse">
+  <li><a href="#naive-bayes-classifier" id="toc-naive-bayes-classifier" class="nav-link" data-scroll-target="#naive-bayes-classifier">Naive Bayes Classifier</a></li>
+  <li><a href="#decision-trees-and-random-forests" id="toc-decision-trees-and-random-forests" class="nav-link" data-scroll-target="#decision-trees-and-random-forests">Decision Trees and Random Forests</a></li>
+  </ul></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/Scaling multi-dataset multi-algo.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -230,6 +250,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sherry Thomas </p>
+          </div>
+  </div>
     
   
     
@@ -238,6 +264,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p>Colab Link: <a href="https://colab.research.google.com/drive/1O0kAoCd9q6RSzs_MeE6TNw50KZBL2Wmj?usp=sharing" target="_blank">Click here!</a></p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>In the realm of machine learning, feature scaling is a crucial preprocessing step that can significantly influence the performance of classification models. It involves transforming the data to a common scale, ensuring that no single feature dominates the learning process due to its range of values. This notebook presents an exhaustive exploration of the impact of various feature scaling methods on classification models. We will focus on five commonly used techniques:</p>
@@ -829,11 +856,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="feature-scaling-methods">Feature Scaling Methods</h2>
 <section id="standard-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="standard-scaler">1. Standard Scaler</h3>
-<p>The Standard Scaler (<span class="math inline">\(SS\)</span>) transforms the data so that it has a mean (<span class="math inline">\(\mu\)</span>) of 0 and a standard deviation (<span class="math inline">\(\sigma\)</span>) of 1. This method assumes that the data is normally distributed. The transformation is given by:</p>
-<p><span class="math display">\[
+<p>The Standard Scaler (<span class="math inline">SS</span>) transforms the data so that it has a mean (<span class="math inline">\mu</span>) of 0 and a standard deviation (<span class="math inline">\sigma</span>) of 1. This method assumes that the data is normally distributed. The transformation is given by:</p>
+<p><span class="math display">
 SS(x) = \frac{x - \mu}{\sigma}
-\]</span></p>
-<p>where <span class="math inline">\(x\)</span> is the original feature vector, <span class="math inline">\(\mu\)</span> is the mean of the feature vector, and <span class="math inline">\(\sigma\)</span> is the standard deviation of the feature vector.</p>
+</span></p>
+<p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">\mu</span> is the mean of the feature vector, and <span class="math inline">\sigma</span> is the standard deviation of the feature vector.</p>
 <div class="cell" data-execution_count="43">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Standard Scaler to a dataset</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_standard_scaler(X_train, X_test):</span>
@@ -851,11 +878,11 @@ SS(x) = \frac{x - \mu}{\sigma}
 </section>
 <section id="min-max-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="min-max-scaler">2. Min-max Scaler</h3>
-<p>The Min-max Scaler (<span class="math inline">\(MMS\)</span>) scales the data to a specific range, typically between 0 and 1. It is suitable for data that does not follow a normal distribution. The transformation is given by:</p>
-<p><span class="math display">\[
+<p>The Min-max Scaler (<span class="math inline">MMS</span>) scales the data to a specific range, typically between 0 and 1. It is suitable for data that does not follow a normal distribution. The transformation is given by:</p>
+<p><span class="math display">
 MMS(x) = \frac{x - x_{min}}{x_{max} - x_{min}}
-\]</span></p>
-<p>where <span class="math inline">\(x\)</span> is the original feature vector, <span class="math inline">\(x_{min}\)</span> is the smallest value in the feature vector, and <span class="math inline">\(x_{max}\)</span> is the largest value in the feature vector.</p>
+</span></p>
+<p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">x_{min}</span> is the smallest value in the feature vector, and <span class="math inline">x_{max}</span> is the largest value in the feature vector.</p>
 <div class="cell" data-execution_count="44">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Min-max Scaler to a dataset</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_min_max_scaler(X_train, X_test):</span>
@@ -873,11 +900,11 @@ MMS(x) = \frac{x - x_{min}}{x_{max} - x_{min}}
 </section>
 <section id="maximum-absolute-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="maximum-absolute-scaler">3. Maximum Absolute Scaler</h3>
-<p>The Maximum Absolute Scaler (<span class="math inline">\(MAS\)</span>) scales the data based on the maximum absolute value, making the largest value in each feature equal to 1. It does not shift/center the data, and thus does not destroy any sparsity. The transformation is given by:</p>
-<p><span class="math display">\[
+<p>The Maximum Absolute Scaler (<span class="math inline">MAS</span>) scales the data based on the maximum absolute value, making the largest value in each feature equal to 1. It does not shift/center the data, and thus does not destroy any sparsity. The transformation is given by:</p>
+<p><span class="math display">
 MAS(x) = \frac{x}{|x_{max}|}
-\]</span></p>
-<p>where <span class="math inline">\(x\)</span> is the original feature vector, and <span class="math inline">\(x_{max, abs}\)</span> is the maximum absolute value in the feature vector.</p>
+</span></p>
+<p>where <span class="math inline">x</span> is the original feature vector, and <span class="math inline">x_{max, abs}</span> is the maximum absolute value in the feature vector.</p>
 <div class="cell" data-execution_count="45">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Maximum Absolute Scaler to a dataset</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_max_abs_scaler(X_train, X_test):</span>
@@ -895,11 +922,11 @@ MAS(x) = \frac{x}{|x_{max}|}
 </section>
 <section id="robust-scaler" class="level3">
 <h3 class="anchored" data-anchor-id="robust-scaler">4. Robust Scaler</h3>
-<p>The Robust Scaler (<span class="math inline">\(RS\)</span>) scales the data using the median (<span class="math inline">\(Q_2\)</span>) and the interquartile range (<span class="math inline">\(IQR\)</span>, <span class="math inline">\(Q_3 - Q_1\)</span>), making it robust to outliers. The transformation is given by:</p>
-<p><span class="math display">\[
+<p>The Robust Scaler (<span class="math inline">RS</span>) scales the data using the median (<span class="math inline">Q_2</span>) and the interquartile range (<span class="math inline">IQR</span>, <span class="math inline">Q_3 - Q_1</span>), making it robust to outliers. The transformation is given by:</p>
+<p><span class="math display">
 RS(x) = \frac{x - Q_2}{IQR}
-\]</span></p>
-<p>where <span class="math inline">\(x\)</span> is the original feature vector, <span class="math inline">\(Q_2\)</span> is the median of the feature vector, and <span class="math inline">\(IQR\)</span> is the interquartile range of the feature vector.</p>
+</span></p>
+<p>where <span class="math inline">x</span> is the original feature vector, <span class="math inline">Q_2</span> is the median of the feature vector, and <span class="math inline">IQR</span> is the interquartile range of the feature vector.</p>
 <div class="cell" data-execution_count="46">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Robust Scaler to a dataset</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_robust_scaler(X_train, X_test):</span>
@@ -917,11 +944,11 @@ RS(x) = \frac{x - Q_2}{IQR}
 </section>
 <section id="quantile-transformer" class="level3">
 <h3 class="anchored" data-anchor-id="quantile-transformer">5. Quantile Transformer</h3>
-<p>The Quantile Transformer (<span class="math inline">\(QT\)</span>) applies a non-linear transformation to the data, mapping it to a uniform or normal distribution. This method can be helpful when the data is not normally distributed. It computes the cumulative distribution function (CDF) of the data to place each value within the range of the distribution. The transformation is given by:</p>
-<p><span class="math display">\[
+<p>The Quantile Transformer (<span class="math inline">QT</span>) applies a non-linear transformation to the data, mapping it to a uniform or normal distribution. This method can be helpful when the data is not normally distributed. It computes the cumulative distribution function (CDF) of the data to place each value within the range of the distribution. The transformation is given by:</p>
+<p><span class="math display">
 QT(x) = F^{-1}(F(x))
-\]</span></p>
-<p>where <span class="math inline">\(F(x)\)</span> is the cumulative distribution function of the data, and <span class="math inline">\(F^{-1}\)</span> is the inverse function of <span class="math inline">\(F\)</span>.</p>
+</span></p>
+<p>where <span class="math inline">F(x)</span> is the cumulative distribution function of the data, and <span class="math inline">F^{-1}</span> is the inverse function of <span class="math inline">F</span>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a function to apply Quantile Transformer to a dataset</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> apply_quantile_transformer(X_train, X_test):</span>
@@ -1424,8 +1451,31 @@ QT(x) = F^{-1}(F(x))
 <p>The choice of feature scaling method has a varying impact on the performance of machine learning models, depending on the characteristics of the dataset and the specific algorithms employed. In the evaluation of the Breast Cancer dataset, most scaling methods showed little influence on model accuracy, suggesting that the dataset’s features were inherently well-scaled. In contrast, the Digits and Iris datasets, which had well-scaled features by default, exhibited consistent performance across various scaling techniques.</p>
 <p>However, the Wine dataset highlighted the importance of feature scaling, as the absence of scaling significantly hindered model performance, particularly for SVM. Scaling methods such as Standard Scaler, Min-max Scaler, Maximum Absolute Scaler, Robust Scaler, and Quantile Transformer proved effective in bringing about consistent and optimal model accuracy.</p>
 <p>Therefore, when working with machine learning models, it is crucial to assess the dataset’s characteristics and choose an appropriate feature scaling method. This decision can have a substantial impact on the model’s performance and the quality of its predictions. Careful consideration of scaling methods is a vital step in the data preprocessing phase, ensuring that the machine learning models are well-equipped to make accurate and reliable predictions.</p>
+</section>
+<section id="the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="the-resilience-of-naive-bayes-and-tree-based-algorithms-to-scaling">The Resilience of Naive Bayes and Tree-Based Algorithms to Scaling</h2>
+<p>In the context of our machine learning analysis, it’s fascinating to observe that Naive Bayes and tree-based algorithms, such as Decision Trees and Random Forests, exhibit remarkable resilience to feature scaling. This resilience stems from the inherent characteristics of these algorithms and their method of decision-making.</p>
+<section id="naive-bayes-classifier" class="level3">
+<h3 class="anchored" data-anchor-id="naive-bayes-classifier">Naive Bayes Classifier</h3>
+<p>Naive Bayes is a probabilistic algorithm that’s based on the Bayes’ theorem. It operates under the “naive” assumption that features are conditionally independent, given the class label. This fundamental assumption simplifies the calculations and often leads to surprisingly good classification results, especially in text and categorical data analysis.</p>
+<p>The reason why Naive Bayes remains largely unaffected by feature scaling is twofold:</p>
+<ol type="1">
+<li><p><strong>Probabilistic Nature</strong>: Naive Bayes calculates probabilities based on the distribution of features within each class. The relative scaling of individual features does not impact the probability ratios significantly. In other words, as long as the relationships between features and classes remain consistent, the algorithm can adapt to different feature scales.</p></li>
+<li><p><strong>Normalization in Probability Calculation</strong>: When computing probabilities, Naive Bayes often involves normalizing terms. This means that even if feature values are on different scales, the normalization process effectively scales them down to a common scale during probability calculations.</p></li>
+</ol>
+</section>
+<section id="decision-trees-and-random-forests" class="level3">
+<h3 class="anchored" data-anchor-id="decision-trees-and-random-forests">Decision Trees and Random Forests</h3>
+<p>Decision Trees and their ensemble counterpart, Random Forests, are non-parametric algorithms that make decisions by recursively splitting data based on feature values. They are highly interpretable and capable of capturing complex relationships within the data.</p>
+<p>The key reasons why Decision Trees and Random Forests are generally insensitive to feature scaling include:</p>
+<ol type="1">
+<li><p><strong>Splitting Criteria</strong>: Decision Trees make decisions based on feature values relative to certain thresholds. The order or magnitude of these thresholds doesn’t affect the decision-making process. The algorithm focuses on finding the most discriminative features and their optimal split points.</p></li>
+<li><p><strong>Ensemble Nature (Random Forests)</strong>: Random Forests combine multiple Decision Trees. The ensemble nature of Random Forests further reduces sensitivity to feature scaling. When individual trees make errors due to scaling, the ensemble tends to compensate for them.</p></li>
+<li><p><strong>Impurity Measures</strong>: Decision Trees use impurity measures like Gini impurity and entropy to determine the quality of a split. These measures are based on class proportions within a split and are independent of feature scales.</p></li>
+</ol>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
