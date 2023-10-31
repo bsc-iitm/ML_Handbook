@@ -1,5 +1,5 @@
 ---
-# footer: "[https://github.com/bsc-iitm/MLT_notes](https://https://github.com/bsc-iitm/MLT_notes/)"
+# footer: "[https://github.com/bsc-iitm/ML_Handbook](https://bsc-iitm.github.io/ML_Handbook/)"
 format: 
   revealjs:
     theme: slides.scss
