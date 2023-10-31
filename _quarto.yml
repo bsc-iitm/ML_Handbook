@@ -37,10 +37,15 @@ website:
         contents:
           - href: index.qmd
             text: About
-      - section: "Scaling"
+      - text: "---"
+      - section: "Preprocessing"
         contents:
-          - href: ./pages/Scaling multi-dataset multi-algo.ipynb
-            text: Overview
+          - href: ./pages/Deliverable_1.ipynb
+            text: Handling Missing Values
+          - section: "Scaling"
+            contents:
+              - href: ./pages/Scaling multi-dataset multi-algo.ipynb
+                text: Overview
       - section: "Extras"
         contents:
           - href: ./pages/Inductive_Bias.ipynb
