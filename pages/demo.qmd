@@ -1,0 +1,215 @@
+---
+# footer: "[https://github.com/bsc-iitm/MLT_notes](https://https://github.com/bsc-iitm/MLT_notes/)"
+format: 
+  revealjs:
+    theme: slides.scss
+    multiplex: true
+    transition: fade
+    slide-number: true
+    incremental: true 
+    chalkboard: true
+editor: visual
+execute:
+  freeze: auto
+---
+
+# Decision Trees
+
+- Popular representation for **interpretable** classifiers; even among humans!
+- Example: I've just arrived at a restaurant. Should I stay (wait for a table) or go elsewhere?
+
+---
+
+::: {.smaller}
+One may choose to use the following set of rules to make their decision:
+
+![source: ai.berkeley.edu](images/decision_tree.png){fig-align="center" width="90%"}
+:::
+---
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+Consider this dataset:
+
+::: {.smaller}
+- 4x4 checkerboard dataset with alternating classes
+- <span style="color:red;">Red</span> points $\implies y=0$ 
+- <span style="color:blue;">Blue</span> points $\implies y=1$
+- Want to model dataset generation rationale
+:::
+
+::: {.fragment}
+Fit a Decision tree?
+:::
+
+:::
+
+::: {.column width="70%"}
+
+![](images/checkerboard.png){fig-align="center" width="90%"}
+
+:::
+
+::::
+
+---
+
+::: {.smaller}
+The following decision tree is achieved:
+:::
+
+::: {.fragment}
+![](images/DTree.png){fig-align="center" width="90%"}
+:::
+::: {.fragment .smaller}
+Rationale is perfectly captured by a decision tree with ```depth=7```
+:::
+
+---
+
+:::: {.columns}
+
+::: {.column width="30%"}
+
+#### A twist
+::: {.fragment}
+#### (literally)
+:::
+
+Consider this dataset:
+
+::: {.smaller}
+- Previous dataset, rotated by $45^{\circ}$ from the origin
+- How will our decision tree algorithm perform on this dataset?
+:::
+
+:::
+
+::: {.column width="70%"}
+
+![](images/checkerboard_rotated.png){fig-align="center" width="90%"}
+
+:::
+
+::::
+---
+
+![](images/DTree_rotated.png){fig-align="center" width="90%"}
+
+:::: {.columns}
+
+::: {.column width="50%"}
+::: {.smaller}
+
+- A complicated decision tree with 18 questions is required
+- Note that the depth is not *constrained*
+- Number of *corners* $\propto$ *density* of class
+- *Unconstrained* - **Overfitting**
+:::
+:::
+
+::: {.column width="50%"}
+::: {.smaller}
+
+- ```depth=7``` found sufficient to capture structure of dataset
+- But performance is not invariant to transformation by rotation
+:::
+:::
+::::
+
+## Why? 
+
+::: {.fragment .smaller}
+Decision trees make the following presumption about the structure of data:
+:::
+
+::: {.fragment .smaller .fade-in-then-semi-out}
+> Can figure class out based on a series of *binary* questions (yes/no) on individual features
+:::
+
+::: {.fragment}
+> **Inductive Bias: ** Anything which makes an algorithm learn one pattern over another
+:::
+
+::: {.smaller}
+- Inductive bias of decision trees entails the use of *axis-parallel splits* to construct the decision boundary
+- Sensitive to *rotations*
+- Algorithm invariant to rotation?
+:::
+
+
+# K-Nearest Neighbors
+- Lazy Human; do not want to learn anything
+- Predict on input $\mathbb{x}$ as follows:
+  - Find others who are in a *similar* situation as $\mathbb{x}$
+  - Choose the top $K$ people w.r.t *similarity*
+  - Have them vote on the prediction
+
+::: {.fragment .smaller}
+In our dataset, we define similarity to be inveresely proportional to the **distance** between datapoints; i.e
+:::
+::: {.fragment}
+> The *closer* the datapoints, the more *similar* they are
+:::
+
+---
+
+::: {.smaller}
+The following decision boundaries are achieved by the KNN algorithm:
+
+::: {.fragment}
+![](images/KNN.png)
+:::
+
+- Rotation has no impact on the decision boundary of KNN!
+- Inductive bias for KNN?
+:::
+
+---
+
+::: {.smaller}
+Consider the following dataset:
+
+::: {.fragment}
+![](images/lsep.png){fig-align="center" width="90%"}
+:::
+
+- The dataset is *linearly seperable*
+- <span style="color:blue;">Blue</span> points $\implies$ Class 1, and <span style="color:red;">Red</span> points $\implies$ Class 2
+- Note that the range (and therefore scaling) is vastly different for Features 1 & 2
+
+:::
+
+---
+
+::: {.smaller}
+KNN Results in the following decision boundary:
+:::
+
+:::: {.columns .smaller}
+
+::: {.column width="50%"}
+::: {.fragment}
+![](images/KNN_boundary_unscaled.png){fig-align="center" width="75%"}
+:::
+
+- Distance is invariant to scaling of features
+- Feature 2 is totally neglected during prediction
+- Apply StandardScalar?
+
+:::
+
+::: {.column width="50%"}
+
+::: {.fragment}
+![](images/KNN_boundary_scaled.png){fig-align="center" width="75%"}
+:::
+
+- KNN has satisfactory performance; but we raise some questions:
+  - Is a StandardScalar transformation advisable? 
+  - Dataset is given to be *linearly seperable*; Can we do better?
+
+:::
+::::
