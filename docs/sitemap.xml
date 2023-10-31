@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
-    <lastmod>2023-10-31T11:00:20.724Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Inductive_Bias.html</loc>
-    <lastmod>2023-10-31T11:00:18.240Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/demo.html</loc>
-    <lastmod>2023-10-31T11:00:09.704Z</lastmod>
-  </url>
-  <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/index.html</loc>
-    <lastmod>2023-10-31T11:00:09.052Z</lastmod>
+    <lastmod>2023-10-31T12:08:13.823Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Deliverable_1.html</loc>
-    <lastmod>2023-10-31T11:00:10.580Z</lastmod>
+    <lastmod>2023-10-31T12:08:13.091Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Inductive_Bias.html</loc>
+    <lastmod>2023-10-31T12:08:12.070Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
+    <lastmod>2023-10-31T12:08:07.434Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
-    <lastmod>2023-10-31T11:00:20.256Z</lastmod>
+    <lastmod>2023-10-31T12:08:09.056Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/demo.html</loc>
+    <lastmod>2023-10-31T12:08:12.488Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/standard.html</loc>
+    <lastmod>2023-10-31T12:08:13.525Z</lastmod>
   </url>
 </urlset>

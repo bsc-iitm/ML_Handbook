@@ -46,6 +46,8 @@ website:
             contents:
               - href: ./pages/Scaling multi-dataset multi-algo.ipynb
                 text: Overview
+              - href: ./pages/standard.ipynb
+                text: Standard Scaling
       - section: "Extras"
         contents:
           - href: ./pages/Inductive_Bias.ipynb
