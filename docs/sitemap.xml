@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
-    <lastmod>2023-10-25T15:08:54.533Z</lastmod>
-  </url>
-  <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/index.html</loc>
-    <lastmod>2023-10-25T15:08:52.609Z</lastmod>
+    <lastmod>2023-10-31T07:59:19.910Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
-    <lastmod>2023-10-25T15:08:52.946Z</lastmod>
+    <lastmod>2023-10-31T07:59:18.025Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
+    <lastmod>2023-10-31T07:59:19.626Z</lastmod>
   </url>
 </urlset>
