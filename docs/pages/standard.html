@@ -8,7 +8,7 @@
 
 <meta name="author" content="Sherry Thomas">
 
-<title>ML Handbook - The Effects of Standard Scaling in Machine Learning</title>
+<title>ML Handbook - Investigation of Standard Scaling Influence</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -100,7 +100,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }</script>
 
 
-<meta property="og:title" content="ML Handbook - The Effects of Standard Scaling in Machine Learning">
+<meta property="og:title" content="ML Handbook - Investigation of Standard Scaling Influence">
 <meta property="og:description" content="">
 <meta property="og:image" content="https://bsc-iitm.github.io/ML_Handbook/pages/standard_files/figure-html/cell-3-output-1.png">
 <meta property="og:site-name" content="ML Handbook">
@@ -231,15 +231,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
-  <li><a href="#the-wine-dataset" id="toc-the-wine-dataset" class="nav-link" data-scroll-target="#the-wine-dataset">The Wine Dataset</a></li>
-  <li><a href="#load-and-prepare-data" id="toc-load-and-prepare-data" class="nav-link" data-scroll-target="#load-and-prepare-data">Load and Prepare Data</a></li>
-  <li><a href="#effects-of-standard-scaling" id="toc-effects-of-standard-scaling" class="nav-link" data-scroll-target="#effects-of-standard-scaling">Effects of Standard Scaling</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a></li>
+  <li><a href="#the-wine-dataset" id="toc-the-wine-dataset" class="nav-link" data-scroll-target="#the-wine-dataset">The Wine Dataset</a>
+  <ul class="collapse">
+  <li><a href="#data-loading-and-preparation" id="toc-data-loading-and-preparation" class="nav-link" data-scroll-target="#data-loading-and-preparation">Data Loading and Preparation</a></li>
+  </ul></li>
+  <li><a href="#analysis-of-standard-scaling-effects" id="toc-analysis-of-standard-scaling-effects" class="nav-link" data-scroll-target="#analysis-of-standard-scaling-effects">Analysis of Standard Scaling Effects</a>
   <ul class="collapse">
   <li><a href="#visualizing-the-effect-on-a-k-neighbors-model" id="toc-visualizing-the-effect-on-a-k-neighbors-model" class="nav-link" data-scroll-target="#visualizing-the-effect-on-a-k-neighbors-model">Visualizing the Effect on a K-Neighbors Model</a></li>
-  <li><a href="#effect-of-standard-scaling-on-pca" id="toc-effect-of-standard-scaling-on-pca" class="nav-link" data-scroll-target="#effect-of-standard-scaling-on-pca">Effect of Standard Scaling on PCA</a></li>
+  <li><a href="#impact-of-standard-scaling-on-pca" id="toc-impact-of-standard-scaling-on-pca" class="nav-link" data-scroll-target="#impact-of-standard-scaling-on-pca">Impact of Standard Scaling on PCA</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
   </ul>
 <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/standard.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
@@ -248,7 +251,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">The Effects of Standard Scaling in Machine Learning</h1>
+<h1 class="title">Investigation of Standard Scaling Influence</h1>
 </div>
 
 
@@ -269,19 +272,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>In this Jupyter Notebook, we will delve into the significance of feature scaling, with a particular focus on standard scaling, also known as Z-score normalization. We will employ the wine dataset from the UCI Machine Learning Repository to demonstrate the implications of feature scaling. This study is crucial in real-world applications, particularly in machine learning and data science, where data preprocessing and normalization are essential steps.</p>
-<section id="introduction" class="level2">
-<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
-<p>Feature scaling is a critical preprocessing step in numerous machine learning algorithms. It entails rescaling each feature in the dataset to have a standard deviation of 1 and a mean of 0. This normalization is vital for several reasons, including improving convergence or creating different model fits, even though tree-based models are less affected by feature scaling.</p>
+<p>Colab Link: <a href="https://colab.research.google.com/drive/14aGKUz7A_1SKdaHwYGMlWOKQw31jFh_2?usp=sharing" target="_blank">Click here!</a></p>
+<p>This Jupyter Notebook is dedicated to an in-depth investigation of feature scaling’s significance, specifically focusing on standard scaling, also known as Z-score normalization. Feature scaling is an indispensable preprocessing step in numerous machine learning algorithms. It often enhances model performance. This study is vital as it sheds light on the practical implications of feature scaling in real-world applications. The wine dataset from the UCI Machine Learning Repository will be employed to demonstrate the effects of feature scaling.</p>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
+<p>Feature scaling is a vital preprocessing step in various machine learning algorithms, and one of the most used ones is the Standard Scaler. It involves rescaling each feature in the dataset to have a standard deviation of 1 and a mean of 0. This normalization is necessary for several reasons, although tree-based models are less affected by feature scaling. Other algorithms might require feature normalization for different purposes, such as improving convergence or creating different model fits.</p>
 </section>
 <section id="the-wine-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="the-wine-dataset">The Wine Dataset</h2>
-<p>We will utilize the wine dataset, available at UCI. This dataset comprises continuous features that measure different properties, such as alcohol content and malic acid. The features are heterogeneous in scale, making it an excellent choice to illustrate the effects of standard scaling.</p>
-</section>
-<section id="load-and-prepare-data" class="level2">
-<h2 class="anchored" data-anchor-id="load-and-prepare-data">Load and Prepare Data</h2>
-<p>Let’s start by loading and preparing the wine dataset for our analysis. We will split the data into training and testing sets:</p>
-<div class="cell" data-execution_count="11">
+<p>The wine dataset from UCI will be used in this study. This dataset contains continuous features that measure different properties, such as alcohol content, malic acid, amongst others. These features are heterogeneous in scale, making it an excellent example to illustrate the effects of standard scaling.</p>
+<section id="data-loading-and-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="data-loading-and-preparation">Data Loading and Preparation</h3>
+<p>We will start by loading and preparing the wine dataset for our analysis. We will also split the data into training and testing sets. This is a common practice in machine learning to evaluate the performance of a model on unseen data.</p>
+<div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_wine</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -298,12 +301,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>scaled_X_train <span class="op">=</span> scaler.fit_transform(X_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="effects-of-standard-scaling" class="level2">
-<h2 class="anchored" data-anchor-id="effects-of-standard-scaling">Effects of Standard Scaling</h2>
+</section>
+<section id="analysis-of-standard-scaling-effects" class="level2">
+<h2 class="anchored" data-anchor-id="analysis-of-standard-scaling-effects">Analysis of Standard Scaling Effects</h2>
 <section id="visualizing-the-effect-on-a-k-neighbors-model" class="level3">
 <h3 class="anchored" data-anchor-id="visualizing-the-effect-on-a-k-neighbors-model">Visualizing the Effect on a K-Neighbors Model</h3>
-<p>To visually demonstrate the effect of standard scaling on a K-Neighbors Classifier, we select a subset of two features, “proline” and “hue,” which have values with different orders of magnitude. We will visualize the decision boundary of the classifier with and without scaling. The K-Neighbors algorithm is a type of instance-based learning where the function is only approximated locally and all computation is deferred until function evaluation.</p>
-<div class="cell" data-execution_count="12">
+<p>To visually demonstrate the effect of standard scaling on a K-Neighbors Classifier, we select a subset of two features, “proline” and “hue,” which have values with different orders of magnitude. We will visualize the decision boundary of the classifier with and without scaling. The K-Neighbors Classifier is a type of instance-based learning or non-generalizing learning: it does not attempt to construct a general internal model, but simply stores instances of the training data. Classification is computed from a simple majority vote of the nearest neighbors of each point.</p>
+<div class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.inspection <span class="im">import</span> DecisionBoundaryDisplay</span>
@@ -338,34 +342,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="standard_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>In the visualizations, we can observe that the decision boundary changes significantly when we scale the features. Without scaling, the variable “proline” dominates the direction of the decision boundary due to its higher magnitude, while “hue” is comparatively ignored. After scaling, both variables have similar impacts on the decision boundary.</p>
+<p>The visualizations depict a significant change in the decision boundary when we scale the features. Without scaling, the variable “proline” dominates the decision boundary due to its higher magnitude, while “hue” is comparatively ignored. After scaling, both variables have similar impacts on the decision boundary.</p>
 </section>
-<section id="effect-of-standard-scaling-on-pca" class="level3">
-<h3 class="anchored" data-anchor-id="effect-of-standard-scaling-on-pca">Effect of Standard Scaling on PCA</h3>
-<p>Next, we will examine the impact of standard scaling on Principal Component Analysis (PCA). PCA is a technique used for dimensionality reduction in machine learning. It aims to find the features that maximize variance. Scaling is crucial as it ensures that features with different scales do not dominate the principal components.</p>
-<div class="cell" data-execution_count="13">
+<section id="impact-of-standard-scaling-on-pca" class="level3">
+<h3 class="anchored" data-anchor-id="impact-of-standard-scaling-on-pca">Impact of Standard Scaling on PCA</h3>
+<p>Next, we will examine the effect of standard scaling on Principal Component Analysis (PCA). PCA is a statistical procedure that uses an orthogonal transformation to convert a set of observations of possibly correlated variables into a set of values of linearly uncorrelated variables called principal components. This transformation is defined in such a way that the first principal component has the largest possible variance. Scaling is crucial as it ensures that features with different scales do not dominate the principal components.</p>
+<div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.decomposition <span class="im">import</span> PCA</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit(X_train)</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>scaled_pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit(scaled_X_train)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>X_train_transformed <span class="op">=</span> pca.transform(X_train)</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>X_train_std_transformed <span class="op">=</span> scaled_pca.transform(scaled_X_train)</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the weights of the first principal component</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>first_pca_component <span class="op">=</span> pd.DataFrame(</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    pca.components_[<span class="dv">0</span>], index<span class="op">=</span>X.columns, columns<span class="op">=</span>[<span class="st">"without scaling"</span>]</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>first_pca_component[<span class="st">"with scaling"</span>] <span class="op">=</span> scaled_pca.components_[<span class="dv">0</span>]</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>first_pca_component.plot.bar(</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Weights of the first principal component"</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">8</span>)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit(X_train)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>scaled_pca <span class="op">=</span> PCA(n_components<span class="op">=</span><span class="dv">2</span>).fit(scaled_X_train)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X_train_transformed <span class="op">=</span> pca.transform(X_train)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>X_train_std_transformed <span class="op">=</span> scaled_pca.transform(scaled_X_train)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the weights of the first principal component</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>first_pca_component <span class="op">=</span> pd.DataFrame(</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>    pca.components_[<span class="dv">0</span>], index<span class="op">=</span>X.columns, columns<span class="op">=</span>[<span class="st">"without scaling"</span>]</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>first_pca_component[<span class="st">"with scaling"</span>] <span class="op">=</span> scaled_pca.components_[<span class="dv">0</span>]</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>first_pca_component.plot.bar(</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    title<span class="op">=</span><span class="st">"Weights of the first principal component"</span>, figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">8</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>_ <span class="op">=</span> plt.tight_layout()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="standard_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
 </div>
 </div>
-<p>Indeed we find that the “proline” feature dominates the direction of the first principal component without scaling, being about two orders of magnitude above the other features. This is contrasted when observing the first principal component for the scaled version of the data, where the orders of magnitude are roughly the same across all the features.</p>
+<p>As observed, the “proline” feature dominates the direction of the first principal component without scaling, being about two orders of magnitude above the other features. This is contrasted when observing the first principal component for the scaled version of the data, where the orders of magnitude are roughly the same across all the features.</p>
 <p>We can visualize the distribution of the principal components in both cases:</p>
-<div class="cell" data-execution_count="7">
+<div class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize the distribution of principal components</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fig, (ax1, ax2) <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">1</span>, ncols<span class="op">=</span><span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">5</span>))</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>target_classes <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>)</span>
@@ -405,7 +411,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="conclusion" class="level2">
 <h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>In this Jupyter Notebook, we have explored the effects of standard scaling on machine learning models using the wine dataset. We observed how standard scaling influences decision boundaries and the behavior of PCA. Scaling the features ensures that no single feature dominates the analysis and can lead to improved model performance. It is an important preprocessing step to consider when working with machine learning algorithms. Future research could focus on the effects of other scaling methods and their impact on different types of machine learning models.</p>
+<p>This Jupyter Notebook has explored the effects of standard scaling on machine learning models using the wine dataset. We observed how standard scaling influences decision boundaries and the behavior of PCA. Scaling the features ensures that no single feature dominates the analysis and can lead to improved model performance. It is an important preprocessing step to consider when working with machine learning algorithms. Future research could focus on the effects of other scaling methods and their impact on different types of machine learning models.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>This notebook is based on the sklearn document titled “Importance of Feature Scaling”. You can find more information at the following link: <a href="https://scikit-learn.org/stable/auto_examples/preprocessing/plot_scaling_importance.html">Importance of Feature Scaling</a>.</p>
 
 
 </section>
