@@ -2,34 +2,38 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/index.html</loc>
-    <lastmod>2023-11-02T08:50:38.450Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Ordinal_Classification.html</loc>
-    <lastmod>2023-11-02T08:50:37.536Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/standard.html</loc>
-    <lastmod>2023-11-02T08:50:36.505Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
-    <lastmod>2023-11-02T08:50:35.635Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
-    <lastmod>2023-11-02T08:50:34.019Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/demo.html</loc>
-    <lastmod>2023-11-02T08:50:36.035Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Inductive_Bias.html</loc>
-    <lastmod>2023-11-02T08:50:37.067Z</lastmod>
+    <lastmod>2023-11-07T07:07:36.882Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Deliverable_1.html</loc>
-    <lastmod>2023-11-02T08:50:38.152Z</lastmod>
+    <lastmod>2023-11-07T07:07:35.349Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Inductive_Bias.html</loc>
+    <lastmod>2023-11-07T07:07:34.260Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/demo.html</loc>
+    <lastmod>2023-11-07T07:07:33.190Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
+    <lastmod>2023-11-07T07:07:31.096Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
+    <lastmod>2023-11-07T07:07:32.772Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/standard.html</loc>
+    <lastmod>2023-11-07T07:07:33.687Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Ordinal_Classification.html</loc>
+    <lastmod>2023-11-07T07:07:34.734Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/vis.html</loc>
+    <lastmod>2023-11-07T07:07:36.563Z</lastmod>
   </url>
 </urlset>

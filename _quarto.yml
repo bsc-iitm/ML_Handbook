@@ -48,6 +48,12 @@ website:
                 text: Overview
               - href: ./pages/standard.ipynb
                 text: Standard Scaling
+      - section: "Observing Data"
+        contents:
+          - section: "Visualization"
+            contents:
+              - href: ./pages/vis.ipynb
+                text: Overview
       - section: "Special Topics in ML"
         contents:
           - href: ./pages/Inductive_Bias.ipynb
