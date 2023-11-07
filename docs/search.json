@@ -242,14 +242,14 @@
     "href": "pages/vis.html",
     "title": "Visualizations using Matplotlib and Seaborn for Data Science",
     "section": "",
-    "text": "Introduction\nWhy Data Visualization Matters\nGetting Started with Matplotlib\n\nBasic Line Plot\nScatter Plot\nBar Chart\nHistogram\nBox Plot\nPie Chart\n\nEnhancing Visualizations with Seaborn\n\nSeaborn vs. Matplotlib\nSeaborn’s Datasets\nSeaborn Styles\nCategorical Plots\nPair Plots\nHeatmaps\nFacetGrid\n\nReal-World Data Visualization Examples\n\nExploratory Data Analysis (EDA)\nTime Series Data Visualization\nGeographic Data Visualization\nAdvanced Plots for Correlation Analysis\n\nInteractive Visualizations\n\nPlotly: A Brief Introduction\nDash: Building Interactive Web Applications\nBokeh\n\nCustomizing and Styling Plots\n\nLabels, Titles, and Legends\nColor Palettes\nPlot Annotations\n\nConclusion"
+    "text": "Colab Link: Click here!"
   },
   {
     "objectID": "pages/vis.html#table-of-contents",
     "href": "pages/vis.html#table-of-contents",
     "title": "Visualizations using Matplotlib and Seaborn for Data Science",
-    "section": "",
-    "text": "Introduction\nWhy Data Visualization Matters\nGetting Started with Matplotlib\n\nBasic Line Plot\nScatter Plot\nBar Chart\nHistogram\nBox Plot\nPie Chart\n\nEnhancing Visualizations with Seaborn\n\nSeaborn vs. Matplotlib\nSeaborn’s Datasets\nSeaborn Styles\nCategorical Plots\nPair Plots\nHeatmaps\nFacetGrid\n\nReal-World Data Visualization Examples\n\nExploratory Data Analysis (EDA)\nTime Series Data Visualization\nGeographic Data Visualization\nAdvanced Plots for Correlation Analysis\n\nInteractive Visualizations\n\nPlotly: A Brief Introduction\nDash: Building Interactive Web Applications\nBokeh\n\nCustomizing and Styling Plots\n\nLabels, Titles, and Legends\nColor Palettes\nPlot Annotations\n\nConclusion"
+    "section": "Table of Contents",
+    "text": "Table of Contents\n\nIntroduction\nWhy Data Visualization Matters\nGetting Started with Matplotlib\n\nBasic Line Plot\nScatter Plot\nBar Chart\nHistogram\nBox Plot\nPie Chart\n\nEnhancing Visualizations with Seaborn\n\nSeaborn vs. Matplotlib\nSeaborn’s Datasets\nSeaborn Styles\nCategorical Plots\nPair Plots\nHeatmaps\nFacetGrid\n\nReal-World Data Visualization Examples\n\nExploratory Data Analysis (EDA)\nTime Series Data Visualization\nGeographic Data Visualization\nAdvanced Plots for Correlation Analysis\n\nInteractive Visualizations\n\nPlotly: A Brief Introduction\nDash: Building Interactive Web Applications\nBokeh\n\nCustomizing and Styling Plots\n\nLabels, Titles, and Legends\nColor Palettes\nPlot Annotations\n\nConclusion"
   },
   {
     "objectID": "pages/vis.html#introduction",
