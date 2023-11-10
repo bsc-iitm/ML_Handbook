@@ -1,0 +1,1644 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Sherry Thomas">
+
+<title>ML Handbook - Comprehensive Data Visualization with Matplotlib and Seaborn</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../pages/Inductive_Bias.html" rel="next">
+<link href="../pages/vis.html" rel="prev">
+<link href="../images/logo.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<meta property="og:title" content="ML Handbook - Comprehensive Data Visualization with Matplotlib and Seaborn">
+<meta property="og:description" content="">
+<meta property="og:image" content="https://bsc-iitm.github.io/ML_Handbook/pages/vis2_files/figure-html/cell-2-output-1.png">
+<meta property="og:site-name" content="ML Handbook">
+<meta property="og:image:height" content="547">
+<meta property="og:image:width" content="857">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Observing Data</li><li class="breadcrumb-item"><a href="../pages/vis.html">Visualization</a></li><li class="breadcrumb-item"><a href="../pages/vis2.html">Comprehensive Data Visualization</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/bsc-iitm/ML_Handbook" rel="" title="GitHub Repo" class="quarto-navigation-tool px-1" aria-label="GitHub Repo"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Home</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Preprocessing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Deliverable_1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Handling Missing Values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Scaling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Scaling multi-dataset multi-algo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/standard.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Standard Scaling</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Observing Data</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true">
+ <span class="menu-text">Visualization</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/vis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/vis2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Comprehensive Data Visualization</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Special Topics in ML</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Inductive_Bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inductive Bias</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Ordinal_Classification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ordinal Classification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Bivariate_EM.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bivariate EM</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#table-of-contents" id="toc-table-of-contents" class="nav-link" data-scroll-target="#table-of-contents">Table of Contents</a></li>
+  <li><a href="#basic-plots" id="toc-basic-plots" class="nav-link" data-scroll-target="#basic-plots">1: Basic Plots</a>
+  <ul class="collapse">
+  <li><a href="#line-plot-visualizing-trends-over-time" id="toc-line-plot-visualizing-trends-over-time" class="nav-link" data-scroll-target="#line-plot-visualizing-trends-over-time">1.1: Line Plot (Visualizing Trends Over Time)</a></li>
+  <li><a href="#scatter-plot-visualizing-relationships-between-variables" id="toc-scatter-plot-visualizing-relationships-between-variables" class="nav-link" data-scroll-target="#scatter-plot-visualizing-relationships-between-variables">1.2: Scatter Plot (Visualizing Relationships Between Variables)</a></li>
+  <li><a href="#bar-plot-visualizing-categorical-data" id="toc-bar-plot-visualizing-categorical-data" class="nav-link" data-scroll-target="#bar-plot-visualizing-categorical-data">1.3: Bar Plot (Visualizing Categorical Data)</a></li>
+  <li><a href="#histogram-visualizing-data-distribution" id="toc-histogram-visualizing-data-distribution" class="nav-link" data-scroll-target="#histogram-visualizing-data-distribution">1.4: Histogram (Visualizing Data Distribution)</a></li>
+  </ul></li>
+  <li><a href="#statistical-plots" id="toc-statistical-plots" class="nav-link" data-scroll-target="#statistical-plots">2: Statistical Plots</a>
+  <ul class="collapse">
+  <li><a href="#box-plot-visualizing-distribution-characteristics" id="toc-box-plot-visualizing-distribution-characteristics" class="nav-link" data-scroll-target="#box-plot-visualizing-distribution-characteristics">2.1: Box Plot (Visualizing Distribution Characteristics)</a></li>
+  <li><a href="#violin-plot-combining-box-plot-and-kde" id="toc-violin-plot-combining-box-plot-and-kde" class="nav-link" data-scroll-target="#violin-plot-combining-box-plot-and-kde">2.2: Violin Plot (Combining Box Plot and KDE)</a></li>
+  <li><a href="#swarm-plot-visualizing-categorical-data" id="toc-swarm-plot-visualizing-categorical-data" class="nav-link" data-scroll-target="#swarm-plot-visualizing-categorical-data">2.3: Swarm Plot (Visualizing Categorical Data)</a></li>
+  </ul></li>
+  <li><a href="#matrix-plots" id="toc-matrix-plots" class="nav-link" data-scroll-target="#matrix-plots">3: Matrix Plots</a>
+  <ul class="collapse">
+  <li><a href="#heatmap-visualizing-correlations" id="toc-heatmap-visualizing-correlations" class="nav-link" data-scroll-target="#heatmap-visualizing-correlations">3.1: Heatmap (Visualizing Correlations)</a></li>
+  <li><a href="#clustermap-hierarchical-clustering" id="toc-clustermap-hierarchical-clustering" class="nav-link" data-scroll-target="#clustermap-hierarchical-clustering">3.2: Clustermap (Hierarchical Clustering)</a></li>
+  </ul></li>
+  <li><a href="#distribution-plots" id="toc-distribution-plots" class="nav-link" data-scroll-target="#distribution-plots">4: Distribution Plots</a>
+  <ul class="collapse">
+  <li><a href="#kernel-density-estimate-kde-plot-visualizing-probability-density" id="toc-kernel-density-estimate-kde-plot-visualizing-probability-density" class="nav-link" data-scroll-target="#kernel-density-estimate-kde-plot-visualizing-probability-density">4.1: Kernel Density Estimate (KDE) Plot (Visualizing Probability Density)</a></li>
+  <li><a href="#pair-plot-exploring-multivariate-relationships" id="toc-pair-plot-exploring-multivariate-relationships" class="nav-link" data-scroll-target="#pair-plot-exploring-multivariate-relationships">4.2: Pair Plot (Exploring Multivariate Relationships)</a></li>
+  </ul></li>
+  <li><a href="#time-series-plots" id="toc-time-series-plots" class="nav-link" data-scroll-target="#time-series-plots">5: Time Series Plots</a>
+  <ul class="collapse">
+  <li><a href="#time-series-plot-unveiling-temporal-trends" id="toc-time-series-plot-unveiling-temporal-trends" class="nav-link" data-scroll-target="#time-series-plot-unveiling-temporal-trends">5.1: Time Series Plot (Unveiling Temporal Trends)</a></li>
+  <li><a href="#autocorrelation-plot-unmasking-time-dependent-dependencies" id="toc-autocorrelation-plot-unmasking-time-dependent-dependencies" class="nav-link" data-scroll-target="#autocorrelation-plot-unmasking-time-dependent-dependencies">5.2: AutoCorrelation Plot (Unmasking Time-Dependent Dependencies)</a></li>
+  </ul></li>
+  <li><a href="#geospatial-data-visualization" id="toc-geospatial-data-visualization" class="nav-link" data-scroll-target="#geospatial-data-visualization">6: Geospatial Data Visualization</a>
+  <ul class="collapse">
+  <li><a href="#scatter-geo-plot-mapping-data-points" id="toc-scatter-geo-plot-mapping-data-points" class="nav-link" data-scroll-target="#scatter-geo-plot-mapping-data-points">6.1: Scatter Geo Plot (Mapping Data Points)</a></li>
+  <li><a href="#choropleth-map-color-coded-data-distribution" id="toc-choropleth-map-color-coded-data-distribution" class="nav-link" data-scroll-target="#choropleth-map-color-coded-data-distribution">6.2: Choropleth Map (Color-Coded Data Distribution)</a></li>
+  </ul></li>
+  <li><a href="#d-plots-visualizing-three-dimensional-data" id="toc-d-plots-visualizing-three-dimensional-data" class="nav-link" data-scroll-target="#d-plots-visualizing-three-dimensional-data">7: 3D Plots (Visualizing Three-Dimensional Data)</a>
+  <ul class="collapse">
+  <li><a href="#d-scatter-plot-visualizing-data-clusters-in-3d-space" id="toc-d-scatter-plot-visualizing-data-clusters-in-3d-space" class="nav-link" data-scroll-target="#d-scatter-plot-visualizing-data-clusters-in-3d-space">7.1: 3D Scatter Plot (Visualizing Data Clusters in 3D Space)</a></li>
+  <li><a href="#d-line-plot-visualizing-data-trajectories-in-3d-space" id="toc-d-line-plot-visualizing-data-trajectories-in-3d-space" class="nav-link" data-scroll-target="#d-line-plot-visualizing-data-trajectories-in-3d-space">7.2: 3D Line Plot (Visualizing Data Trajectories in 3D Space)</a></li>
+  </ul></li>
+  <li><a href="#specialized-plots" id="toc-specialized-plots" class="nav-link" data-scroll-target="#specialized-plots">8: Specialized Plots</a>
+  <ul class="collapse">
+  <li><a href="#polar-plot-visualizing-circular-data" id="toc-polar-plot-visualizing-circular-data" class="nav-link" data-scroll-target="#polar-plot-visualizing-circular-data">8.1: Polar Plot (Visualizing Circular Data)</a></li>
+  <li><a href="#network-plot-visualizing-complex-relationships" id="toc-network-plot-visualizing-complex-relationships" class="nav-link" data-scroll-target="#network-plot-visualizing-complex-relationships">8.2: Network Plot (Visualizing Complex Relationships)</a></li>
+  <li><a href="#word-cloud-visualizing-text-data" id="toc-word-cloud-visualizing-text-data" class="nav-link" data-scroll-target="#word-cloud-visualizing-text-data">8.3: Word Cloud (Visualizing Text Data)</a></li>
+  </ul></li>
+  <li><a href="#advanced-data-visualization" id="toc-advanced-data-visualization" class="nav-link" data-scroll-target="#advanced-data-visualization">9: Advanced Data Visualization</a>
+  <ul class="collapse">
+  <li><a href="#roc-curves-and-auc-model-evaluation" id="toc-roc-curves-and-auc-model-evaluation" class="nav-link" data-scroll-target="#roc-curves-and-auc-model-evaluation">9.1: ROC Curves and AUC (Model Evaluation)</a></li>
+  <li><a href="#t-sne-plots-dimensionality-reduction" id="toc-t-sne-plots-dimensionality-reduction" class="nav-link" data-scroll-target="#t-sne-plots-dimensionality-reduction">9.2: t-SNE Plots (Dimensionality Reduction)</a></li>
+  </ul></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#additional-notes" id="toc-additional-notes" class="nav-link" data-scroll-target="#additional-notes">Additional Notes</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/vis2.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Comprehensive Data Visualization with Matplotlib and Seaborn</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sherry Thomas </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Colab Link: <a href="https://colab.research.google.com/drive/1UuhOSZYU5Geo0j7OqPbVIsBEKk4FppbQ?usp=sharing" target="_blank">Click here!</a></p>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>Data visualization is an essential tool in the field of data analysis and interpretation. It allows us to gain insights from complex data by representing it in a visual format. In this Jupyter notebook, we will explore various data visualization techniques using Matplotlib and Seaborn, two popular Python libraries. These techniques cater to the needs of Computer Science and Data Science students, helping them understand and utilize visualization methods effectively.</p>
+</section>
+<section id="table-of-contents" class="level2">
+<h2 class="anchored" data-anchor-id="table-of-contents">Table of Contents</h2>
+<ol type="1">
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#basic-plots">Basic Plots</a>
+<ul>
+<li><a href="#line-plot-visualizing-trends-over-time">Line Plot</a></li>
+<li><a href="#scatter-plot-visualizing-relationships-between-variables">Scatter Plot</a></li>
+<li><a href="#bar-plot-visualizing-categorical-data">Bar Plot</a></li>
+<li><a href="#histogram-visualizing-data-distribution">Histogram</a></li>
+</ul></li>
+<li><a href="#statistical-plots">Statistical Plots</a>
+<ul>
+<li><a href="#box-plot-visualizing-distribution-characteristics">Box Plot</a></li>
+<li><a href="#violin-plot-combining-box-plot-and-kde">Violin Plot</a></li>
+<li><a href="#swarm-plot-visualizing-categorical-data">Swarm Plot</a></li>
+</ul></li>
+<li><a href="#matrix-plots">Matrix Plots</a>
+<ul>
+<li><a href="#heatmap-visualizing-correlations">Heatmap</a></li>
+<li><a href="#clustermap-hierarchical-clustering">Clustermap</a></li>
+</ul></li>
+<li><a href="#distribution-plots">Distribution Plots</a>
+<ul>
+<li><a href="#kernel-density-estimate-kde-plot-visualizing-probability-density">KDE Plot</a></li>
+<li><a href="#pair-plot-exploring-multivariate-relationships">Pair Plot</a></li>
+</ul></li>
+<li><a href="#time-series-plots">Time Series Plots</a>
+<ul>
+<li><a href="#time-series-plot-unveiling-temporal-trends">Time Series Plot</a></li>
+<li><a href="#autocorrelation-plot-unmasking-time-dependent-dependencies">AutoCorrelation Plot</a></li>
+</ul></li>
+<li><a href="#geospatial-data-visualization">Geospatial Data Visualization</a>
+<ul>
+<li><a href="#scatter-geo-plot-mapping-data-points">Scatter Geo Plot</a></li>
+<li><a href="#choropleth-map-color-coded-data-distribution">Choropleth Map</a></li>
+</ul></li>
+<li><a href="#d-plots-visualizing-three-dimensional-data">3D Plots</a>
+<ul>
+<li><a href="#d-scatter-plot-visualizing-data-clusters-in-3d-space">3D Scatter Plot</a></li>
+<li><a href="#d-line-plot-visualizing-data-trajectories-in-3d-space">3D Line Plot</a></li>
+</ul></li>
+<li><a href="#specialized-plots">Specialized Plots</a>
+<ul>
+<li><a href="#polar-plot-visualizing-circular-data">Polar Plot</a></li>
+<li><a href="#network-plot-visualizing-complex-relationships">Network Plot</a></li>
+<li><a href="#word-cloud-visualizing-text-data">Word Cloud</a></li>
+</ul></li>
+<li><a href="#advanced-data-visualization">Advanced Data Visualization</a>
+<ul>
+<li><a href="#roc-curves-and-auc-model-evaluation">ROC Curves and AUC</a></li>
+<li><a href="#t-sne-plots-dimensionality-reduction">t-SNE Plots</a></li>
+</ul></li>
+<li><a href="#conclusion">Conclusion</a></li>
+<li><a href="#additional-notes">Additional Notes</a></li>
+</ol>
+</section>
+<section id="basic-plots" class="level2">
+<h2 class="anchored" data-anchor-id="basic-plots">1: Basic Plots</h2>
+<p>In this section, we will delve into a comprehensive exploration of basic data visualization techniques, collectively known as “Basic Plots.” These fundamental visualizations are crucial for understanding data trends, relationships, and distributions. We will cover Line Plots, Scatter Plots, Bar Plots, and Histograms, each offering a unique perspective on data representation.</p>
+<section id="line-plot-visualizing-trends-over-time" class="level3">
+<h3 class="anchored" data-anchor-id="line-plot-visualizing-trends-over-time">1.1: Line Plot (Visualizing Trends Over Time)</h3>
+<p>Line plots are a fundamental tool for visualizing data trends, particularly those that evolve over time. In this subsection, we will use a synthetic time-series dataset, such as stock market data, to illustrate the significance of line plots.</p>
+<p><strong>Creating a Line Plot:</strong></p>
+<p>We will begin by generating synthetic time-series data, including time points and corresponding stock prices. Then, we will use Matplotlib to craft an informative line plot.</p>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic time-series data</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">10</span>, <span class="fl">0.1</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>stock_prices <span class="op">=</span> np.sin(time) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="bu">len</span>(time))</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a line plot</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.plot(time, stock_prices, label<span class="op">=</span><span class="st">'Stock Prices'</span>, color<span class="op">=</span><span class="st">'b'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Stock Prices'</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Stock Price Trends Over Time'</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-2-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting line plot provides a visual representation of stock price trends over time. It offers customization options such as line style, color, and labels to enhance clarity.</p>
+<p><strong>Interpreting Line Plots:</strong></p>
+<p>Interpreting a line plot involves assessing various aspects:</p>
+<ol type="1">
+<li><p><strong>Trends</strong>: Observe the direction of the line to identify upward, downward, or stable trends in the data.</p></li>
+<li><p><strong>Amplitude</strong>: The vertical distance of the line from the baseline signifies the magnitude of changes in the variable being measured.</p></li>
+<li><p><strong>Cyclic Patterns</strong>: Some time-series data exhibit cyclic patterns or seasonality, which can be spotted in the plot.</p></li>
+<li><p><strong>Variability</strong>: Variations in the data are reflected in the fluctuations of the line.</p></li>
+</ol>
+<p>Line plots are essential for detecting temporal patterns, understanding data evolution, and making informed decisions based on historical data.</p>
+</section>
+<section id="scatter-plot-visualizing-relationships-between-variables" class="level3">
+<h3 class="anchored" data-anchor-id="scatter-plot-visualizing-relationships-between-variables">1.2: Scatter Plot (Visualizing Relationships Between Variables)</h3>
+<p>Scatter plots are valuable for visualizing the relationships between two numeric variables. In this subsection, we will use synthetic data representing height vs.&nbsp;weight to demonstrate the utility of scatter plots.</p>
+<p><strong>Creating a Scatter Plot:</strong></p>
+<p>We will generate synthetic height and weight data and then employ Matplotlib to create a comprehensive scatter plot.</p>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic height vs. weight data</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>height <span class="op">=</span> np.random.normal(<span class="dv">170</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>weight <span class="op">=</span> height <span class="op">*</span> <span class="fl">0.6</span> <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">100</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a scatter plot</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>plt.scatter(height, weight, label<span class="op">=</span><span class="st">'Height vs. Weight'</span>, color<span class="op">=</span><span class="st">'r'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Height (cm)'</span>)</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Weight (kg)'</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Relationship between Height and Weight'</span>)</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The scatter plot visually illustrates the relationship between height and weight, allowing for the identification of patterns and correlations.</p>
+<p><strong>Interpreting Scatter Plots:</strong></p>
+<p>Interpreting a scatter plot involves considering several key aspects:</p>
+<ol type="1">
+<li><p><strong>Trend Direction</strong>: Determine if the points exhibit an upward, downward, or random trend.</p></li>
+<li><p><strong>Scatter Density</strong>: The density of points in different areas of the plot indicates data concentration.</p></li>
+<li><p><strong>Outliers</strong>: Identify any data points that deviate significantly from the general pattern, which might be outliers.</p></li>
+<li><p><strong>Correlation</strong>: Assess the overall direction and strength of the relationship between the variables.</p></li>
+</ol>
+<p>Scatter plots are essential for understanding the correlation between two variables and identifying potential outliers or trends.</p>
+</section>
+<section id="bar-plot-visualizing-categorical-data" class="level3">
+<h3 class="anchored" data-anchor-id="bar-plot-visualizing-categorical-data">1.3: Bar Plot (Visualizing Categorical Data)</h3>
+<p>Bar plots are instrumental for representing categorical data. In this subsection, we will use synthetic sales data by product category to demonstrate the effectiveness of bar plots.</p>
+<p><strong>Creating a Bar Plot:</strong></p>
+<p>We will generate synthetic sales data categorized by product type and then create a bar plot using Matplotlib.</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic sales data by product category</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> [<span class="st">'Electronics'</span>, <span class="st">'Clothing'</span>, <span class="st">'Books'</span>, <span class="st">'Home Decor'</span>]</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>sales <span class="op">=</span> [<span class="dv">1200</span>, <span class="dv">800</span>, <span class="dv">1500</span>, <span class="dv">900</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a bar plot</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>plt.bar(categories, sales, color<span class="op">=</span><span class="st">'g'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Product Categories'</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Sales'</span>)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Sales by Product Category'</span>)</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-4-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The bar plot visually represents the sales data by product category, offering insights into categorical data representation.</p>
+<p><strong>Interpreting Bar Plots:</strong></p>
+<p>Interpreting a bar plot involves considering the following aspects:</p>
+<ol type="1">
+<li><p><strong>Category Comparison</strong>: Compare the heights of bars to understand variations in sales among different categories.</p></li>
+<li><p><strong>Categorical Representation</strong>: Observe how categories are represented on the x-axis.</p></li>
+<li><p><strong>Color Usage</strong>: Color can be utilized to highlight specific categories or add visual appeal to the plot.</p></li>
+<li><p><strong>Stacked vs.&nbsp;Grouped Bars</strong>: Depending on the data representation, bars can be stacked or grouped for better comprehension.</p></li>
+</ol>
+<p>Bar plots are essential for comparing categorical data and understanding the distribution of values within categories.</p>
+</section>
+<section id="histogram-visualizing-data-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="histogram-visualizing-data-distribution">1.4: Histogram (Visualizing Data Distribution)</h3>
+<p>Histograms are powerful tools for visualizing the distribution of a single variable. In this subsection, we will use synthetic exam score data to create a histogram.</p>
+<p><strong>Creating a Histogram:</strong></p>
+<p>We will generate synthetic exam scores and then employ Matplotlib to create an informative histogram.</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic exam score data</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>exam_scores <span class="op">=</span> np.random.normal(<span class="dv">70</span>, <span class="dv">10</span>, <span class="dv">300</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a histogram</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>plt.hist(exam_scores, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span><span class="st">'purple'</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Exam Scores'</span>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Frequency'</span>)</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Distribution of Exam Scores'</span>)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The histogram visually represents the distribution of exam scores, offering customization options for bin size and normalization.</p>
+<p><strong>Interpreting Histograms:</strong></p>
+<p>Interpreting a histogram involves considering several key aspects:</p>
+<ol type="1">
+<li><p><strong>Data Distribution</strong>: Assess whether the data is normally distributed, skewed, or exhibits other patterns.</p></li>
+<li><p><strong>Central Tendency</strong>: Identify the central tendency of the data, such as the mean or median.</p></li>
+<li><p><strong>Dispersion</strong>: Examine the spread or variability of the data.</p></li>
+<li><p><strong>Bin Width</strong>: The width of histogram bins can affect the visual representation of the distribution.</p></li>
+</ol>
+<p>Histograms are essential for understanding the distribution of a single variable and identifying patterns in the data.</p>
+</section>
+</section>
+<section id="statistical-plots" class="level2">
+<h2 class="anchored" data-anchor-id="statistical-plots">2: Statistical Plots</h2>
+<p>In this section, we will dive into a comprehensive exploration of statistical data visualization techniques, collectively known as “Statistical Plots.” These visualizations are particularly suited for gaining insights into data distributions, identifying outliers, and understanding the central tendencies and variations within datasets. We will cover Box Plots, Violin Plots, and Swarm Plots, each offering a unique perspective on data distribution and statistical characteristics.</p>
+<section id="box-plot-visualizing-distribution-characteristics" class="level3">
+<h3 class="anchored" data-anchor-id="box-plot-visualizing-distribution-characteristics">2.1: Box Plot (Visualizing Distribution Characteristics)</h3>
+<p>Box plots, often referred to as box-and-whisker plots, are powerful tools for visualizing the distribution and central tendencies of a dataset. They provide valuable information about the quartiles, outliers, and the spread of data. To illustrate the utility of box plots, we will utilize a synthetic dataset representing income distribution.</p>
+<p><strong>Creating a Box Plot:</strong></p>
+<p>We will commence by generating synthetic income distribution data and then proceed to create an informative box plot using Matplotlib.</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic income distribution data</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>income_data <span class="op">=</span> np.random.normal(<span class="dv">50000</span>, <span class="dv">10000</span>, <span class="dv">500</span>)</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a box plot</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>plt.boxplot(income_data, vert<span class="op">=</span><span class="va">False</span>, patch_artist<span class="op">=</span><span class="va">True</span>, boxprops<span class="op">=</span><span class="bu">dict</span>(facecolor<span class="op">=</span><span class="st">'lightblue'</span>))</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Income'</span>)</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Income Distribution'</span>)</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'x'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting box plot offers an intuitive representation of income distribution, where the box’s boundaries denote the interquartile range, the median is indicated by the central line, and whiskers extend to minimum and maximum values. The use of color adds an additional layer of visualization.</p>
+<p><strong>Interpreting Box Plots:</strong></p>
+<p>Interpreting a box plot involves analyzing several key aspects:</p>
+<ol type="1">
+<li><p><strong>Median (Q2)</strong>: The central line inside the box represents the median income, providing insight into the dataset’s central tendency.</p></li>
+<li><p><strong>Interquartile Range (IQR)</strong>: The span of the box represents the IQR, indicating the spread of data between the 25th and 75th percentiles.</p></li>
+<li><p><strong>Whiskers</strong>: The whiskers extend from the box to the minimum and maximum values within the dataset, highlighting potential outliers.</p></li>
+<li><p><strong>Outliers</strong>: Any data points beyond the whiskers are considered outliers, which may warrant further investigation.</p></li>
+</ol>
+<p>Box plots are valuable for comparing the distributions of different datasets and identifying variations in data characteristics.</p>
+</section>
+<section id="violin-plot-combining-box-plot-and-kde" class="level3">
+<h3 class="anchored" data-anchor-id="violin-plot-combining-box-plot-and-kde">2.2: Violin Plot (Combining Box Plot and KDE)</h3>
+<p>Violin plots are a hybrid of box plots and Kernel Density Estimation (KDE) plots, offering a more detailed view of data distribution. These plots are especially useful when you need to visualize the shape and density of the dataset. To demonstrate the capabilities of violin plots, we will continue using the synthetic income distribution data.</p>
+<p><strong>Creating a Violin Plot:</strong></p>
+<p>We will take the income distribution data and craft a violin plot that combines the benefits of box plots and KDE to provide a richer representation.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a violin plot</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>plt.violinplot(income_data, vert<span class="op">=</span><span class="va">False</span>, showmedians<span class="op">=</span><span class="va">True</span>, showextrema<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Income'</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Income Distribution (Violin Plot)'</span>)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'x'</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>In the resulting plot, you can observe a combination of the classic box plot and a KDE representation, providing a more comprehensive understanding of data distribution.</p>
+<p><strong>Interpreting Violin Plots:</strong></p>
+<p>When interpreting violin plots, consider the following:</p>
+<ol type="1">
+<li><p><strong>Width of the Violin</strong>: The width of the violin at any given value indicates the density of data points at that level. Wider sections represent higher data density.</p></li>
+<li><p><strong>Box within the Violin</strong>: Just like in a box plot, the central box in the violin plot represents the IQR, and the central line is the median.</p></li>
+<li><p><strong>Violin Extrema</strong>: The extrema, represented as small lines or points, highlight the minimum and maximum values in the dataset.</p></li>
+</ol>
+<p>Violin plots are effective for capturing both the central tendencies and the variations in data, making them a powerful tool in exploratory data analysis.</p>
+</section>
+<section id="swarm-plot-visualizing-categorical-data" class="level3">
+<h3 class="anchored" data-anchor-id="swarm-plot-visualizing-categorical-data">2.3: Swarm Plot (Visualizing Categorical Data)</h3>
+<p>Swarm plots are excellent for visualizing categorical data with multiple categories, showcasing individual data points within these categories. To exemplify the utility of swarm plots, we will employ synthetic survey response data, which is often categorical and offers a prime use case for this type of visualization.</p>
+<p><strong>Creating a Swarm Plot:</strong></p>
+<p>We will generate synthetic survey response data and construct a swarm plot using the Seaborn library, which excels in creating aesthetically pleasing and informative categorical plots.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic survey response data</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>categories <span class="op">=</span> [<span class="st">'Category A'</span>, <span class="st">'Category B'</span>, <span class="st">'Category C'</span>, <span class="st">'Category D'</span>]</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>responses <span class="op">=</span> np.random.choice(categories, size<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a swarm plot</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>sns.swarmplot(x<span class="op">=</span>responses, y<span class="op">=</span>np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>), palette<span class="op">=</span><span class="st">'Set2'</span>, hue<span class="op">=</span>responses, legend<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Survey Categories'</span>)</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">''</span>)</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Survey Responses'</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting swarm plot showcases individual survey responses distributed along the categorical axis, revealing the distribution of data points within each category.</p>
+<p><strong>Interpreting Swarm Plots:</strong></p>
+<p>Swarm plots are particularly useful for:</p>
+<ol type="1">
+<li><p><strong>Visualizing Distribution</strong>: The positions of individual data points offer a clear view of how responses are distributed within each category.</p></li>
+<li><p><strong>Identifying Clustering</strong>: Patterns or clustering of responses within categories can be observed, aiding in the identification of trends or commonalities among responses.</p></li>
+</ol>
+<p>Swarm plots are an excellent choice when working with categorical data and seeking insights into the distribution and clustering of responses.</p>
+</section>
+</section>
+<section id="matrix-plots" class="level2">
+<h2 class="anchored" data-anchor-id="matrix-plots">3: Matrix Plots</h2>
+<p>Matrix plots are essential for visualizing relationships and patterns in data, particularly when dealing with multivariate datasets. This section will provide an in-depth exploration of matrix plots, focusing on Heatmaps and Clustermaps. These visualization techniques offer a comprehensive view of data interactions and similarities, aiding in the discovery of hidden insights within complex datasets.</p>
+<section id="heatmap-visualizing-correlations" class="level3">
+<h3 class="anchored" data-anchor-id="heatmap-visualizing-correlations">3.1: Heatmap (Visualizing Correlations)</h3>
+<p>Heatmaps are powerful tools for visualizing correlation matrices of variables. These visualizations allow us to gain insights into how variables interact with each other, identify patterns, and assess the strength and direction of these relationships. For our demonstration, we will create a synthetic correlation matrix and generate an informative heatmap.</p>
+<p><strong>Creating a Heatmap:</strong></p>
+<p>We begin by generating a synthetic correlation matrix and then proceed to create a compelling heatmap using Seaborn.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating a synthetic correlation matrix</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> np.corrcoef(np.random.rand(<span class="dv">5</span>, <span class="dv">5</span>))</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a heatmap</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, cbar<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Heatmap'</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting heatmap visually represents correlations between variables. It uses a color map to accentuate the strength of the relationships. In this example, warmer colors indicate positive correlations, cooler colors represent negative correlations, and the annotation provides precise correlation values.</p>
+<p><strong>Interpreting Heatmaps:</strong></p>
+<p>Interpreting a heatmap involves analyzing the following aspects:</p>
+<ol type="1">
+<li><p><strong>Color Intensity</strong>: The intensity of color at the intersection of two variables signifies the strength of their correlation. Darker colors represent stronger correlations.</p></li>
+<li><p><strong>Color Direction</strong>: Warm colors (e.g., red and orange) indicate positive correlations, while cool colors (e.g., blue and green) denote negative correlations.</p></li>
+<li><p><strong>Annotation</strong>: Annotation within the heatmap provides specific correlation values, enabling precise quantitative assessment.</p></li>
+</ol>
+<p>Heatmaps are instrumental in identifying significant relationships in datasets, making them invaluable in fields like finance, biology, and social sciences.</p>
+</section>
+<section id="clustermap-hierarchical-clustering" class="level3">
+<h3 class="anchored" data-anchor-id="clustermap-hierarchical-clustering">3.2: Clustermap (Hierarchical Clustering)</h3>
+<p>Clustermaps are a specialized form of heatmap that combines data visualization with hierarchical clustering. They are exceptionally useful for grouping and ordering data based on similarity, revealing underlying structures in the dataset. Dendrograms are often employed to illustrate the clustering hierarchy.</p>
+<p><strong>Creating a Clustermap:</strong></p>
+<p>We will utilize the same synthetic correlation matrix to create a clustermap, which employs hierarchical clustering to group and order data.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a clustermap without specifying cbar_pos</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>sns.clustermap(correlation_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Clustermap of Correlation Matrix'</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-10-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The clustermap visually presents the clustered relationships among variables. It employs dendrograms to showcase the hierarchical structure within the data. By using dendrograms, the clustermap provides insights into how data points are grouped based on their similarity.</p>
+<p><strong>Interpreting Clustermaps:</strong></p>
+<p>Interpreting a clustermap involves focusing on the following components:</p>
+<ol type="1">
+<li><p><strong>Dendrograms</strong>: Dendrograms in the row and column margins show the hierarchical structure of clustered data points. The closer data points are on the dendrogram, the more similar they are.</p></li>
+<li><p><strong>Ordering</strong>: The order of rows and columns reflects the clustering hierarchy, allowing us to identify groups of variables with similar relationships.</p></li>
+</ol>
+<p>Clustermaps are a valuable tool for identifying and visualizing patterns within datasets, making them indispensable in fields such as genomics and social network analysis. They help unveil the underlying structure of complex data, enabling informed decision-making and insightful data exploration.</p>
+</section>
+</section>
+<section id="distribution-plots" class="level2">
+<h2 class="anchored" data-anchor-id="distribution-plots">4: Distribution Plots</h2>
+<p>In this section, we will delve into the realm of distribution plots, a set of visualization techniques designed to provide insights into the distribution of data. These plots are invaluable for understanding the underlying structure of datasets, exploring the shape of distributions, and detecting important statistical properties. We will explore two distribution plots: Kernel Density Estimate (KDE) Plot and Pair Plot.</p>
+<section id="kernel-density-estimate-kde-plot-visualizing-probability-density" class="level3">
+<h3 class="anchored" data-anchor-id="kernel-density-estimate-kde-plot-visualizing-probability-density">4.1: Kernel Density Estimate (KDE) Plot (Visualizing Probability Density)</h3>
+<p>Kernel Density Estimate (KDE) plots offer an effective means of visualizing the probability density function of a single variable. They provide a smooth representation of data distribution, allowing us to explore underlying patterns and characteristics. To illustrate the utility of KDE plots, we will use a synthetic dataset of exam scores.</p>
+<p><strong>Creating a Kernel Density Estimate (KDE) Plot:</strong></p>
+<p>Let’s begin by generating synthetic exam score data and then create a KDE plot using Seaborn.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic exam score data</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>exam_scores <span class="op">=</span> np.random.normal(<span class="dv">75</span>, <span class="dv">10</span>, <span class="dv">200</span>)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a KDE plot</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>sns.kdeplot(exam_scores, fill<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'orange'</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Exam Scores'</span>)</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Probability Density'</span>)</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Kernel Density Estimate (KDE) of Exam Scores'</span>)</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-11-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting KDE plot provides a smooth representation of the exam scores’ probability density, highlighting potential peaks and trends in the data. The shade area under the curve represents the estimated probability.</p>
+<p><strong>Interpreting KDE Plots:</strong></p>
+<p>Interpreting a KDE plot involves recognizing key elements:</p>
+<ol type="1">
+<li><p><strong>Kernel Smoothness</strong>: The smoothness of the curve is determined by the choice of the kernel function. Smoother curves indicate a more generalized representation of the data.</p></li>
+<li><p><strong>Peaks</strong>: Peaks in the KDE plot represent modes or significant clusters within the data. These peaks indicate areas where data points are more concentrated.</p></li>
+<li><p><strong>Tails</strong>: The tails of the KDE plot extend towards the data’s minimum and maximum values, providing insights into the data’s spread.</p></li>
+</ol>
+<p>KDE plots are crucial for understanding the underlying data distribution, especially when dealing with single-variable datasets.</p>
+</section>
+<section id="pair-plot-exploring-multivariate-relationships" class="level3">
+<h3 class="anchored" data-anchor-id="pair-plot-exploring-multivariate-relationships">4.2: Pair Plot (Exploring Multivariate Relationships)</h3>
+<p>Pair plots are a powerful tool for exploring the relationships between multiple numeric variables within a dataset. They provide a comprehensive overview of variable interactions, including scatterplots, histograms, and correlation coefficients. To demonstrate the utility of pair plots, we will use a synthetic dataset with multiple features.</p>
+<p><strong>Creating a Pair Plot:</strong></p>
+<p>Let’s generate synthetic data with multiple numeric features and use Seaborn to create a pair plot.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic dataset with multiple features</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Feature1'</span>: np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Feature2'</span>: np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>),</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Feature3'</span>: np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>),</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="st">'Feature4'</span>: np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a pair plot</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>sns.pairplot(data)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>plt.suptitle(<span class="st">'Pair Plot of Multiple Features'</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-12-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting pair plot offers a matrix of scatterplots for pairwise variable comparisons, histograms along the diagonal, and correlation coefficients.</p>
+<p><strong>Interpreting Pair Plots:</strong></p>
+<p>Interpreting a pair plot involves examining various components:</p>
+<ol type="1">
+<li><p><strong>Scatterplots</strong>: The scatterplots in the upper and lower triangles of the matrix illustrate the relationships between pairs of variables. They help identify trends and correlations.</p></li>
+<li><p><strong>Histograms</strong>: The diagonal of the pair plot consists of histograms for each variable, revealing the distribution of each feature individually.</p></li>
+<li><p><strong>Correlation Coefficients</strong>: If desired, correlation coefficients can be displayed within the scatterplots, indicating the strength and direction of linear relationships.</p></li>
+</ol>
+<p>Pair plots are instrumental in identifying relationships between variables, detecting outliers, and gaining insights into dataset characteristics.</p>
+</section>
+</section>
+<section id="time-series-plots" class="level2">
+<h2 class="anchored" data-anchor-id="time-series-plots">5: Time Series Plots</h2>
+<p>Time series data is a fundamental component of various fields, including finance, economics, and environmental sciences. Visualizing time-dependent trends is crucial for understanding patterns, making predictions, and conducting in-depth analyses. In this section, we will explore a range of time series visualization techniques that empower us to decode and interpret the dynamics of temporal data.</p>
+<section id="time-series-plot-unveiling-temporal-trends" class="level3">
+<h3 class="anchored" data-anchor-id="time-series-plot-unveiling-temporal-trends">5.1: Time Series Plot (Unveiling Temporal Trends)</h3>
+<p>Time series plots are a go-to choice for unveiling temporal trends in data. By tracking changes over time, we can uncover patterns, fluctuations, and anomalies. For this demonstration, we will employ a synthetic time series dataset representing stock prices over time.</p>
+<p><strong>Creating a Time Series Plot:</strong></p>
+<p>Let’s initiate our exploration by generating a synthetic time series dataset and crafting an informative time series plot using Matplotlib.</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic time series data</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>time <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="dv">10</span>, <span class="fl">0.1</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>stock_prices <span class="op">=</span> np.sin(time) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="bu">len</span>(time))</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a time series plot</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>plt.plot(time, stock_prices, label<span class="op">=</span><span class="st">'Stock Prices'</span>, color<span class="op">=</span><span class="st">'b'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Time'</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Stock Prices'</span>)</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Stock Price Trends Over Time'</span>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting time series plot beautifully illustrates stock price trends over time. This visualization is instrumental for detecting long-term trends, seasonal patterns, and short-term fluctuations in time series data.</p>
+<p><strong>Interpreting Time Series Plots:</strong></p>
+<p>Interpreting time series plots involves analyzing various aspects:</p>
+<ol type="1">
+<li><p><strong>Trends</strong>: Examining the overall direction of the time series to identify upward, downward, or stationary trends.</p></li>
+<li><p><strong>Seasonality</strong>: Detecting recurring patterns or cycles within the data, which may occur daily, weekly, monthly, or seasonally.</p></li>
+<li><p><strong>Volatility</strong>: Observing the degree of variability in the data, which is crucial for risk assessment and financial analysis.</p></li>
+<li><p><strong>Anomalies</strong>: Identifying unusual data points that deviate significantly from the expected patterns.</p></li>
+</ol>
+<p>Time series plots are foundational for analyzing historical data and can guide decision-making in areas such as investment and resource allocation.</p>
+</section>
+<section id="autocorrelation-plot-unmasking-time-dependent-dependencies" class="level3">
+<h3 class="anchored" data-anchor-id="autocorrelation-plot-unmasking-time-dependent-dependencies">5.2: AutoCorrelation Plot (Unmasking Time-Dependent Dependencies)</h3>
+<p>AutoCorrelation plots are essential tools for unveiling time-dependent dependencies in time series data. They help us understand the relationship between a time series and its past observations. In this demonstration, we will utilize a synthetic time series dataset representing monthly sales data.</p>
+<p><strong>Creating an AutoCorrelation Plot:</strong></p>
+<p>To illustrate the concept of auto-correlation, we will generate synthetic monthly sales data and craft an informative auto-correlation plot using Matplotlib.</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic monthly sales data</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>months <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">13</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>monthly_sales <span class="op">=</span> np.sin(months) <span class="op">+</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.2</span>, <span class="dv">12</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating an auto-correlation plot</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>pd.plotting.autocorrelation_plot(monthly_sales)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Lag'</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Autocorrelation'</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Autocorrelation Plot of Monthly Sales'</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plt.grid(axis<span class="op">=</span><span class="st">'y'</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting auto-correlation plot unveils insights into the temporal dependencies within the monthly sales data. It is instrumental for identifying seasonal patterns, lags, and potential predictive features.</p>
+<p><strong>Interpreting AutoCorrelation Plots:</strong></p>
+<p>Interpreting auto-correlation plots involves examining several key components:</p>
+<ol type="1">
+<li><p><strong>Lags</strong>: On the x-axis, the lag represents the number of time periods between observations. It helps identify time-dependent relationships.</p></li>
+<li><p><strong>Autocorrelation Values</strong>: The y-axis displays autocorrelation values, which indicate the strength and direction of the relationship. Peaks and valleys in this plot reveal time-dependent patterns.</p></li>
+<li><p><strong>Seasonality</strong>: Peaks at regular intervals in the auto-correlation plot suggest the presence of seasonal patterns. The width of these peaks may reveal the season’s duration.</p></li>
+</ol>
+<p>Auto-correlation plots are indispensable for understanding the time-dependent dynamics of data, identifying seasonality, and guiding the selection of appropriate forecasting models.</p>
+</section>
+</section>
+<section id="geospatial-data-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="geospatial-data-visualization">6: Geospatial Data Visualization</h2>
+<p>In this section, we will embark on an in-depth exploration of geospatial data visualization, a crucial domain for understanding and interpreting data in geographic contexts. Geospatial data visualization techniques enable us to represent data with latitude and longitude coordinates, visualize patterns in geographical data, and gain insights into the distribution and relationships of spatial data points. We will cover Scatter Geo Plots and Choropleth Maps, each offering a unique perspective on geospatial data representation.</p>
+<section id="scatter-geo-plot-mapping-data-points" class="level3">
+<h3 class="anchored" data-anchor-id="scatter-geo-plot-mapping-data-points">6.1: Scatter Geo Plot (Mapping Data Points)</h3>
+<p>Scatter Geo Plots are instrumental in mapping data points with latitude and longitude coordinates onto a geographical map. This visualization technique allows us to observe the spatial distribution of data, identify clusters, and understand the geographical patterns within a dataset.</p>
+<p><strong>Creating a Scatter Geo Plot:</strong></p>
+<p>To exemplify the usage of Scatter Geo Plots, we will generate synthetic data representing earthquake locations worldwide and visualize them using the scatter geo plot.</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic earthquake location data</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>latitude <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="dv">90</span>, <span class="dv">90</span>, <span class="dv">100</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>longitude <span class="op">=</span> np.random.uniform(<span class="op">-</span><span class="dv">180</span>, <span class="dv">180</span>, <span class="dv">100</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a scatter geo plot</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>plt.scatter(longitude, latitude, color<span class="op">=</span><span class="st">'red'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Longitude'</span>)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Latitude'</span>)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Earthquake Locations'</span>)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>plt.grid()</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-15-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The scatter geo plot provides a visual representation of earthquake locations, with latitude on the y-axis and longitude on the x-axis. Each data point on the map signifies the location of an earthquake event, and the color (red) distinguishes the data points for easier identification.</p>
+<p><strong>Interpreting Scatter Geo Plots:</strong></p>
+<p>Interpreting a scatter geo plot involves:</p>
+<ol type="1">
+<li><p><strong>Spatial Distribution</strong>: Observing the distribution of data points across the geographical area. Clusters or patterns may indicate regions with a higher concentration of events.</p></li>
+<li><p><strong>Outliers</strong>: Identifying isolated data points that deviate significantly from the main cluster, which may denote unique or extreme events.</p></li>
+<li><p><strong>Geographic Relationships</strong>: Understanding the relationships between data points based on their geographic proximity.</p></li>
+</ol>
+<p>Scatter Geo Plots are vital for understanding and analyzing geospatial data, making them invaluable for applications such as seismology, epidemiology, and environmental studies.</p>
+</section>
+<section id="choropleth-map-color-coded-data-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="choropleth-map-color-coded-data-distribution">6.2: Choropleth Map (Color-Coded Data Distribution)</h3>
+<p>Choropleth Maps are a powerful visualization tool for representing geographic data in regions or administrative boundaries. They use color gradients to depict variations in data values across different geographic areas. Choropleth Maps are instrumental for understanding regional disparities, population distributions, and data patterns at a macroscopic level.</p>
+<p><strong>Creating a Choropleth Map:</strong></p>
+<p>To illustrate the application of Choropleth Maps, we will utilize synthetic population data by country and generate a color-coded map to visualize population distribution.</p>
+<div class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> geopandas <span class="im">as</span> gpd</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Loading the 'naturalearth_lowres' dataset</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>world <span class="op">=</span> gpd.read_file(gpd.datasets.get_path(<span class="st">'naturalearth_lowres'</span>))</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic population data by country</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>countries <span class="op">=</span> [<span class="st">'India'</span>, <span class="st">'USA'</span>, <span class="st">'China'</span>, <span class="st">'Russia'</span>]</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>population <span class="op">=</span> [<span class="dv">1400</span>, <span class="dv">330</span>, <span class="dv">1440</span>, <span class="dv">145</span>]</span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Merging the synthetic population data with the geospatial data</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>world[<span class="st">'Population'</span>] <span class="op">=</span> <span class="dv">0</span>  <span class="co"># Initialize the 'Population' column with zeros</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Populate the 'Population' column with synthetic data</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> country, pop <span class="kw">in</span> <span class="bu">zip</span>(countries, population):</span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>    world.loc[world[<span class="st">'name'</span>] <span class="op">==</span> country, <span class="st">'Population'</span>] <span class="op">=</span> pop</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a choropleth map</span></span>
+<span id="cb15-20"><a href="#cb15-20" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">8</span>))</span>
+<span id="cb15-21"><a href="#cb15-21" aria-hidden="true" tabindex="-1"></a>world.boundary.plot(ax<span class="op">=</span>ax, linewidth<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-22"><a href="#cb15-22" aria-hidden="true" tabindex="-1"></a>world.plot(column<span class="op">=</span><span class="st">'Population'</span>, cmap<span class="op">=</span><span class="st">'YlOrRd'</span>, ax<span class="op">=</span>ax, legend<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb15-23"><a href="#cb15-23" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Population by Country'</span>)</span>
+<span id="cb15-24"><a href="#cb15-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>/tmp/ipykernel_88883/2624646566.py:6: FutureWarning: The geopandas.dataset module is deprecated and will be removed in GeoPandas 1.0. You can get the original 'naturalearth_lowres' data from https://www.naturalearthdata.com/downloads/110m-cultural-vectors/.
+  world = gpd.read_file(gpd.datasets.get_path('naturalearth_lowres'))</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-16-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>In this example, we load a world map with country boundaries and overlay it with color-coded regions based on population. The color intensity reflects population density, allowing us to visualize variations in population across different countries.</p>
+<p><strong>Interpreting Choropleth Maps:</strong></p>
+<p>Interpreting a choropleth map involves:</p>
+<ol type="1">
+<li><p><strong>Color Gradients</strong>: Understanding the color spectrum used to represent data values. Darker colors typically denote higher values, while lighter colors indicate lower values.</p></li>
+<li><p><strong>Regional Patterns</strong>: Observing variations in data distribution across different regions. Darker regions indicate higher population or data values.</p></li>
+<li><p><strong>Geographic Trends</strong>: Identifying regional trends, disparities, or clusters within the dataset.</p></li>
+</ol>
+<p>Choropleth Maps are indispensable for visualizing data associated with geographic regions, and they find extensive use in fields such as demographics, economics, and public health.</p>
+</section>
+</section>
+<section id="d-plots-visualizing-three-dimensional-data" class="level2">
+<h2 class="anchored" data-anchor-id="d-plots-visualizing-three-dimensional-data">7: 3D Plots (Visualizing Three-Dimensional Data)</h2>
+<p>In this section, we will embark on an exploration of three-dimensional (3D) data visualization techniques. Visualizing data in three dimensions allows us to understand complex relationships and patterns that cannot be effectively represented in two dimensions. We will cover two fundamental 3D plot types: 3D Scatter Plots and 3D Line Plots.</p>
+<section id="d-scatter-plot-visualizing-data-clusters-in-3d-space" class="level3">
+<h3 class="anchored" data-anchor-id="d-scatter-plot-visualizing-data-clusters-in-3d-space">7.1: 3D Scatter Plot (Visualizing Data Clusters in 3D Space)</h3>
+<p>3D scatter plots are a valuable tool for visualizing data with three numeric variables. They enable us to explore data points in a three-dimensional space, making it easier to identify clusters, patterns, and relationships among variables.</p>
+<p><strong>Creating a 3D Scatter Plot:</strong></p>
+<p>To illustrate the concept, we will generate synthetic 3D data and create an insightful 3D scatter plot using Matplotlib. The generated data includes three numeric variables: X, Y, and Z coordinates.</p>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic 3D data</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">100</span>)</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a 3D scatter plot</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> mpl_toolkits.mplot3d <span class="im">import</span> Axes3D</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>ax.scatter(x, y, z, c<span class="op">=</span><span class="st">'b'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'X-axis'</span>)</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Y-axis'</span>)</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">'Z-axis'</span>)</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'3D Scatter Plot'</span>)</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-17-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The 3D scatter plot portrays the data in a three-dimensional space, offering an intuitive perspective on the distribution of data points. The use of color, markers, and labels enhances the visualization.</p>
+<p><strong>Interpreting 3D Scatter Plots:</strong></p>
+<p>Interpreting a 3D scatter plot involves several key considerations:</p>
+<ol type="1">
+<li><p><strong>Data Clusters</strong>: Examine the distribution of data points in 3D space to identify clusters or patterns. Data points that are close to each other may represent a cohesive group or relationship.</p></li>
+<li><p><strong>Outliers</strong>: Look for data points that deviate significantly from the main cluster, as these may indicate outliers or special cases.</p></li>
+<li><p><strong>Variable Relationships</strong>: Understand how the three numeric variables (X, Y, and Z) interact in the 3D space. Observing their positions can reveal relationships and correlations.</p></li>
+</ol>
+<p>3D scatter plots are valuable for a wide range of applications, including data clustering, spatial analysis, and the visualization of multidimensional data.</p>
+</section>
+<section id="d-line-plot-visualizing-data-trajectories-in-3d-space" class="level3">
+<h3 class="anchored" data-anchor-id="d-line-plot-visualizing-data-trajectories-in-3d-space">7.2: 3D Line Plot (Visualizing Data Trajectories in 3D Space)</h3>
+<p>3D line plots are instrumental in visualizing data trajectories or data with time-dependent coordinates in three-dimensional space. These plots help us understand how data points evolve in a 3D environment.</p>
+<p><strong>Creating a 3D Line Plot:</strong></p>
+<p>To illustrate the concept, we will generate synthetic 3D trajectory data and create a 3D line plot using Matplotlib. The data includes time, X, Y, and Z coordinates, which can represent a variety of phenomena, such as particle motion, aircraft paths, or spatial trajectories.</p>
+<div class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importing necessary libraries</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic trajectory data</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">100</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.sin(t)</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.cos(t)</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> t</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a 3D line plot</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> fig.add_subplot(<span class="dv">111</span>, projection<span class="op">=</span><span class="st">'3d'</span>)</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>ax.plot(x, y, z, c<span class="op">=</span><span class="st">'r'</span>)</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'X-axis'</span>)</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'Y-axis'</span>)</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>ax.set_zlabel(<span class="st">'Z-axis'</span>)</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'3D Line Plot'</span>)</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-18-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The 3D line plot portrays the trajectory or path of data points in a three-dimensional space. This visualization provides insights into the evolution and spatial characteristics of the data.</p>
+<p><strong>Interpreting 3D Line Plots:</strong></p>
+<p>Interpreting a 3D line plot involves several key considerations:</p>
+<ol type="1">
+<li><p><strong>Trajectories</strong>: Observe the path followed by the data points over time or in 3D space. Identify any loops, patterns, or trends within the trajectories.</p></li>
+<li><p><strong>Spatial Relationships</strong>: Analyze how the data points are distributed in the 3D space. Investigate whether certain regions are densely populated or sparsely populated.</p></li>
+<li><p><strong>Customization</strong>: Explore customization options for line style and color to enhance the clarity and visual appeal of the plot.</p></li>
+</ol>
+<p>3D line plots are invaluable for studying phenomena with three-dimensional characteristics, and they offer a unique perspective on the data’s behavior in space and time.</p>
+</section>
+</section>
+<section id="specialized-plots" class="level2">
+<h2 class="anchored" data-anchor-id="specialized-plots">8: Specialized Plots</h2>
+<p>In this section, we will explore a range of specialized data visualization techniques that cater to specific data types and analysis needs. Specialized plots offer unique insights and enable the visualization of data that may not be adequately represented by standard plot types. We will delve into Polar Plots, Network Plots, and Word Clouds, each serving distinct purposes in data analysis.</p>
+<section id="polar-plot-visualizing-circular-data" class="level3">
+<h3 class="anchored" data-anchor-id="polar-plot-visualizing-circular-data">8.1: Polar Plot (Visualizing Circular Data)</h3>
+<p>Polar plots are a specialized form of data visualization ideal for representing data with angular coordinates, such as wind direction, compass bearings, or circular data. These plots are invaluable for revealing patterns and trends in cyclical datasets.</p>
+<p><strong>Creating a Polar Plot:</strong></p>
+<p>To illustrate the creation of a polar plot, we will use a synthetic dataset representing wind direction and wind speeds. This plot will provide insights into wind speed distribution in different directions.</p>
+<div class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic wind direction data</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>angles <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">2</span> <span class="op">*</span> np.pi, <span class="dv">8</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>wind_speeds <span class="op">=</span> np.random.uniform(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">8</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a polar plot</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>plt.polar(angles, wind_speeds, label<span class="op">=</span><span class="st">'Wind Speeds'</span>, linestyle<span class="op">=</span><span class="st">'-'</span>, marker<span class="op">=</span><span class="st">'o'</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>plt.fill(angles, wind_speeds, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>plt.thetagrids(angles <span class="op">*</span> <span class="dv">180</span> <span class="op">/</span> np.pi, labels<span class="op">=</span>[<span class="st">'N'</span>, <span class="st">'NE'</span>, <span class="st">'E'</span>, <span class="st">'SE'</span>, <span class="st">'S'</span>, <span class="st">'SW'</span>, <span class="st">'W'</span>, <span class="st">'NW'</span>])</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>plt.rgrids(np.arange(<span class="dv">0</span>, <span class="dv">10</span>, <span class="dv">2</span>), angle<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Wind Speeds in Different Directions'</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-19-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The polar plot above represents wind speeds in various directions. The circular nature of the plot is well-suited for visualizing angular data.</p>
+<p><strong>Interpreting Polar Plots:</strong></p>
+<p>Interpreting a polar plot involves understanding the following elements:</p>
+<ol type="1">
+<li><p><strong>Angular Coordinates</strong>: The angles on the plot’s perimeter represent the directional data, with labels denoting the corresponding directions.</p></li>
+<li><p><strong>Radial Axes</strong>: The radial axes extending from the center indicate values, in this case, wind speeds.</p></li>
+<li><p><strong>Data Representation</strong>: Each data point is plotted at its angular position, and the radial distance from the center corresponds to the value being represented.</p></li>
+</ol>
+<p>Polar plots are excellent for visualizing cyclical patterns and identifying trends in circular data, making them valuable in fields such as meteorology and environmental science.</p>
+</section>
+<section id="network-plot-visualizing-complex-relationships" class="level3">
+<h3 class="anchored" data-anchor-id="network-plot-visualizing-complex-relationships">8.2: Network Plot (Visualizing Complex Relationships)</h3>
+<p>Network plots, also known as graph visualizations, are designed to represent complex relationships and connections between entities. They are particularly useful for visualizing social networks, communication structures, and various interconnected data.</p>
+<p><strong>Creating a Network Plot:</strong></p>
+<p>To showcase the creation of a network plot, we will use a synthetic dataset representing social network relationships. This plot will reveal the connections between individuals within the network.</p>
+<div class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic network data</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> networkx <span class="im">as</span> nx</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>G <span class="op">=</span> nx.Graph()</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>G.add_node(<span class="st">"Alice"</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>G.add_node(<span class="st">"Bob"</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>G.add_node(<span class="st">"Charlie"</span>)</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>G.add_edge(<span class="st">"Alice"</span>, <span class="st">"Bob"</span>)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>G.add_edge(<span class="st">"Alice"</span>, <span class="st">"Charlie"</span>)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a network plot</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>pos <span class="op">=</span> nx.spring_layout(G)</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_nodes(G, pos)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_edges(G, pos)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>nx.draw_networkx_labels(G, pos)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Social Network Relationships'</span>)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-20-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting network plot visually represents the relationships between individuals within the social network.</p>
+<p><strong>Interpreting Network Plots:</strong></p>
+<p>Interpreting a network plot involves considering the following aspects:</p>
+<ol type="1">
+<li><p><strong>Nodes</strong>: Nodes represent individual entities, such as people or objects within the network.</p></li>
+<li><p><strong>Edges</strong>: Edges, often depicted as lines connecting nodes, signify relationships or connections between entities.</p></li>
+<li><p><strong>Layout</strong>: The arrangement of nodes and edges within the plot reflects the structure of the network. Different layout algorithms can reveal various network properties.</p></li>
+<li><p><strong>Clustering</strong>: Patterns of clustering and connectivity can provide insights into the network’s structure.</p></li>
+</ol>
+<p>Network plots are essential for understanding complex relationships and can be applied in diverse fields, including social sciences, biology, and information technology.</p>
+</section>
+<section id="word-cloud-visualizing-text-data" class="level3">
+<h3 class="anchored" data-anchor-id="word-cloud-visualizing-text-data">8.3: Word Cloud (Visualizing Text Data)</h3>
+<p>Word clouds are a specialized form of data visualization used to represent text data, specifically word frequency within a corpus or document. They provide an intuitive way to grasp the most common words and their relative importance.</p>
+<p><strong>Creating a Word Cloud:</strong></p>
+<p>To demonstrate the creation of a word cloud, we will use a synthetic text data sample. This word cloud will visualize word frequency in the provided text.</p>
+<div class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic text data</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> wordcloud <span class="im">import</span> WordCloud</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>text_data <span class="op">=</span> <span class="st">"This is a sample text data for creating a word cloud. Word clouds are a fun way to visualize word frequency."</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a word cloud</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>wordcloud <span class="op">=</span> WordCloud(width<span class="op">=</span><span class="dv">800</span>, height<span class="op">=</span><span class="dv">400</span>, background_color<span class="op">=</span><span class="st">'white'</span>).generate(text_data)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>plt.imshow(wordcloud, interpolation<span class="op">=</span><span class="st">'bilinear'</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>plt.axis(<span class="st">"off"</span>)</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Word Cloud of Text Data'</span>)</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-21-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting word cloud visually emphasizes words by size, with more frequent words appearing larger.</p>
+<p><strong>Interpreting Word Clouds:</strong></p>
+<p>Interpreting a word cloud involves considering the following aspects:</p>
+<ol type="1">
+<li><p><strong>Word Size</strong>: The size of each word in the cloud corresponds to its frequency within the text. Larger words are more frequently used.</p></li>
+<li><p><strong>Color</strong>: Word clouds can employ color to further emphasize certain words or categories.</p></li>
+<li><p><strong>Context</strong>: Understanding the context of the word cloud is crucial to extract meaningful insights.</p></li>
+</ol>
+<p>Word clouds are an engaging way to uncover prominent terms within text data, making them valuable in text analysis, content marketing, and sentiment analysis.</p>
+</section>
+</section>
+<section id="advanced-data-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="advanced-data-visualization">9: Advanced Data Visualization</h2>
+<p>In this section, we will explore specialized data visualization techniques that cater to distinct data analysis needs. These visualizations offer unique insights into specific aspects of data analysis, such as model evaluation and dimensionality reduction.</p>
+<section id="roc-curves-and-auc-model-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="roc-curves-and-auc-model-evaluation">9.1: ROC Curves and AUC (Model Evaluation)</h3>
+<p>ROC (Receiver Operating Characteristic) curves and AUC (Area Under the Curve) are powerful tools for evaluating the performance of binary classification models. They provide a visual representation of a model’s ability to discriminate between positive and negative classes over various thresholds.</p>
+<p><strong>Creating ROC Curves and Calculating AUC:</strong></p>
+<p>To illustrate the use of ROC curves and AUC, we will follow these steps:</p>
+<ol type="1">
+<li>Generate a synthetic dataset for binary classification.</li>
+<li>Split the dataset into training and testing sets.</li>
+<li>Train a logistic regression model.</li>
+<li>Calculate the ROC curve and AUC.</li>
+</ol>
+<div class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic binary classification data and training a model</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> make_classification</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic binary classification data</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_classification(n_samples<span class="op">=</span><span class="dv">1000</span>, n_features<span class="op">=</span><span class="dv">20</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Training a logistic regression model</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LogisticRegression()</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>y_scores <span class="op">=</span> model.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a ROC curve</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>fpr, tpr, thresholds <span class="op">=</span> roc_curve(y_test, y_scores)</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>roc_auc <span class="op">=</span> auc(fpr, tpr)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting the ROC curve</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'ROC curve (area = </span><span class="sc">%0.2f</span><span class="st">)'</span> <span class="op">%</span> roc_auc)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'navy'</span>, lw<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Receiver Operating Characteristic (ROC) Curve'</span>)</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-22-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The ROC curve illustrates the trade-off between the true positive rate (sensitivity) and the false positive rate as the classification threshold varies. AUC quantifies the overall model performance, with higher AUC values indicating better classification ability.</p>
+<p><strong>Interpreting ROC Curves and AUC:</strong></p>
+<ul>
+<li><p><strong>True Positive Rate (TPR)</strong>: The TPR represents the proportion of true positive predictions concerning all actual positive instances. It reflects the model’s ability to correctly classify positive cases.</p></li>
+<li><p><strong>False Positive Rate (FPR)</strong>: The FPR represents the proportion of false positive predictions concerning all actual negative instances. A low FPR is desired, as it indicates minimal misclassification of negative cases.</p></li>
+<li><p><strong>ROC Curve Shape</strong>: The shape of the ROC curve and its proximity to the top-left corner indicate the model’s performance. A curve that approaches the top-left corner indicates a superior model.</p></li>
+<li><p><strong>Area Under the Curve (AUC)</strong>: AUC summarizes the ROC curve’s performance in a single value. It ranges from 0.5 (random classification) to 1.0 (perfect classification). An AUC value greater than 0.5 suggests that the model outperforms random chance.</p></li>
+</ul>
+<p>ROC curves and AUC are invaluable for assessing the quality of binary classification models and selecting the optimal threshold for specific application requirements.</p>
+</section>
+<section id="t-sne-plots-dimensionality-reduction" class="level3">
+<h3 class="anchored" data-anchor-id="t-sne-plots-dimensionality-reduction">9.2: t-SNE Plots (Dimensionality Reduction)</h3>
+<p>t-SNE (t-distributed Stochastic Neighbor Embedding) is a dimensionality reduction technique that is particularly useful for visualizing high-dimensional data in lower dimensions while preserving the structure of data clusters. It is an excellent tool for exploring patterns and relationships within complex datasets.</p>
+<p><strong>Creating t-SNE Scatter Plots:</strong></p>
+<p>To demonstrate the use of t-SNE, we will perform the following steps:</p>
+<ol type="1">
+<li>Generate synthetic high-dimensional data.</li>
+<li>Apply t-SNE to reduce data to two dimensions.</li>
+<li>Create a scatter plot of the reduced data.</li>
+</ol>
+<div class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic high-dimensional data and reducing it using t-SNE</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.manifold <span class="im">import</span> TSNE</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Generating synthetic high-dimensional data</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> make_classification(n_samples<span class="op">=</span><span class="dv">100</span>, n_features<span class="op">=</span><span class="dv">50</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Reducing the data to two dimensions using t-SNE</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>X_embedded <span class="op">=</span> TSNE(n_components<span class="op">=</span><span class="dv">2</span>, random_state<span class="op">=</span><span class="dv">42</span>).fit_transform(X)</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a t-SNE scatter plot</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>plt.scatter(X_embedded[:, <span class="dv">0</span>], X_embedded[:, <span class="dv">1</span>], c<span class="op">=</span>y, cmap<span class="op">=</span><span class="st">'viridis'</span>)</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t-SNE Dimension 1'</span>)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'t-SNE Dimension 2'</span>)</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'t-SNE Scatter Plot'</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="vis2_files/figure-html/cell-23-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The resulting t-SNE scatter plot provides a simplified representation of the original high-dimensional data while preserving data patterns and clusters.</p>
+<p><strong>Interpreting t-SNE Plots:</strong></p>
+<ul>
+<li><p><strong>Clusters</strong>: Data points that are close together in the t-SNE scatter plot belong to the same clusters in the high-dimensional space, revealing natural groupings within the data.</p></li>
+<li><p><strong>Dimensionality Reduction</strong>: t-SNE effectively reduces the data’s dimensionality, making it easier to explore and understand complex datasets.</p></li>
+<li><p><strong>Outliers</strong>: Outliers or anomalies may appear as data points that are isolated from the main clusters in the scatter plot.</p></li>
+</ul>
+<p>t-SNE is a valuable tool for data exploration, visualization, and gaining insights into high-dimensional data structures. It is particularly useful in fields such as machine learning, biology, and text analysis.</p>
+</section>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>In this extensive Jupyter notebook, we have explored various data visualization techniques using Matplotlib and Seaborn. We began with basic plots, including line plots, scatter plots, bar plots, and histograms. Then, we delved into statistical plots like box plots, violin plots, and swarm plots. The matrix plots section covered heatmaps and clustermaps. We also explored distribution plots, time series plots, geospatial data visualization, 3D plots, specialized plots, custom visualizations, interactive visualizations, and specialized plots like ROC curves and t-SNE plots.</p>
+<p>Data visualization is an integral part of data analysis, helping us gain insights, make informed decisions, and communicate our findings effectively. Choosing the right visualization technique for a given dataset is crucial, and this notebook provides a comprehensive overview to aid Computer Science and Data Science students in their data visualization journey.</p>
+</section>
+<section id="additional-notes" class="level2">
+<h2 class="anchored" data-anchor-id="additional-notes">Additional Notes</h2>
+<ul>
+<li>For interactive visualizations, consider using libraries like Plotly, Bokeh, or Dash.</li>
+<li>To enhance your data visualization skills, practice with real-world datasets and explore more advanced techniques and libraries.</li>
+<li>Always strive for clear and informative visualizations that convey the intended message effectively.</li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pages/vis.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Overview</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../pages/Inductive_Bias.html" class="pagination-link">
+        <span class="nav-page-text">Inductive Bias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+</body></html>

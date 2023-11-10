@@ -54,12 +54,16 @@ website:
             contents:
               - href: ./pages/vis.ipynb
                 text: Overview
+              - href: ./pages/vis2.ipynb
+                text: Comprehensive Data Visualization
       - section: "Special Topics in ML"
         contents:
           - href: ./pages/Inductive_Bias.ipynb
             text: Inductive Bias
           - href: ./pages/Ordinal_Classification.ipynb
             text: Ordinal Classification
+          - href: ./pages/Bivariate_EM.ipynb
+            text: Bivariate EM
 
 format:
   html:

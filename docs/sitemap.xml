@@ -2,38 +2,46 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/index.html</loc>
-    <lastmod>2023-11-07T07:40:55.488Z</lastmod>
+    <lastmod>2023-11-10T06:11:00.222Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/vis2.html</loc>
+    <lastmod>2023-11-10T06:10:59.439Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Deliverable_1.html</loc>
-    <lastmod>2023-11-07T07:40:54.037Z</lastmod>
+    <lastmod>2023-11-10T06:10:56.599Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Inductive_Bias.html</loc>
-    <lastmod>2023-11-07T07:40:52.994Z</lastmod>
+    <lastmod>2023-11-10T06:10:55.540Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/demo.html</loc>
-    <lastmod>2023-11-07T07:40:51.958Z</lastmod>
+    <lastmod>2023-11-10T06:10:54.522Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
-    <lastmod>2023-11-07T07:40:49.915Z</lastmod>
+    <lastmod>2023-11-10T06:10:52.503Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
-    <lastmod>2023-11-07T07:40:51.537Z</lastmod>
+    <lastmod>2023-11-10T06:10:54.101Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/standard.html</loc>
-    <lastmod>2023-11-07T07:40:52.435Z</lastmod>
+    <lastmod>2023-11-10T06:10:54.984Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Ordinal_Classification.html</loc>
-    <lastmod>2023-11-07T07:40:53.439Z</lastmod>
+    <lastmod>2023-11-10T06:10:56.003Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/vis.html</loc>
-    <lastmod>2023-11-07T07:40:55.188Z</lastmod>
+    <lastmod>2023-11-10T06:10:57.724Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Bivariate_EM.html</loc>
+    <lastmod>2023-11-10T06:10:59.932Z</lastmod>
   </url>
 </urlset>
