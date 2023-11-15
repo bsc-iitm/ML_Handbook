@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../pages/Scaling multi-dataset multi-algo.html" rel="next">
 <link href="../images/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -131,7 +132,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Dealing with missing-values</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/dealing_with_missing_values.html">Preprocessing</a></li><li class="breadcrumb-item"><a href="../pages/dealing_with_missing_values.html">Dealing with missing-values</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -180,16 +181,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="px-0"><hr class="sidebar-divider hi "></li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Preprocessing</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/dealing_with_missing_values.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/dealing_with_missing_values.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Dealing with missing-values</span></a>
   </div>
 </li>
@@ -297,6 +298,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#missing-at-random-mar" id="toc-missing-at-random-mar" class="nav-link" data-scroll-target="#missing-at-random-mar">Missing At Random (MAR)</a></li>
   <li><a href="#missing-not-at-random-mnar" id="toc-missing-not-at-random-mnar" class="nav-link" data-scroll-target="#missing-not-at-random-mnar">Missing Not At Random (MNAR)</a></li>
   <li><a href="#identifying-the-type-of-missingness" id="toc-identifying-the-type-of-missingness" class="nav-link" data-scroll-target="#identifying-the-type-of-missingness">Identifying the type of missingness</a></li>
+  <li><a href="#dealing-with-missing-values" id="toc-dealing-with-missing-values" class="nav-link" data-scroll-target="#dealing-with-missing-values">Dealing with missing values</a></li>
   <li><a href="#missing-value-imputation" id="toc-missing-value-imputation" class="nav-link" data-scroll-target="#missing-value-imputation">Missing Value Imputation</a></li>
   <li><a href="#simple-imputer" id="toc-simple-imputer" class="nav-link" data-scroll-target="#simple-imputer">Simple Imputer</a>
   <ul class="collapse">
@@ -304,8 +306,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#simple-imputer---mode" id="toc-simple-imputer---mode" class="nav-link" data-scroll-target="#simple-imputer---mode">Simple Imputer - Mode</a></li>
   </ul></li>
   <li><a href="#k-nearest-neighbours" id="toc-k-nearest-neighbours" class="nav-link" data-scroll-target="#k-nearest-neighbours">K Nearest Neighbours</a></li>
+  <li><a href="#additional-info" id="toc-additional-info" class="nav-link" data-scroll-target="#additional-info">Additional Info</a>
+  <ul class="collapse">
+  <li><a href="#dealing-with-missingness-in-tree-based-methods" id="toc-dealing-with-missingness-in-tree-based-methods" class="nav-link" data-scroll-target="#dealing-with-missingness-in-tree-based-methods">Dealing with missingness in Tree-Based Methods</a></li>
+  <li><a href="#missingness-indicator" id="toc-missingness-indicator" class="nav-link" data-scroll-target="#missingness-indicator">Missingness Indicator</a></li>
+  <li><a href="#estimators-that-handle-nan-values" id="toc-estimators-that-handle-nan-values" class="nav-link" data-scroll-target="#estimators-that-handle-nan-values">Estimators that handle NaN values</a></li>
+  </ul></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/Deliverable_1.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/dealing_with_missing_values.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
@@ -356,7 +364,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="missing-not-at-random-mnar" class="level2">
 <h2 class="anchored" data-anchor-id="missing-not-at-random-mnar">Missing Not At Random (MNAR)</h2>
 <p>In this case, the missingness is neither MCAR nor MAR. The fact that a datapoint is missing is dependent on the value of the data point. In order to correct for the bias we would have to make modelling assumptions about the nature of the bias.</p>
-<p>For example, in a social survey where individuals are asked about their income, respondnets may not disclose it if it is too high or too low. Thus the missingness in the feature income is directly related to the values of that feature.</p>
+<p>For example, in a social survey where individuals are asked about their income, respondents may not disclose it if it is too high or too low. Thus the missingness in the feature income is directly related to the values of that feature.</p>
+<p>For example, if a patient’s measurement was not taken because the doctor felt he was too sick, that observation would not be MAR or MCAR. In this case the missing data mechanism causes our observed training data to give a distorted picture of the true population, and data imputation is dangerous in this instance.</p>
 </section>
 <section id="identifying-the-type-of-missingness" class="level2">
 <h2 class="anchored" data-anchor-id="identifying-the-type-of-missingness">Identifying the type of missingness</h2>
@@ -364,6 +373,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Understanding the data collection process, the features involved and the research domain can help identify possible patterns as to why data is missing</li>
 <li>Graphical representation of the missing data and heatmaps can help identify relationships between features that can be utilized to make better imputation of the missing data</li>
 <li>We can impute the data using different techniques while also making assumptions on the nature of missingness. Subsequently, we analyze the results to observe the assumptions that have led to consistent results.</li>
+<li>For categorical features, we can code missing as an additional class(feature). We can then fit our model on the training data and see if the class “Missing” is predictive of the response(label)</li>
+</ul>
+</section>
+<section id="dealing-with-missing-values" class="level2">
+<h2 class="anchored" data-anchor-id="dealing-with-missing-values">Dealing with missing values</h2>
+<p>If we assume that the features are missing completely at random, there are three approaches that we can follow</p>
+<ul>
+<li>Discard the observations with any missing values</li>
+<li>Choose an algorithm that inherently deals with missing values</li>
+<li>Impute the missing values before training</li>
 </ul>
 </section>
 <section id="missing-value-imputation" class="level2">
@@ -376,7 +395,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="simple-imputer" class="level2">
 <h2 class="anchored" data-anchor-id="simple-imputer">Simple Imputer</h2>
-<p>The Simple Imputation technique offers a basic approach to filling missing data wherein we replace the missing data with a constant value or utilize statistics such as “mean”, “mode”, or “median” of the available values. The technique is useful for its simplicity and can serve as a reference technique. It is also worth noting that this can lead to biased or unrealistic results</p>
+<p>Simple Imputation is a univariate imputation technique where the missing values of a feature are imputed using the non-missing values of the same feature. It offers a basic approach to filling missing data wherein we replace the missing data with a constant value or utilize statistics such as “mean”, “mode”, or “median” of the available values.</p>
+<p>The technique is useful for its simplicity and can serve as a reference technique. It is also worth noting that this can lead to biased or unrealistic results</p>
 <section id="simple-imputer---mean" class="level3">
 <h3 class="anchored" data-anchor-id="simple-imputer---mean">Simple Imputer - Mean</h3>
 <div class="cell">
@@ -1214,6 +1234,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="k-nearest-neighbours" class="level2">
 <h2 class="anchored" data-anchor-id="k-nearest-neighbours">K Nearest Neighbours</h2>
 <p>This technique is an extension of the KNN classifier we have seen in MLT to perform imputation. In this technique we identify the points that are similar to the observation we wish to impute based on the available features. We can then use the values of these neighboring points fill in the missing values</p>
+<p>Consider the following matrix, <span class="math display"> A=\begin{bmatrix}
+1 &amp; 1 &amp; 3\\
+2 &amp; 1 &amp; 3\\
+3 &amp; nan &amp; 3\\
+4 &amp; 2 &amp; 4\\
+5 &amp; 4 &amp; 5
+\end{bmatrix} </span></p>
+<p>We can fill the missing value using KNN Imputer with value of k = 2. Firstly, we need to find the distance of our entry with the missing value, with other entries. <br> <br> The distance of <span class="math inline">\begin{bmatrix} 3 &amp; nan &amp; 3 \end{bmatrix}</span> with <span class="math inline">\begin{bmatrix} 1 &amp; 1 &amp; 3 \end{bmatrix}</span> is given by , <br> <span class="math display">\displaystyle \sqrt{\frac{3}{2}\left(( 3-1)^{2} +( 3-3)^{2}\right)} =\ \sqrt{6}</span> <br> In this example the nearest neighbors based on Euclidean distance will be the points <span class="math inline">\begin{bmatrix} 2 &amp; 1 &amp; 3 \end{bmatrix}</span> and <span class="math inline">\begin{bmatrix} 4 &amp; 2 &amp; 4 \end{bmatrix}</span>.Now to fill the missing value, we take the average of the values of the features from the 2 nearest neighbors identified above.</p>
+<p><br></p>
+<p><span class="math display">\begin{align*}
+\frac{\text{Sum of values of the feature from 2 neares neighbors}}{\text{Number of values}} &amp; =\frac{1+2}{2} \ =\ 1.5
+\end{align*}</span></p>
+<p><br></p>
+<p>Thus the updated matrix would be, <span class="math display"> A=\begin{bmatrix}
+1 &amp; 1 &amp; 3\\
+2 &amp; 1 &amp; 3\\
+3 &amp; 1.5 &amp; 3\\
+4 &amp; 2 &amp; 4\\
+5 &amp; 4 &amp; 5
+\end{bmatrix} </span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> KNNImputer</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -1480,8 +1520,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </div>
 </div>
+</section>
+<section id="additional-info" class="level2">
+<h2 class="anchored" data-anchor-id="additional-info">Additional Info</h2>
+<section id="dealing-with-missingness-in-tree-based-methods" class="level3">
+<h3 class="anchored" data-anchor-id="dealing-with-missingness-in-tree-based-methods">Dealing with missingness in Tree-Based Methods</h3>
+<p>For tree based models we can try a couple of different approaches</p>
+<p>Approach 1: The first is applicable to categorical predictors: we simply make a new category for “missing.” From this we might discover that observations with missing values for some measurement behave differently than those with nonmissing values.</p>
+<p>Approach 2: The second more general approach is the construction of surrogate variables. Surrogate splits use alternative variables when the primary variable has missing values. The idea is to leverage the correlation or similarity between variables, allowing them to substitute for each other in the splitting process. This enables the inclusion of records with missing values in the training data, ensuring they are split based on the best available variable. The effectiveness of this technique is dependent on the quality and availability of surrogate variables.</p>
+</section>
+<section id="missingness-indicator" class="level3">
+<h3 class="anchored" data-anchor-id="missingness-indicator">Missingness Indicator</h3>
+<p>The idea of missingness Indicator is to make use of a binary indicator that highlights the missing values in your dataset. This can be used when we want the ML models to capture information about the missingness</p>
+</section>
+<section id="estimators-that-handle-nan-values" class="level3">
+<h3 class="anchored" data-anchor-id="estimators-that-handle-nan-values">Estimators that handle NaN values</h3>
+<p>CART, MARS, PRIM, GBM</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
@@ -1833,6 +1890,15 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../pages/Scaling multi-dataset multi-algo.html" class="pagination-link">
+        <span class="nav-page-text">Overview</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

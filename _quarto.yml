@@ -40,8 +40,8 @@ website:
       - text: "---"
       - section: "Preprocessing"
         contents:
-          - href: ./pages/Deliverable_1.ipynb
-            text: Handling Missing Values
+          - href: ./pages/dealing_with_missing_values.ipynb
+            text: Dealing with missing-values 
           - section: "Scaling"
             contents:
               - href: ./pages/Scaling multi-dataset multi-algo.ipynb
