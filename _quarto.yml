@@ -62,8 +62,8 @@ website:
             text: Inductive Bias
           - href: ./pages/Ordinal_Classification.ipynb
             text: Ordinal Classification
-          - href: ./pages/Bivariate_EM.ipynb
-            text: Bivariate EM
+          - href: ./pages/EM_Algorithm.ipynb
+            text: EM Algorithm
 
 format:
   html:
