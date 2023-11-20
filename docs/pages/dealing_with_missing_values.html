@@ -306,6 +306,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#simple-imputer---mode" id="toc-simple-imputer---mode" class="nav-link" data-scroll-target="#simple-imputer---mode">Simple Imputer - Mode</a></li>
   </ul></li>
   <li><a href="#k-nearest-neighbours" id="toc-k-nearest-neighbours" class="nav-link" data-scroll-target="#k-nearest-neighbours">K Nearest Neighbours</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
   <li><a href="#additional-info" id="toc-additional-info" class="nav-link" data-scroll-target="#additional-info">Additional Info</a>
   <ul class="collapse">
   <li><a href="#dealing-with-missingness-in-tree-based-methods" id="toc-dealing-with-missingness-in-tree-based-methods" class="nav-link" data-scroll-target="#dealing-with-missingness-in-tree-based-methods">Dealing with missingness in Tree-Based Methods</a></li>
@@ -348,24 +349,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="bias" class="level2">
 <h2 class="anchored" data-anchor-id="bias">Bias</h2>
 <p>When data is missing, the remaining data may not always accurately reflect the true population. The type of missingness and the way we deal with it can dictate bias in our results.</p>
-<p>For example, in a survey recording income of individuals, those with low income may choose not to respond. The use of average income to impute the missing values can lead to bias as the average of the available data may not represent that of the population.</p>
+<p><strong>For example</strong>, in a survey recording income of individuals, those with low income may choose not to respond. The use of average income to impute the missing values can lead to bias as the average of the available data may not represent that of the population.</p>
 </section>
 <section id="missing-completely-at-random-mcar" class="level2">
 <h2 class="anchored" data-anchor-id="missing-completely-at-random-mcar">Missing Completely At Random (MCAR)</h2>
-<p>In this case, the data is missing randomly and is not related to any variable in the dataset or to the missing value themselves. The probability of missingness is same for all observations. There exists no underlying pattern to the missingness. The missing values are completely independent of other data.</p>
-<p>For example, during data collection, if some responses were not collected due to a technical error, then the missing data is completely at random.</p>
-<p>All statistical analysis performed on the dataset will remain unbiased in this case.</p>
+<p>In situations characterized by Missing Completely At Random (MCAR), the absence of data occurs randomly and is unrelated to any variable in the dataset or the missing values themselves. The probability of missingness is same for all observations. There exists no underlying pattern to the missingness. The missing values are completely independent of other data. All statistical analysis performed on the dataset will remain unbiased in this case.</p>
+<p><strong>For example</strong>, during data collection, if some responses were not collected due to a technical error, then the missing data is completely at random.</p>
 </section>
 <section id="missing-at-random-mar" class="level2">
 <h2 class="anchored" data-anchor-id="missing-at-random-mar">Missing At Random (MAR)</h2>
-<p>In this case, the missingness of the data can be fully accounted for by the other known data values. Here there exists some form of pattern in the missing values.</p>
-<p>For example, In a survey, women might be unwilling to disclose their age. Here the missingness of the variable age can be explained by another observed variable “gender”.</p>
+<p>In instances of Missing At Random (MAR), the absence of data can be entirely explained by the values of other known variables in the dataset. There exists some form of pattern in the missing values.</p>
+<p><strong>For example</strong>, In a survey, women might be unwilling to disclose their age. Here the missingness of the variable age can be explained by another observed variable “gender”.</p>
 </section>
 <section id="missing-not-at-random-mnar" class="level2">
 <h2 class="anchored" data-anchor-id="missing-not-at-random-mnar">Missing Not At Random (MNAR)</h2>
 <p>In this case, the missingness is neither MCAR nor MAR. The fact that a datapoint is missing is dependent on the value of the data point. In order to correct for the bias we would have to make modelling assumptions about the nature of the bias.</p>
-<p>For example, in a social survey where individuals are asked about their income, respondents may not disclose it if it is too high or too low. Thus the missingness in the feature income is directly related to the values of that feature.</p>
-<p>For example, if a patient’s measurement was not taken because the doctor felt he was too sick, that observation would not be MAR or MCAR. In this case the missing data mechanism causes our observed training data to give a distorted picture of the true population, and data imputation is dangerous in this instance.</p>
+<p><strong>For example</strong>, in a social survey where individuals are asked about their income, respondents may not disclose it if it is too high or too low. Thus the missingness in the feature income is directly related to the values of that feature.</p>
+<p><strong>For example</strong>, if a patient’s measurement was not taken because the doctor felt he was too sick, that observation would not be MAR or MCAR. In this case the missing data mechanism causes our observed training data to give a distorted picture of the true population, and data imputation is dangerous in this instance.</p>
 </section>
 <section id="identifying-the-type-of-missingness" class="level2">
 <h2 class="anchored" data-anchor-id="identifying-the-type-of-missingness">Identifying the type of missingness</h2>
@@ -1233,15 +1233,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="k-nearest-neighbours" class="level2">
 <h2 class="anchored" data-anchor-id="k-nearest-neighbours">K Nearest Neighbours</h2>
-<p>This technique is an extension of the KNN classifier we have seen in MLT to perform imputation. In this technique we identify the points that are similar to the observation we wish to impute based on the available features. We can then use the values of these neighboring points fill in the missing values</p>
+<p>This technique operates on the principle of finding the K most similar data points to the one with missing values and using their known values to estimate and impute the missing values.</p>
+<p>KNN imputation is especially useful when there is a pattern or structure in the data that can be captured by considering the relationships between neighboring data points. It’s a flexible method that can be applied to various types of data, but the choice of K and the distance metric are critical parameters that can impact imputation accuracy.</p>
 <p>Consider the following matrix, <span class="math display"> A=\begin{bmatrix}
 1 &amp; 1 &amp; 3\\
 2 &amp; 1 &amp; 3\\
 3 &amp; nan &amp; 3\\
 4 &amp; 2 &amp; 4\\
 5 &amp; 4 &amp; 5
-\end{bmatrix} </span></p>
-<p>We can fill the missing value using KNN Imputer with value of k = 2. Firstly, we need to find the distance of our entry with the missing value, with other entries. <br> <br> The distance of <span class="math inline">\begin{bmatrix} 3 &amp; nan &amp; 3 \end{bmatrix}</span> with <span class="math inline">\begin{bmatrix} 1 &amp; 1 &amp; 3 \end{bmatrix}</span> is given by , <br> <span class="math display">\displaystyle \sqrt{\frac{3}{2}\left(( 3-1)^{2} +( 3-3)^{2}\right)} =\ \sqrt{6}</span> <br> In this example the nearest neighbors based on Euclidean distance will be the points <span class="math inline">\begin{bmatrix} 2 &amp; 1 &amp; 3 \end{bmatrix}</span> and <span class="math inline">\begin{bmatrix} 4 &amp; 2 &amp; 4 \end{bmatrix}</span>.Now to fill the missing value, we take the average of the values of the features from the 2 nearest neighbors identified above.</p>
+\end{bmatrix} </span> <br> We can fill the missing value using KNN Imputer with value of k = 2. Firstly, we need to find the distance of our entry(row) containing the missing value, with other entries(rows). <br> <br> The distance of <span class="math inline">\begin{bmatrix} 3 &amp; nan &amp; 3 \end{bmatrix}</span> with <span class="math inline">\begin{bmatrix} 1 &amp; 1 &amp; 3 \end{bmatrix}</span> is given by , <br> <span class="math display">\displaystyle \sqrt{\frac{3}{2}\left(( 3-1)^{2} +( 3-3)^{2}\right)} =\ \sqrt{6}</span> <br> In this example the nearest neighbors based on Euclidean distance will be the points <span class="math inline">\begin{bmatrix} 2 &amp; 1 &amp; 3 \end{bmatrix}</span> and <span class="math inline">\begin{bmatrix} 4 &amp; 2 &amp; 4 \end{bmatrix}</span>.Now to fill the missing value, we take the average of the values of the feature from the 2 nearest neighbors identified above.</p>
 <p><br></p>
 <p><span class="math display">\begin{align*}
 \frac{\text{Sum of values of the feature from 2 neares neighbors}}{\text{Number of values}} &amp; =\frac{1+2}{2} \ =\ 1.5
@@ -1520,6 +1520,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </div>
 </div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>Use the links provided below to access the datasets. Treat the dataset like an unsupervised learning problem with the only “constraint” being that findings/results should pertain to missingness. Share your findings/results in a ipynb file.</p>
+<ol type="1">
+<li><p>Link to dataset 1: <a href="https://drive.google.com/file/d/1Fk5V6GNNfdgm8qB4sA1EinB9gQhNdg4Z/view?usp=drive_link" target="_blank">https://drive.google.com/file/d/1Fk5V6GNNfdgm8qB4sA1EinB9gQhNdg4Z/view?usp=drive_link</a></p></li>
+<li><p>Link to dataset 2: <a href="https://drive.google.com/file/d/15HYh3p6SZjic_Ytef84b1vsgYcWoqh4L/view?usp=drive_link" target="_blank">https://drive.google.com/file/d/15HYh3p6SZjic_Ytef84b1vsgYcWoqh4L/view?usp=drive_link</a></p></li>
+</ol>
 </section>
 <section id="additional-info" class="level2">
 <h2 class="anchored" data-anchor-id="additional-info">Additional Info</h2>
