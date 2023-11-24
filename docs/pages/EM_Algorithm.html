@@ -64,6 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../pages/Probabilistic_PCA.html" rel="next">
 <link href="../pages/Ordinal_Classification.html" rel="prev">
 <link href="../images/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
@@ -283,6 +284,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">EM Algorithm</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Probabilistic_PCA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probabilistic PCA</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -300,6 +307,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#introduction-of-latent-variable" id="toc-introduction-of-latent-variable" class="nav-link" data-scroll-target="#introduction-of-latent-variable">Introduction of Latent Variable</a>
   <ul class="collapse">
   <li><a href="#reformulating-problem-in-terms-of-latent-variable-mathbfz" id="toc-reformulating-problem-in-terms-of-latent-variable-mathbfz" class="nav-link" data-scroll-target="#reformulating-problem-in-terms-of-latent-variable-mathbfz">Reformulating problem in terms of latent variable <span class="math inline">\mathbf{z}</span></a></li>
+  <li><a href="#lets-begin" id="toc-lets-begin" class="nav-link" data-scroll-target="#lets-begin">Let’s begin!</a></li>
   </ul></li>
   <li><a href="#posing-a-maximum-likelihood-problem" id="toc-posing-a-maximum-likelihood-problem" class="nav-link" data-scroll-target="#posing-a-maximum-likelihood-problem">Posing a Maximum Likelihood problem:</a>
   <ul class="collapse">
@@ -389,7 +397,11 @@ old_faithful.csv.13   0%[                    ]       0  --.-KB/s               o
 <p><span class="math display">
 p(\mathbf{x}) =  \sum_{k=1}^{K} \pi_k \mathcal{N}(\mathbf{x} | \mathbf{\mu}_k, \mathbf{Σ}_k)
 </span></p>
-<p>Where: - $_k = $ Probability that a random point belongs to the kth component (also called mixing coefficients) (<span class="math inline">\sum{\pi_k} = 1</span>) - <span class="math inline">\mu_k, Σ_k</span> and <span class="math inline">\mathcal{N}(\mathbf{x} | \mathbf{\mu}_k, \mathbf{Σ}_k)</span> are the parameters and pdf of the kth components respectively.</p>
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\pi_k =</span> Probability that a random point belongs to the kth component (also called mixing coefficients) (<span class="math inline">\sum{\pi_k} = 1</span>)</li>
+<li><span class="math inline">\mu_k, Σ_k</span> and <span class="math inline">\mathcal{N}(\mathbf{x} | \mathbf{\mu}_k, \mathbf{Σ}_k)</span> are the parameters and pdf of the kth components respectively.</li>
+</ul>
 <section id="introduction-of-latent-variable" class="level2">
 <h2 class="anchored" data-anchor-id="introduction-of-latent-variable">Introduction of Latent Variable</h2>
 <p>We introduce a K-dimensional latent variable <span class="math inline">\mathbf{z}</span>; only one of the elements of <span class="math inline">\mathbf{z}</span> will be <span class="math inline">1</span> (<span class="math inline">1</span>-of-<span class="math inline">K</span> encoding) (also a standard basis vector).</p>
@@ -405,7 +417,9 @@ p(\mathbf{x}) =  \sum_{k=1}^{K} \pi_k \mathcal{N}(\mathbf{x} | \mathbf{\mu}_k, \
 <p>And done! We have formulated our goal using this latent variable <span class="math inline">\mathbf{z}</span>. One more quantity of use is the conditional probablity of <span class="math inline">\mathbf{z}=\mathbf{e}_k</span> given <span class="math inline">\mathbf{x}_i</span> (which we will call <span class="math inline">\lambda_ik</span>):</p>
 <p><span class="math display">\lambda_{ik} \equiv p(\mathbf{z}=\mathbf{e}_k) = \frac{p(\mathbf{z}=\mathbf{e}_k)p(\mathbf{x}|\mathbf{z}_k=\mathbf{e}_k)}{\sum_{j=1}^K p(\mathbf{z}=\mathbf{e}_j)p(\mathbf{x}|\mathbf{z}_j=\mathbf{e}_j)} = \frac{\pi_k\mathcal{N}(\mathbf{x}|\mu_k, Σ_k)}{\sum_{j=1}^K \pi_j\mathcal{N}(\mathbf{x}|\mu_j, Σ_j)}</span></p>
 <p>By the reformulation above, we have enabled the application of EM on our problem.</p>
-<p>$$$$ ### Let’s begin!</p>
+</section>
+<section id="lets-begin" class="level3">
+<h3 class="anchored" data-anchor-id="lets-begin">Let’s begin!</h3>
 <p>To get started, we perform the following initialization: - Pick 2 points at random as cluster centres - Hard-assign points based on proximity to centres</p>
 <div class="cell" data-outputid="1d08d7c4-ebab-4e40-b8e4-cc3de2482827">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>K <span class="op">=</span> <span class="dv">2</span></span>
@@ -30710,6 +30724,9 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
+      <a href="../pages/Probabilistic_PCA.html" class="pagination-link">
+        <span class="nav-page-text">Probabilistic PCA</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
   </div>
 </nav>
 </div> <!-- /content -->

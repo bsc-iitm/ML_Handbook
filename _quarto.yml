@@ -64,6 +64,8 @@ website:
             text: Ordinal Classification
           - href: ./pages/EM_Algorithm.ipynb
             text: EM Algorithm
+          - href: ./pages/Probabilistic_PCA.ipynb
+            text: Probabilistic PCA
 
 format:
   html:
