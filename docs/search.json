@@ -553,6 +553,13 @@
     "text": "Additional Notes\n\nFor interactive visualizations, consider using libraries like Plotly, Bokeh, or Dash.\nTo enhance your data visualization skills, practice with real-world datasets and explore more advanced techniques and libraries.\nAlways strive for clear and informative visualizations that convey the intended message effectively."
   },
   {
+    "objectID": "pages/vis2.html#excercise",
+    "href": "pages/vis2.html#excercise",
+    "title": "Comprehensive Data Visualization with Matplotlib and Seaborn",
+    "section": "Excercise",
+    "text": "Excercise\nPractise your visualization skills on the following Stocks dataset: link"
+  },
+  {
     "objectID": "pages/EM_Algorithm.html",
     "href": "pages/EM_Algorithm.html",
     "title": "EM Algorithm",
