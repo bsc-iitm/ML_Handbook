@@ -2,62 +2,66 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/index.html</loc>
-    <lastmod>2023-11-24T05:19:39.100Z</lastmod>
+    <lastmod>2023-11-27T06:23:54.607Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/roc.html</loc>
-    <lastmod>2023-11-24T05:19:37.470Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/EM_Algorithm.html</loc>
-    <lastmod>2023-11-24T05:19:35.866Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/vis2.html</loc>
-    <lastmod>2023-11-24T05:19:34.228Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Deliverable_1.html</loc>
-    <lastmod>2023-11-24T05:19:31.326Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Inductive_Bias.html</loc>
-    <lastmod>2023-11-24T05:19:30.245Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/demo.html</loc>
-    <lastmod>2023-11-24T05:19:29.225Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
-    <lastmod>2023-11-24T05:19:27.168Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
-    <lastmod>2023-11-24T05:19:28.796Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/standard.html</loc>
-    <lastmod>2023-11-24T05:19:29.690Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Ordinal_Classification.html</loc>
-    <lastmod>2023-11-24T05:19:30.704Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/vis.html</loc>
-    <lastmod>2023-11-24T05:19:32.500Z</lastmod>
-  </url>
-  <url>
-    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Bivariate_EM.html</loc>
-    <lastmod>2023-11-24T05:19:34.743Z</lastmod>
+    <lastmod>2023-11-27T06:23:53.909Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/dealing_with_missing_values.html</loc>
-    <lastmod>2023-11-24T05:19:36.596Z</lastmod>
+    <lastmod>2023-11-27T06:23:51.773Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Bivariate_EM.html</loc>
+    <lastmod>2023-11-27T06:23:49.882Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/vis.html</loc>
+    <lastmod>2023-11-27T06:23:47.609Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Ordinal_Classification.html</loc>
+    <lastmod>2023-11-27T06:23:45.812Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/standard.html</loc>
+    <lastmod>2023-11-27T06:23:44.787Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Scaling multi-dataset multi-algo.html</loc>
+    <lastmod>2023-11-27T06:23:43.905Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/about.html</loc>
+    <lastmod>2023-11-27T06:23:42.280Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/demo.html</loc>
+    <lastmod>2023-11-27T06:23:44.317Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Inductive_Bias.html</loc>
+    <lastmod>2023-11-27T06:23:45.353Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Deliverable_1.html</loc>
+    <lastmod>2023-11-27T06:23:46.443Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/vis2.html</loc>
+    <lastmod>2023-11-27T06:23:49.347Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/EM_Algorithm.html</loc>
+    <lastmod>2023-11-27T06:23:51.038Z</lastmod>
   </url>
   <url>
     <loc>https://bsc-iitm.github.io/ML_Handbook/pages/Probabilistic_PCA.html</loc>
-    <lastmod>2023-11-24T05:19:38.803Z</lastmod>
+    <lastmod>2023-11-27T06:23:53.084Z</lastmod>
+  </url>
+  <url>
+    <loc>https://bsc-iitm.github.io/ML_Handbook/pages/accuracy.html</loc>
+    <lastmod>2023-11-27T06:23:54.316Z</lastmod>
   </url>
 </urlset>

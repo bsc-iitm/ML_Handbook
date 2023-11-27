@@ -6,6 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Sherry Thomas">
 
 <title>ML Handbook - Exploring the Significance of ROC AUC in Classification Models</title>
 <style>
@@ -63,6 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
+<link href="../pages/Inductive_Bias.html" rel="next">
+<link href="../pages/accuracy.html" rel="prev">
 <link href="../images/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -99,8 +102,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 <meta property="og:title" content="ML Handbook - Exploring the Significance of ROC AUC in Classification Models">
 <meta property="og:description" content="">
@@ -119,7 +136,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Exploring the Significance of ROC AUC in Classification Models</li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/accuracy.html">Evaluation Metrics</a></li><li class="breadcrumb-item"><a href="../pages/roc.html">ROC-AUC</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -242,13 +259,36 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
- <span class="menu-text">Special Topics in ML</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
+ <span class="menu-text">Evaluation Metrics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/accuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Accuracy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/roc.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">ROC-AUC</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Special Topics in ML</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/Inductive_Bias.html" class="sidebar-item-text sidebar-link">
@@ -296,13 +336,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#auc-values-understanding-model-performance" id="toc-auc-values-understanding-model-performance" class="nav-link" data-scroll-target="#auc-values-understanding-model-performance">AUC Values: Understanding Model Performance</a></li>
   <li><a href="#code-for-auc-analysis" id="toc-code-for-auc-analysis" class="nav-link" data-scroll-target="#code-for-auc-analysis">Code for AUC Analysis</a></li>
   <li><a href="#interpretation-of-auc-values" id="toc-interpretation-of-auc-values" class="nav-link" data-scroll-target="#interpretation-of-auc-values">Interpretation of AUC Values</a></li>
-  <li><a href="#connection-between-class-imbalance-and-auc-scores" id="toc-connection-between-class-imbalance-and-auc-scores" class="nav-link" data-scroll-target="#connection-between-class-imbalance-and-auc-scores">Connection Between Class Imbalance and AUC Scores:</a></li>
   </ul></li>
   <li><a href="#precision-recall-and-f1-score-complementary-metrics-to-roc-auc" id="toc-precision-recall-and-f1-score-complementary-metrics-to-roc-auc" class="nav-link" data-scroll-target="#precision-recall-and-f1-score-complementary-metrics-to-roc-auc">Precision, Recall, and F1-score: Complementary Metrics to ROC AUC</a>
   <ul class="collapse">
-  <li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision">Precision:</a></li>
-  <li><a href="#recall-sensitivity" id="toc-recall-sensitivity" class="nav-link" data-scroll-target="#recall-sensitivity">Recall (Sensitivity):</a></li>
-  <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score">F1-score:</a></li>
+  <li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision">Precision</a></li>
+  <li><a href="#recall-sensitivity" id="toc-recall-sensitivity" class="nav-link" data-scroll-target="#recall-sensitivity">Recall (Sensitivity)</a></li>
+  <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score">F1-score</a></li>
   </ul></li>
   <li><a href="#real-world-scenarios-leveraging-roc-auc" id="toc-real-world-scenarios-leveraging-roc-auc" class="nav-link" data-scroll-target="#real-world-scenarios-leveraging-roc-auc">Real-World Scenarios: Leveraging ROC AUC</a>
   <ul class="collapse">
@@ -325,6 +364,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Sherry Thomas </p>
+          </div>
+  </div>
     
   
     
@@ -333,10 +378,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
+<p>Colab Link: <a href="https://colab.research.google.com/drive/1YTS0e4rX1hwpmdxaXjtPLKLoqkkyorpS?usp=sharing" target="_blank">Click here!</a></p>
 <p>Within the realm of assessing the performance of classification models, the Receiver Operating Characteristic (ROC) curve and its corresponding Area Under the Curve (AUC) metric stand as pivotal tools. This exploration seeks to expound upon their practical significance by employing diverse datasets, offering a nuanced understanding of these fundamental concepts in model evaluation.</p>
 <section id="understanding-roc-auc-a-brief-overview" class="level2">
 <h2 class="anchored" data-anchor-id="understanding-roc-auc-a-brief-overview">Understanding ROC AUC: A Brief Overview</h2>
-<p>The Receiver Operating Characteristic (ROC) curve, along with the Area Under the Curve (AUC) metric, holds paramount importance in evaluating the efficiency of binary classification models.</p>
+<p>A receiver operating characteristic curve, or ROC curve, is a graphical plot that illustrates the performance of a binary classifier model (can be used for multi class classification as well) at varying threshold values.</p>
+<p>The ROC curve is the plot of the true positive rate (TPR) against the false positive rate (FPR) at each threshold setting.</p>
+<p>The ROC can also be thought of as a plot of the statistical power as a function of the Type I Error of the decision rule (when the performance is calculated from just a sample of the population, it can be thought of as estimators of these quantities). The ROC curve is thus the sensitivity or recall as a function of false positive rate.</p>
 </section>
 <section id="dataset-illustration-wisconsin-breast-cancer-dataset" class="level2">
 <h2 class="anchored" data-anchor-id="dataset-illustration-wisconsin-breast-cancer-dataset">Dataset Illustration: Wisconsin Breast Cancer Dataset</h2>
@@ -364,7 +412,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
 <span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>X_test_scaled <span class="op">=</span> scaler.transform(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Utilizing this dataset, we aim to demonstrate how the ROC AUC curve enhances the evaluation of classification model performance, specifically in the context of distinguishing between malignant and benign tumors based on various features extracted from FNA images.</p>
 </section>
 <section id="understanding-roc-auc-curve" class="level3">
 <h3 class="anchored" data-anchor-id="understanding-roc-auc-curve">Understanding ROC AUC Curve</h3>
@@ -376,8 +423,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>True Positive Rate (TPR) measures how often the model correctly identifies positives.</li>
 <li>False Positive Rate (FPR) calculates how often the model wrongly flags negatives.</li>
 </ul>
-<p><span class="math display">\[ \text{TPR} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} \]</span></p>
-<p><span class="math display">\[ \text{FPR} = \frac{\text{False Positives}}{\text{False Positives} + \text{True Negatives}} \]</span></p>
+<p><span class="math display"> \text{TPR} = \frac{\text{True Positives}}{\text{Actual Positives}} </span></p>
+<p><span class="math display"> \text{FPR} = \frac{\text{False Positives}}{\text{Actual Negatives}} </span></p>
 </section>
 <section id="auc" class="level4">
 <h4 class="anchored" data-anchor-id="auc">AUC:</h4>
@@ -386,7 +433,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>AUC values range from 0 to 1, where higher values imply better discrimination ability.</li>
 <li>AUC = 1 signifies a perfect classifier, while AUC = 0.5 suggests random guessing.</li>
 </ul>
-<p><span class="math display">\[ \text{AUC} = \int_{x=0}^{1} \text{TPR}(FPR^-(x)) \, d(\text{x}) \]</span></p>
+<p><span class="math display"> \text{AUC} = \int_{x=0}^{1} \text{TPR}(FPR^-(x)) \, d(\text{x}) </span></p>
 <p>The ROC curve shows how well a model distinguishes between classes, while AUC quantifies this performance, aiding in understanding a model’s effectiveness.</p>
 <p>Let’s illustrate the computation of the ROC curve and AUC using a logistic regression model applied to the Wisconsin Breast Cancer dataset:</p>
 <div class="cell" data-execution_count="2">
@@ -426,14 +473,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="analyzing-area-under-the-curve-auc-values-across-datasets-and-models">Analyzing Area Under the Curve (AUC) Values Across Datasets and Models</h2>
 <section id="auc-values-understanding-model-performance" class="level3">
 <h3 class="anchored" data-anchor-id="auc-values-understanding-model-performance">AUC Values: Understanding Model Performance</h3>
-<p>The AUC (Area Under the Curve) metric serves as a crucial indicator of the discriminatory power of classification models. It ranges from 0 to 1, where higher values signify better performance in distinguishing between classes. Let’s delve into the AUC values obtained across diverse datasets using different classification models.</p>
+<p>Let’s delve into the AUC values obtained across diverse datasets using different classification models.</p>
 </section>
 <section id="code-for-auc-analysis" class="level3">
 <h3 class="anchored" data-anchor-id="code-for-auc-analysis">Code for AUC Analysis</h3>
 <div class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, roc_curve, auc</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, GradientBoostingClassifier</span>
@@ -451,8 +498,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_auc(dataset, dataset_name, ax):</span>
 <span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split dataset into features and target</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> dataset.data.features</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> dataset.data.targets</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> dataset[<span class="st">"data"</span>][<span class="st">"features"</span>]</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> dataset[<span class="st">"data"</span>][<span class="st">"targets"</span>]</span>
 <span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    targets <span class="op">=</span> <span class="bu">list</span>(y[y.columns[<span class="dv">0</span>]].unique())</span>
 <span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> (y.replace({targets[<span class="dv">0</span>]: <span class="dv">0</span>, targets[<span class="dv">1</span>]: <span class="dv">1</span>})).to_numpy().reshape(<span class="op">-</span><span class="dv">1</span>)  <span class="co"># Adjust target labels if needed</span></span>
 <span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    </span>
@@ -480,7 +527,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate AUC for each model</span></span>
 <span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    auc_results <span class="op">=</span> {}</span>
 <span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, model <span class="kw">in</span> models:</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'classifier'</span>, model)])</span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'scaling'</span>, StandardScaler(with_mean<span class="op">=</span><span class="va">False</span>)), (<span class="st">'classifier'</span>, model)])</span>
 <span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        pipeline.fit(X_train, y_train)</span>
 <span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        y_prob <span class="op">=</span> pipeline.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
 <span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        auc_value <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
@@ -500,16 +547,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> auc_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> [</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>   <span class="co"># (fetch_ucirepo(id=2), 'adult'),  # adult</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">545</span>), <span class="st">'rice_cammeo_and_osmancik'</span>),  <span class="co"># rice_cammeo_and_osmancik</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">73</span>), <span class="st">'mushroom'</span>),  <span class="co"># mushroom</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">94</span>), <span class="st">'spambase'</span>),  <span class="co"># spambase</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">105</span>), <span class="st">'congressional_voting_records'</span>),  <span class="co"># congressional_voting_records</span></span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">222</span>), <span class="st">'bank_marketing'</span>),  <span class="co"># bank_marketing</span></span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">144</span>), <span class="st">'statlog_german_credit_data'</span>),  <span class="co"># statlog_german_credit_data</span></span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">52</span>), <span class="st">'ionosphere'</span>)  <span class="co"># ionosphere</span></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>htru <span class="op">=</span> pd.read_csv(<span class="st">"data/HTRU_2.csv"</span>, header<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>htru_2 <span class="op">=</span> {</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">"data"</span>: {</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"features"</span>: htru.drop(<span class="dv">8</span>, axis<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"targets"</span>: htru[<span class="dv">8</span>].to_frame()</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> [</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>   (htru_2, <span class="st">"htru_2"</span>),</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">222</span>), <span class="st">'bank_marketing'</span>),  <span class="co"># bank_marketing</span></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">144</span>), <span class="st">'statlog_german_credit_data'</span>),  <span class="co"># statlog_german_credit_data</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">52</span>), <span class="st">'ionosphere'</span>),  <span class="co"># ionosphere</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">73</span>), <span class="st">'mushroom'</span>),  <span class="co"># mushroom</span></span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">545</span>), <span class="st">'rice_cammeo_and_osmancik'</span>),  <span class="co"># rice_cammeo_and_osmancik</span></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">94</span>), <span class="st">'spambase'</span>),  <span class="co"># spambase</span></span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">105</span>), <span class="st">'congressional_voting_records'</span>),  <span class="co"># congressional_voting_records</span></span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create subplots in a 4x2 grid (4 rows, 2 columns)</span></span>
@@ -560,15 +616,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </thead>
 <tbody>
 <tr class="odd">
-<td data-quarto-table-cell-role="th">rice_cammeo_and_osmancik</td>
-<td>1.337423</td>
-<td>0.979421</td>
-<td>0.940780</td>
-<td>0.982067</td>
-<td>0.976727</td>
-<td>0.950000</td>
+<td data-quarto-table-cell-role="th">htru_2</td>
+<td>0.100806</td>
+<td>0.973845</td>
+<td>0.964026</td>
+<td>0.974464</td>
+<td>0.970874</td>
+<td>0.971288</td>
 </tr>
 <tr class="even">
+<td data-quarto-table-cell-role="th">bank_marketing</td>
+<td>0.132483</td>
+<td>0.921774</td>
+<td>0.822823</td>
+<td>0.904550</td>
+<td>0.924950</td>
+<td>0.917207</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">statlog_german_credit_data</td>
+<td>0.428571</td>
+<td>0.812237</td>
+<td>0.729475</td>
+<td>0.817887</td>
+<td>0.808090</td>
+<td>0.794687</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">ionosphere</td>
+<td>0.560000</td>
+<td>0.974252</td>
+<td>0.924834</td>
+<td>0.875415</td>
+<td>0.986296</td>
+<td>0.996678</td>
+</tr>
+<tr class="odd">
 <td data-quarto-table-cell-role="th">mushroom</td>
 <td>1.074566</td>
 <td>1.000000</td>
@@ -577,50 +660,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td>1.000000</td>
 <td>1.000000</td>
 </tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">rice_cammeo_and_osmancik</td>
+<td>1.337423</td>
+<td>0.979414</td>
+<td>0.959702</td>
+<td>0.981969</td>
+<td>0.977521</td>
+<td>0.982153</td>
+</tr>
 <tr class="odd">
 <td data-quarto-table-cell-role="th">spambase</td>
 <td>1.537783</td>
-<td>0.983992</td>
-<td>0.855997</td>
-<td>0.965092</td>
-<td>0.984772</td>
-<td>0.786911</td>
+<td>0.984449</td>
+<td>0.945009</td>
+<td>0.971433</td>
+<td>0.985448</td>
+<td>0.978449</td>
 </tr>
 <tr class="even">
 <td data-quarto-table-cell-role="th">congressional_voting_records</td>
 <td>1.589286</td>
 <td>0.987327</td>
-<td>0.942108</td>
-<td>0.994240</td>
-<td>0.995968</td>
-<td>0.995392</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">bank_marketing</td>
-<td>0.132483</td>
-<td>0.921754</td>
-<td>0.766266</td>
-<td>0.852807</td>
-<td>0.926193</td>
-<td>0.723498</td>
-</tr>
-<tr class="even">
-<td data-quarto-table-cell-role="th">statlog_german_credit_data</td>
-<td>0.428571</td>
-<td>0.812477</td>
-<td>0.554934</td>
-<td>0.793485</td>
-<td>0.819389</td>
-<td>0.502224</td>
-</tr>
-<tr class="odd">
-<td data-quarto-table-cell-role="th">ionosphere</td>
-<td>0.560000</td>
-<td>0.975083</td>
-<td>0.907392</td>
-<td>0.866279</td>
-<td>0.994186</td>
-<td>0.995017</td>
+<td>0.931164</td>
+<td>0.979263</td>
+<td>0.994816</td>
+<td>0.993088</td>
 </tr>
 </tbody>
 </table>
@@ -631,47 +696,46 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="interpretation-of-auc-values" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation-of-auc-values">Interpretation of AUC Values</h3>
-<section id="dataset-and-model-performance" class="level4">
-<h4 class="anchored" data-anchor-id="dataset-and-model-performance">Dataset and Model Performance:</h4>
 <ol type="1">
-<li><p><strong>rice_cammeo_and_osmancik:</strong> This dataset displays a varying range of AUC values across models, indicating differences in their ability to discriminate between classes. Models like Random Forest and Gradient Boosting demonstrate high AUC values (approximately 0.98), suggesting strong performance in classification tasks for this dataset.</p></li>
-<li><p><strong>mushroom:</strong> All models achieve perfect AUC scores of 1.00 on this dataset, indicating flawless separation between classes. However, while these scores are impressive, further evaluation might be needed to assess other aspects of model performance.</p></li>
-<li><p><strong>spambase:</strong> The AUC values range from approximately 0.79 to 0.99 across models. Notably, the SVM model shows the lowest AUC (0.79), while other models perform considerably better, especially Random Forest and Logistic Regression.</p></li>
-<li><p><strong>congressional_voting_records:</strong> Across all models, the AUC values hover above 0.94, demonstrating strong discrimination between classes. SVM and Random Forest exhibit particularly high AUC scores, showcasing their effectiveness in this context.</p></li>
-<li><p><strong>bank_marketing:</strong> The dataset reveals varying model performance with AUC values ranging from approximately 0.72 to 0.93. Random Forest and Logistic Regression exhibit higher discriminatory power compared to other models.</p></li>
-<li><p><strong>statlog_german_credit_data:</strong> AUC values for this dataset range from around 0.50 to 0.81. The models’ performance appears moderate, with Logistic Regression and Random Forest displaying relatively better discriminatory ability.</p></li>
-<li><p><strong>ionosphere:</strong> Across models, AUC values range from approximately 0.87 to 0.99. SVM and Gradient Boosting showcase exceptional performance with high AUC values.</p></li>
-</ol>
-<p>These diverse AUC values across datasets and models emphasize the importance of model selection and evaluation specific to each dataset’s characteristics. The AUC metric aids in understanding the discriminatory power of models, guiding the choice of appropriate algorithms for various real-world applications.</p>
-</section>
-</section>
-<section id="connection-between-class-imbalance-and-auc-scores" class="level3">
-<h3 class="anchored" data-anchor-id="connection-between-class-imbalance-and-auc-scores">Connection Between Class Imbalance and AUC Scores:</h3>
+<li><strong>Consistently High AUC:</strong>
 <ul>
-<li><p>Class imbalance within datasets can significantly influence model performance metrics like AUC. Higher imbalances might impact a model’s ability to properly learn and distinguish between minority and majority classes.</p></li>
-<li><p>In instances of severe imbalance (e.g., spambase), models might struggle to capture and generalize patterns from the underrepresented class, leading to lower AUC scores. This struggle arises due to the dominance of the majority class during model training.</p></li>
-<li><p>Datasets with balanced class distributions (e.g., mushroom) tend to yield higher AUC scores across models, as these balanced representations allow models to learn from both classes equally, resulting in better discriminatory power.</p></li>
-<li><p>However, some models showcase resilience to imbalance (e.g., Gradient Boosting on ionosphere), achieving high AUC scores despite skewed class distributions. These models might employ techniques like weighted loss functions or sampling methods to mitigate the impact of imbalance.</p></li>
-</ul>
+<li>Most models exhibit consistently high AUC values across various datasets.</li>
+<li>However, relying solely on AUC for model comparison might not distinguish between models effectively due to consistently high scores.</li>
+</ul></li>
+<li><strong>Challenge of Class Imbalance:</strong>
+<ul>
+<li>Imbalanced datasets, highlighted in the ‘Class_Ratio 1:0’ column, pose challenges.</li>
+<li>Models with high AUC might struggle to accurately predict minority classes, impacting real-world applicability.</li>
+</ul></li>
+<li><strong>Beyond AUC Evaluation:</strong>
+<ul>
+<li>Supplementary metrics like precision, recall, and F1-score, along with techniques like precision-recall curves, become crucial, particularly in imbalanced datasets.</li>
+<li>Consideration of domain-specific knowledge guides model selection beyond AUC reliance.</li>
+</ul></li>
+<li><strong>Comprehensive Model Evaluation:</strong>
+<ul>
+<li>Emphasis on a comprehensive evaluation strategy considering class imbalance impact and multiple relevant metrics beyond AUC for informed model selection and performance assessment.</li>
+</ul></li>
+</ol>
 </section>
 </section>
 <section id="precision-recall-and-f1-score-complementary-metrics-to-roc-auc" class="level2">
 <h2 class="anchored" data-anchor-id="precision-recall-and-f1-score-complementary-metrics-to-roc-auc">Precision, Recall, and F1-score: Complementary Metrics to ROC AUC</h2>
 <p>In addition to ROC AUC, evaluating classification models involves considering precision, recall, and the F1-score, providing nuanced insights into a model’s performance in specific scenarios.</p>
 <section id="precision" class="level3">
-<h3 class="anchored" data-anchor-id="precision">Precision:</h3>
+<h3 class="anchored" data-anchor-id="precision">Precision</h3>
 <p>Precision gauges the accuracy of positive predictions made by the model, measuring the ratio of true positives to the total predicted positives. Higher precision implies fewer false positives, making it crucial when minimizing false identifications is a priority.</p>
-<p><span class="math display">\[ \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} \]</span></p>
+<p><span class="math display"> \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} </span></p>
 </section>
 <section id="recall-sensitivity" class="level3">
-<h3 class="anchored" data-anchor-id="recall-sensitivity">Recall (Sensitivity):</h3>
+<h3 class="anchored" data-anchor-id="recall-sensitivity">Recall (Sensitivity)</h3>
 <p>Recall evaluates the model’s ability to correctly identify all positive instances, calculating the ratio of true positives to the actual positives. Higher recall indicates capturing a larger proportion of actual positive instances, essential in scenarios where missing positives is a greater concern.</p>
-<p><span class="math display">\[ \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} \]</span></p>
+<p><span class="math display"> \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} </span></p>
 </section>
 <section id="f1-score" class="level3">
-<h3 class="anchored" data-anchor-id="f1-score">F1-score:</h3>
+<h3 class="anchored" data-anchor-id="f1-score">F1-score</h3>
 <p>The F1-score, a harmonic mean of precision and recall, offers a balanced assessment by considering false positives and false negatives. It becomes valuable when both precision and recall are equally important and provides a single metric summarizing their trade-offs.</p>
-<p><span class="math display">\[ \text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} \]</span></p>
+<p><span class="math display"> \text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} </span></p>
 <p>When to Prioritize Precision, Recall, and F1-score over ROC AUC:</p>
 <ul>
 <li><strong>Precision:</strong> When minimizing false positives is critical, e.g., medical diagnoses where avoiding misdiagnoses is crucial.</li>
@@ -683,7 +747,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="real-world-scenarios-leveraging-roc-auc" class="level2">
 <h2 class="anchored" data-anchor-id="real-world-scenarios-leveraging-roc-auc">Real-World Scenarios: Leveraging ROC AUC</h2>
-<p>Exploring the practical implications of the Receiver Operating Characteristic (ROC) curve and its Area Under the Curve (AUC) metric, let’s venture into real-world scenarios using the UCI German Credit Data and UCI Bank Marketing Dataset. Through compelling narratives backed by visualizations, we’ll demonstrate how ROC AUC influences decision-making and outcomes.</p>
+<p>Exploring the practical implications of the Receiver Operating Characteristic (ROC) curve and its Area Under the Curve (AUC) metric, let’s venture into real-world scenarios using the UCI German Credit Data and UCI Bank Marketing Dataset.</p>
 <section id="assessing-credit-risk-with-uci-german-credit-data" class="level3">
 <h3 class="anchored" data-anchor-id="assessing-credit-risk-with-uci-german-credit-data">Assessing Credit Risk with UCI German Credit Data</h3>
 <p>Imagine a financial institution evaluating credit risk accurately. Utilizing the UCI German Credit Data, ROC AUC facilitates model comparison for predicting creditworthiness. Let’s visualize the ROC AUC scores:</p>
@@ -692,7 +756,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
 <span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
 <span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
 <span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo </span>
@@ -730,7 +794,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>random_forest <span class="op">=</span> RandomForestClassifier()</span>
 <span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Create pipelines with preprocessing and model fitting</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>logreg_pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'classifier'</span>, logistic_regression)])</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>logreg_pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'scaling'</span>, StandardScaler()), (<span class="st">'classifier'</span>, logistic_regression)])</span>
 <span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>rf_pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'classifier'</span>, random_forest)])</span>
 <span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit models</span></span>
@@ -764,17 +828,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <section id="interpretation" class="level4">
 <h4 class="anchored" data-anchor-id="interpretation">Interpretation</h4>
-<p><strong>Logistic Regression (AUC = 0.79):</strong></p>
 <ul>
-<li>The Logistic Regression model exhibits a reasonably good discriminatory ability in predicting creditworthiness based on the UCI German Credit Data. With an Area Under the Curve (AUC) of 0.79, the model performs above average in distinguishing between creditworthy and non-creditworthy individuals. It indicates that the model can make reliable predictions, although there is room for improvement.</li>
-</ul>
-<p><strong>Random Forest (AUC = 0.82):</strong></p>
-<ul>
-<li>The Random Forest model, with an AUC of 0.82, demonstrates a slightly superior performance compared to Logistic Regression in assessing credit risk. The higher AUC suggests that the Random Forest model achieves better discrimination between individuals who are likely to be creditworthy and those who are not. This model may be a preferable choice for credit assessment tasks based on the features available in the dataset.</li>
-</ul>
-<p><strong>Overall Interpretation:</strong></p>
-<ul>
-<li>In summary, both models showcase above-average discriminatory abilities, with the Random Forest model exhibiting a slightly better performance in this context. The ROC AUC analysis provides valuable insights for financial institutions evaluating credit risk, assisting them in selecting models aligned with their specific objectives and risk tolerance.</li>
+<li><p><strong>Logistic Regression (AUC = 0.82):</strong> This model effectively distinguishes creditworthy from non-creditworthy individuals with an AUC of 0.82, showcasing consistent reliability in predicting creditworthiness.</p></li>
+<li><p><strong>Random Forest (AUC = 0.83):</strong> The Random Forest model demonstrates an AUC of 0.83, indicating a slight improvement over the Logistic Regression model’s performance. While it is marginally better by only 0.01, the Random Forest model still maintains a commendable ability to assess credit risk.</p></li>
+<li><p><strong>Overall Interpretation:</strong> Both models exhibit above-average discriminatory abilities, with the Random Forest model showing a minor edge in performance with its 0.01 higher AUC compared to Logistic Regression. This modest improvement reaffirms its capability in credit risk assessment, offering financial institutions an alternative approach without a substantial margin of difference from the Logistic Regression model.</p></li>
 </ul>
 </section>
 </section>
@@ -783,7 +840,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Shifting focus to marketing analytics, ROC AUC becomes pivotal in predicting customer response to campaigns. Using the UCI Bank Marketing Dataset, let’s visualize ROC AUC scores:</p>
 <div class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
 <span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingClassifier</span>
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
@@ -809,54 +866,49 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>X_train_encoded <span class="op">=</span> preprocessor.fit_transform(X_train)</span>
 <span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>X_test_encoded <span class="op">=</span> preprocessor.transform(X_test)</span>
 <span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit models</span></span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>gradient_boosting <span class="op">=</span> GradientBoostingClassifier()</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>neural_network <span class="op">=</span> MLPClassifier()</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>X_train_encoded <span class="op">=</span> scaler.fit_transform(X_train_encoded)</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>X_test_encoded <span class="op">=</span> scaler.transform(X_test_encoded)</span>
 <span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>gradient_boosting.fit(X_train_encoded, y_train)</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>neural_network.fit(X_train_encoded, y_train)</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probabilities</span></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>gradient_boosting_probs <span class="op">=</span> gradient_boosting.predict_proba(X_test_encoded)[:, <span class="dv">1</span>]</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>neural_network_probs <span class="op">=</span> neural_network.predict_proba(X_test_encoded)[:, <span class="dv">1</span>]</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit models</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>gradient_boosting <span class="op">=</span> GradientBoostingClassifier()</span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>neural_network <span class="op">=</span> MLPClassifier()</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>gradient_boosting.fit(X_train_encoded, y_train)</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>neural_network.fit(X_train_encoded, y_train)</span>
 <span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute ROC curves and AUCs</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>fpr_gb, tpr_gb, thresholds_gb <span class="op">=</span> roc_curve(y_test, gradient_boosting_probs)</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>roc_auc_gb <span class="op">=</span> auc(fpr_gb, tpr_gb)</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probabilities</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>gradient_boosting_probs <span class="op">=</span> gradient_boosting.predict_proba(X_test_encoded)[:, <span class="dv">1</span>]</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>neural_network_probs <span class="op">=</span> neural_network.predict_proba(X_test_encoded)[:, <span class="dv">1</span>]</span>
 <span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>fpr_nn, tpr_nn, thresholds_nn <span class="op">=</span> roc_curve(y_test, neural_network_probs)</span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>roc_auc_nn <span class="op">=</span> auc(fpr_nn, tpr_nn)</span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize ROC AUC curves</span></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_gb, tpr_gb, color<span class="op">=</span><span class="st">'blue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Gradient Boosting (AUC = </span><span class="sc">{</span>roc_auc_gb<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_nn, tpr_nn, color<span class="op">=</span><span class="st">'green'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Neural Network (AUC = </span><span class="sc">{</span>roc_auc_nn<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, lw<span class="op">=</span><span class="dv">1</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ROC Curve for Marketing Campaign Models'</span>)</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute ROC curves and AUCs</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>fpr_gb, tpr_gb, thresholds_gb <span class="op">=</span> roc_curve(y_test, gradient_boosting_probs)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>roc_auc_gb <span class="op">=</span> auc(fpr_gb, tpr_gb)</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>fpr_nn, tpr_nn, thresholds_nn <span class="op">=</span> roc_curve(y_test, neural_network_probs)</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>roc_auc_nn <span class="op">=</span> auc(fpr_nn, tpr_nn)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize ROC AUC curves</span></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_gb, tpr_gb, color<span class="op">=</span><span class="st">'blue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Gradient Boosting (AUC = </span><span class="sc">{</span>roc_auc_gb<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_nn, tpr_nn, color<span class="op">=</span><span class="st">'green'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Neural Network (AUC = </span><span class="sc">{</span>roc_auc_nn<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, lw<span class="op">=</span><span class="dv">1</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ROC Curve for Marketing Campaign Models'</span>)</span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <p><img src="roc_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <section id="interpretation-1" class="level4">
 <h4 class="anchored" data-anchor-id="interpretation-1">Interpretation</h4>
-<p><strong>Gradient Boosting (AUC = 0.82):</strong></p>
 <ul>
-<li>The Gradient Boosting model exhibits a notably high AUC of 0.92. This indicates strong predictive power in assessing customer response to marketing campaigns. The model demonstrates a high ability to distinguish between positive and negative instances, making it a robust choice for predicting customer outcomes.</li>
+<li><p><strong>Gradient Boosting (AUC = 0.92):</strong> This model excels with an AUC of 0.92, displaying strong predictive power for assessing customer responses in marketing campaigns. Its high AUC indicates a remarkable ability to distinguish between positive and negative instances, making it a top choice for forecasting customer outcomes.</p></li>
+<li><p><strong>Neural Network (AUC = 0.91):</strong> Despite a slightly lower AUC of 0.91 compared to Gradient Boosting, the Neural Network still demonstrates commendable predictive performance in the UCI Bank Marketing Dataset. However, it might not capture certain subtleties of customer responses as effectively as the Gradient Boosting model.</p></li>
+<li><p><strong>Overall Interpretation:</strong> The AUC scores provide crucial insights into the models’ discriminatory abilities when predicting customer responses to marketing campaigns. Stakeholders should carefully consider trade-offs between model performance and complexity. The Gradient Boosting model, with its slightly higher AUC, could be preferred for applications where precise predictions of positive outcomes are particularly crucial. These interpretations guide decision-making by offering a nuanced understanding of each model’s performance in the UCI Bank Marketing Dataset.</p></li>
 </ul>
-<p><strong>Neural Network (AUC = 0.82):</strong></p>
-<ul>
-<li>The Neural Network model, while still decent with an AUC of 0.77, shows a comparatively lower discriminatory ability in the context of the UCI Bank Marketing Dataset. It suggests that the Neural Network might not be as effective in capturing the nuances of customer response compared to the Gradient Boosting model.</li>
-</ul>
-<p><strong>Overall Interpretation:</strong></p>
-<ul>
-<li><p>The AUC scores provide valuable insights into the discriminatory power of the models in the specific scenario of predicting customer response to marketing campaigns.</p></li>
-<li><p>Stakeholders should consider the trade-offs between model performance and complexity when choosing between these models. The Gradient Boosting model, with its higher AUC, might be a preferred choice for applications where accurate predictions of positive outcomes are crucial.</p></li>
-</ul>
-<p>These interpretations help guide decision-making by providing a nuanced understanding of how each model performs in the context of the UCI Bank Marketing Dataset.</p>
 </section>
 </section>
 </section>
@@ -1217,6 +1269,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pages/accuracy.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Accuracy</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../pages/Inductive_Bias.html" class="pagination-link">
+        <span class="nav-page-text">Inductive Bias</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

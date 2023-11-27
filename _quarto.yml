@@ -56,6 +56,12 @@ website:
                 text: Overview
               - href: ./pages/vis2.ipynb
                 text: Comprehensive Data Visualization
+      - section: "Evaluation Metrics"
+        contents:
+          - href: ./pages/accuracy.ipynb
+            text: Accuracy
+          - href: ./pages/roc.ipynb
+            text: ROC-AUC
       - section: "Special Topics in ML"
         contents:
           - href: ./pages/Inductive_Bias.ipynb

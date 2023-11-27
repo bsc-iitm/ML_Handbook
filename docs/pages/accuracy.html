@@ -6,8 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
+<meta name="author" content="Alape Aniruddha">
 
-<title>ML Handbook</title>
+<title>ML Handbook - Accuracy</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,27 +21,63 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./images/logo.png" rel="icon" type="image/png">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../pages/roc.html" rel="next">
+<link href="../pages/vis2.html" rel="prev">
+<link href="../images/logo.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -62,8 +99,24 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
-<meta property="og:title" content="ML Handbook">
+<meta property="og:title" content="ML Handbook - Accuracy">
 <meta property="og:description" content="">
 <meta property="og:site-name" content="ML Handbook">
 </head>
@@ -77,7 +130,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Home</a></li><li class="breadcrumb-item"><a href="./index.html">About</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/accuracy.html">Evaluation Metrics</a></li><li class="breadcrumb-item"><a href="../pages/accuracy.html">Accuracy</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -91,8 +144,8 @@ ul.task-list li input[type="checkbox"] {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
     <div class="pt-lg-2 mt-2 text-center sidebar-header">
-      <a href="./index.html" class="sidebar-logo-link">
-      <img src="./images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
       <div class="sidebar-tools-main">
     <a href="https://github.com/bsc-iitm/ML_Handbook" rel="" title="GitHub Repo" class="quarto-navigation-tool px-1" aria-label="GitHub Repo"><i class="bi bi-github"></i></a>
@@ -108,16 +161,16 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
  <span class="menu-text">Home</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">About</span></a>
   </div>
 </li>
@@ -135,7 +188,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/dealing_with_missing_values.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/dealing_with_missing_values.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Dealing with missing-values</span></a>
   </div>
 </li>
@@ -150,13 +203,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/Scaling multi-dataset multi-algo.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/Scaling multi-dataset multi-algo.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/standard.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/standard.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Standard Scaling</span></a>
   </div>
 </li>
@@ -184,13 +237,13 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/vis.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/vis.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Overview</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/vis2.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/vis2.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Comprehensive Data Visualization</span></a>
   </div>
 </li>
@@ -200,22 +253,22 @@ ul.task-list li input[type="checkbox"] {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Evaluation Metrics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/accuracy.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/accuracy.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Accuracy</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/roc.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/roc.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ROC-AUC</span></a>
   </div>
 </li>
@@ -232,25 +285,25 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/Inductive_Bias.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/Inductive_Bias.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Inductive Bias</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/Ordinal_Classification.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/Ordinal_Classification.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Ordinal Classification</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/EM_Algorithm.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/EM_Algorithm.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">EM Algorithm</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./pages/Probabilistic_PCA.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/Probabilistic_PCA.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Probabilistic PCA</span></a>
   </div>
 </li>
@@ -262,20 +315,39 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-accuracy" id="toc-what-is-accuracy" class="nav-link active" data-scroll-target="#what-is-accuracy">What is Accuracy?</a></li>
+  <li><a href="#calculating-accuracy-for-binary-classification-problems" id="toc-calculating-accuracy-for-binary-classification-problems" class="nav-link" data-scroll-target="#calculating-accuracy-for-binary-classification-problems">Calculating accuracy for Binary Classification problems</a></li>
+  <li><a href="#issues-with-using-accuracy" id="toc-issues-with-using-accuracy" class="nav-link" data-scroll-target="#issues-with-using-accuracy">Issues with using Accuracy</a></li>
+  <li><a href="#accuracy-in-imbalanced-dataset" id="toc-accuracy-in-imbalanced-dataset" class="nav-link" data-scroll-target="#accuracy-in-imbalanced-dataset">Accuracy in imbalanced dataset</a></li>
+  <li><a href="#accuracy-in-sklearn" id="toc-accuracy-in-sklearn" class="nav-link" data-scroll-target="#accuracy-in-sklearn">Accuracy in sklearn</a></li>
+  <li><a href="#accuracy-on-a-real-word-dataset" id="toc-accuracy-on-a-real-word-dataset" class="nav-link" data-scroll-target="#accuracy-on-a-real-word-dataset">Accuracy on a real word dataset</a></li>
+  <li><a href="#tuning-for-accuracy" id="toc-tuning-for-accuracy" class="nav-link" data-scroll-target="#tuning-for-accuracy">Tuning for accuracy</a></li>
+  <li><a href="#notes" id="toc-notes" class="nav-link" data-scroll-target="#notes">Notes</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/accuracy.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">ML Handbook</h1>
+<h1 class="title">Accuracy</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Alape Aniruddha </p>
+          </div>
+  </div>
     
   
     
@@ -284,15 +356,130 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<p><strong>About Our Project</strong></p>
-<p>Hey there, fellow learners! 🚀 We’re a bunch of ML enthusiasts on a mission to make your learning journey more exciting and practical.</p>
-<p>🔍 <strong>What We Do</strong> We’re all about breaking down those complex ML models and datasets, helping you understand the ‘whys’ and ‘hows’ in a fun way.</p>
-<p>📚 <strong>Why We’re Here</strong> Traditional courses teach the theory, but we’re here to fill in the gaps, one Colab notebook at a time.</p>
-<p>🎁 <strong>What You Get</strong> Explore our user-friendly notebooks, detailed reports, and a platform designed just for you.</p>
-<p>Join us in unraveling the magic of machine learning, one experiment at a time. Happy learning! 🤖📈</p>
-<hr>
+<section id="what-is-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-accuracy">What is Accuracy?</h2>
+<p>Accuracy is a metric for evaluating the performance of a classification algorithm. It can be understood as the fraction of predictions the model performed correctly.</p>
+<p><span class="math display">\displaystyle \text{Accuracy} \ =\ \frac{\text{No of correct predictions}}{\text{Total number of predictions}}</span></p>
+</section>
+<section id="calculating-accuracy-for-binary-classification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-accuracy-for-binary-classification-problems">Calculating accuracy for Binary Classification problems</h2>
+<p><br> <span class="math display">\displaystyle \text{Accuracy} \ =\ \frac{\text{TP + TN}}{\text{TP + FP +TN + FN}}</span></p>
+<p><br></p>
+<p>Where, TP = True Positives FP = False Positives TN = True Negatives FN = False Negatives</p>
+</section>
+<section id="issues-with-using-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="issues-with-using-accuracy">Issues with using Accuracy</h2>
+<ul>
+<li>In an imbalaced dataset i.e when one class significantly outnumbers the other, if the model predicts the majority class all the time, we get a high accuracy but we know that the model can not be used</li>
+</ul>
+</section>
+<section id="accuracy-in-imbalanced-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="accuracy-in-imbalanced-dataset">Accuracy in imbalanced dataset</h2>
+<p>Consider a dataset on 100 individuals where we would like to predict if an individual is suffering from cancer.</p>
+<p>The dataset contains 90 individuals who do not suffer from cancer (class 0) whereas 10 of them who do (class 1). If we build a model that always predicts class 0, then our model will never be able to predict that an individual might be suffering from cancer. So, we establish that this is a bad model.</p>
+<p>However based on the definition of accuracy, <span class="math display">\displaystyle \text{Accuracy} \ =\ \frac{90}{100} = 0.9</span></p>
+<p>From this, we can see that we would have to use other metrics when we have imbalanced datasets</p>
+</section>
+<section id="accuracy-in-sklearn" class="level2">
+<h2 class="anchored" data-anchor-id="accuracy-in-sklearn">Accuracy in sklearn</h2>
+<p>link: https://scikit-learn.org/stable/modules/generated/sklearn.metrics.accuracy_score.html#sklearn.metrics.accuracy_score</p>
+<p>To calculate accuracy using sklearn, we use the <strong>accuracy_score</strong> function from the module <strong>sklearn.metrics</strong></p>
+<p>The parameters are as follows: <br></p>
+<ul>
+<li>y_true : Ground truth (correct) labels.</li>
+<li>y_pred : Predicted labels, as returned by a classifier.</li>
+<li>normalize (True) : If False, return the number of correctly classified samples. Otherwise, return the fraction of correctly classified samples.</li>
+<li>sample_weight (None) : Sample weights.</li>
+</ul>
+<div class="cell" data-outputid="bb80ed77-b666-407b-b92c-e9ae4bc4e577">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_true, y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="41">
+<pre><code>0.5</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="c25c50e5-e442-4ab8-f6ca-5b2af82ce99f">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#normalize=False gives the count of correctly classified samples</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_true, y_pred, normalize<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="42">
+<pre><code>2</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="be04fa80-3d0e-4684-882d-ab7479baf6b7">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sample weights can be varied for each point</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_true, y_pred, sample_weight<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="43">
+<pre><code>1.0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co">#To view a simplified version of the documentation in colab environment</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>accuracy_score?</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="accuracy-on-a-real-word-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="accuracy-on-a-real-word-dataset">Accuracy on a real word dataset</h2>
+<p>We are going to calculate the accuracy of a KNN classifier model on the breast_cancer dataset using sklearn.</p>
+<p>The dataset does not have any categorical variables and we will just split the dataset into train and test. We shall fit the model on the training dataset and find the accuracy on the test dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>X,y <span class="op">=</span> load_breast_cancer(return_X_y<span class="op">=</span><span class="va">True</span>,as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-outputid="2b3f6d9c-3d38-49d3-d08e-cdf25b21bed6">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> KNeighborsClassifier()</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model.fit(X_train,y_train)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>model.score(X_test,y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="45">
+<pre><code>0.965034965034965</code></pre>
+</div>
+</div>
+<div class="cell" data-outputid="e33a12c0-fb85-4f57-e529-459e7eb73380">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_test,y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="46">
+<pre><code>0.965034965034965</code></pre>
+</div>
+</div>
+</section>
+<section id="tuning-for-accuracy" class="level2">
+<h2 class="anchored" data-anchor-id="tuning-for-accuracy">Tuning for accuracy</h2>
+<p>We use GridSearchCV for hyperparameter tuning and cross validation. We can change the scoring metric to tune the model as per our requirement.</p>
+<div class="cell" data-outputid="8df78124-17fb-4266-99ba-21598be8d036">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {<span class="st">'n_neighbors'</span>:[<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>]}</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>model_tuned <span class="op">=</span> GridSearchCV(estimator<span class="op">=</span>KNeighborsClassifier(),param_grid<span class="op">=</span>param_grid,scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>model_tuned.fit(X_train,y_train)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>model_tuned.score(X_test,y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="47">
+<pre><code>0.972027972027972</code></pre>
+</div>
+</div>
+</section>
+<section id="notes" class="level2">
+<h2 class="anchored" data-anchor-id="notes">Notes</h2>
+<ul>
+<li>The value of accuracy required by a model varies by use case</li>
+<li>Accuracy can often be a misleading metric</li>
+</ul>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -643,6 +830,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
 });
 </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pages/vis2.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Comprehensive Data Visualization</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../pages/roc.html" class="pagination-link">
+        <span class="nav-page-text">ROC-AUC</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">
@@ -651,7 +850,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     </div>   
     <div class="nav-footer-center">
       &nbsp;
-    <div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.com/bsc-iitm/ML_Handbook/edit/main/index.qmd" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></div>
+    </div>
     <div class="nav-footer-right">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>
   </div>
 </footer>
