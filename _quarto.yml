@@ -72,6 +72,10 @@ website:
             text: EM Algorithm
           - href: ./pages/Probabilistic_PCA.ipynb
             text: Probabilistic PCA
+      - section: "Case Studies"
+        contents:
+          - href: ./pages/cirrhosis.ipynb
+            text: Predictive Modeling of Patient Status in Primary Biliary Cirrhosis
 
 format:
   html:

@@ -6,7 +6,6 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Sherry Thomas">
 
 <title>ML Handbook - Exploring the Significance of ROC AUC in Classification Models</title>
 <style>
@@ -102,29 +101,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
 <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 
-  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
-  <script>document.addEventListener("DOMContentLoaded", function () {
- var mathElements = document.getElementsByClassName("math");
- var macros = [];
- for (var i = 0; i < mathElements.length; i++) {
-  var texText = mathElements[i].firstChild;
-  if (mathElements[i].tagName == "SPAN") {
-   katex.render(texText.data, mathElements[i], {
-    displayMode: mathElements[i].classList.contains('display'),
-    throwOnError: false,
-    macros: macros,
-    fleqn: false
-   });
-}}});
-  </script>
-  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <meta property="og:title" content="ML Handbook - Exploring the Significance of ROC AUC in Classification Models">
 <meta property="og:description" content="">
-<meta property="og:image" content="https://bsc-iitm.github.io/ML_Handbook/pages/roc_files/figure-html/cell-3-output-1.png">
+<meta property="og:image" content="https://bsc-iitm.github.io/ML_Handbook/pages/TP_FP.png">
 <meta property="og:site-name" content="ML Handbook">
-<meta property="og:image:height" content="701">
-<meta property="og:image:width" content="691">
+<meta property="og:image:height" content="290">
+<meta property="og:image:width" content="797">
 </head>
 
 <body class="nav-sidebar docked">
@@ -315,6 +300,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false">
+ <span class="menu-text">Case Studies</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/cirrhosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Predictive Modeling of Patient Status in Primary Biliary Cirrhosis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -325,16 +327,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#understanding-roc-auc-a-brief-overview" id="toc-understanding-roc-auc-a-brief-overview" class="nav-link active" data-scroll-target="#understanding-roc-auc-a-brief-overview">Understanding ROC AUC: A Brief Overview</a></li>
-  <li><a href="#dataset-illustration-wisconsin-breast-cancer-dataset" id="toc-dataset-illustration-wisconsin-breast-cancer-dataset" class="nav-link" data-scroll-target="#dataset-illustration-wisconsin-breast-cancer-dataset">Dataset Illustration: Wisconsin Breast Cancer Dataset</a>
+  <li><a href="#understanding-roc-auc-a-brief-overview" id="toc-understanding-roc-auc-a-brief-overview" class="nav-link active" data-scroll-target="#understanding-roc-auc-a-brief-overview">Understanding ROC AUC: A Brief Overview</a>
   <ul class="collapse">
-  <li><a href="#load-and-prepare-the-wisconsin-breast-cancer-dataset" id="toc-load-and-prepare-the-wisconsin-breast-cancer-dataset" class="nav-link" data-scroll-target="#load-and-prepare-the-wisconsin-breast-cancer-dataset">Load and Prepare the Wisconsin Breast Cancer Dataset</a></li>
-  <li><a href="#understanding-roc-auc-curve" id="toc-understanding-roc-auc-curve" class="nav-link" data-scroll-target="#understanding-roc-auc-curve">Understanding ROC AUC Curve</a></li>
+  <li><a href="#example-calculation-of-roc-curve-and-auc" id="toc-example-calculation-of-roc-curve-and-auc" class="nav-link" data-scroll-target="#example-calculation-of-roc-curve-and-auc"><strong>Example Calculation of ROC Curve and AUC</strong></a></li>
   </ul></li>
   <li><a href="#analyzing-area-under-the-curve-auc-values-across-datasets-and-models" id="toc-analyzing-area-under-the-curve-auc-values-across-datasets-and-models" class="nav-link" data-scroll-target="#analyzing-area-under-the-curve-auc-values-across-datasets-and-models">Analyzing Area Under the Curve (AUC) Values Across Datasets and Models</a>
   <ul class="collapse">
   <li><a href="#auc-values-understanding-model-performance" id="toc-auc-values-understanding-model-performance" class="nav-link" data-scroll-target="#auc-values-understanding-model-performance">AUC Values: Understanding Model Performance</a></li>
-  <li><a href="#code-for-auc-analysis" id="toc-code-for-auc-analysis" class="nav-link" data-scroll-target="#code-for-auc-analysis">Code for AUC Analysis</a></li>
   <li><a href="#interpretation-of-auc-values" id="toc-interpretation-of-auc-values" class="nav-link" data-scroll-target="#interpretation-of-auc-values">Interpretation of AUC Values</a></li>
   </ul></li>
   <li><a href="#precision-recall-and-f1-score-complementary-metrics-to-roc-auc" id="toc-precision-recall-and-f1-score-complementary-metrics-to-roc-auc" class="nav-link" data-scroll-target="#precision-recall-and-f1-score-complementary-metrics-to-roc-auc">Precision, Recall, and F1-score: Complementary Metrics to ROC AUC</a>
@@ -342,11 +341,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#precision" id="toc-precision" class="nav-link" data-scroll-target="#precision">Precision</a></li>
   <li><a href="#recall-sensitivity" id="toc-recall-sensitivity" class="nav-link" data-scroll-target="#recall-sensitivity">Recall (Sensitivity)</a></li>
   <li><a href="#f1-score" id="toc-f1-score" class="nav-link" data-scroll-target="#f1-score">F1-score</a></li>
-  </ul></li>
-  <li><a href="#real-world-scenarios-leveraging-roc-auc" id="toc-real-world-scenarios-leveraging-roc-auc" class="nav-link" data-scroll-target="#real-world-scenarios-leveraging-roc-auc">Real-World Scenarios: Leveraging ROC AUC</a>
-  <ul class="collapse">
-  <li><a href="#assessing-credit-risk-with-uci-german-credit-data" id="toc-assessing-credit-risk-with-uci-german-credit-data" class="nav-link" data-scroll-target="#assessing-credit-risk-with-uci-german-credit-data">Assessing Credit Risk with UCI German Credit Data</a></li>
-  <li><a href="#optimizing-marketing-campaigns-with-uci-bank-marketing-dataset" id="toc-optimizing-marketing-campaigns-with-uci-bank-marketing-dataset" class="nav-link" data-scroll-target="#optimizing-marketing-campaigns-with-uci-bank-marketing-dataset">Optimizing Marketing Campaigns with UCI Bank Marketing Dataset</a></li>
   </ul></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul>
@@ -364,12 +358,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>Sherry Thomas </p>
-          </div>
-  </div>
     
   
     
@@ -378,95 +366,203 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Colab Link: <a href="https://colab.research.google.com/drive/1YTS0e4rX1hwpmdxaXjtPLKLoqkkyorpS?usp=sharing" target="_blank">Click here!</a></p>
 <p>Within the realm of assessing the performance of classification models, the Receiver Operating Characteristic (ROC) curve and its corresponding Area Under the Curve (AUC) metric stand as pivotal tools. This exploration seeks to expound upon their practical significance by employing diverse datasets, offering a nuanced understanding of these fundamental concepts in model evaluation.</p>
 <section id="understanding-roc-auc-a-brief-overview" class="level2">
 <h2 class="anchored" data-anchor-id="understanding-roc-auc-a-brief-overview">Understanding ROC AUC: A Brief Overview</h2>
 <p>A receiver operating characteristic curve, or ROC curve, is a graphical plot that illustrates the performance of a binary classifier model (can be used for multi class classification as well) at varying threshold values.</p>
+<blockquote class="blockquote">
+<p><em><strong>Did you know?</strong> The Receiver Operating Characteristic (ROC) curve originated from radar engineering during World War II. It’s named for the device that detects signals from enemy objects (the “receiver”) and its ability to distinguish between true signals and background noise (the “operating characteristic”). This curve illustrates the trade-off between true positive and false positive rates at various threshold settings. Its purpose was to assess receiver performance and optimize its settings. For more details, check out the Wikipedia article on the ROC curve or this Cross Validated question on its history.You can read more about the history of the ROC curve from <a href="https://en.wikipedia.org/wiki/Receiver_operating_characteristic">this Wikipedia article</a> or <a href="https://stats.stackexchange.com/questions/341043/what-is-the-origin-of-the-receiver-operating-characteristic-roc-terminology">this Cross Validated question</a>.</em></p>
+</blockquote>
 <p>The ROC curve is the plot of the true positive rate (TPR) against the false positive rate (FPR) at each threshold setting.</p>
 <p>The ROC can also be thought of as a plot of the statistical power as a function of the Type I Error of the decision rule (when the performance is calculated from just a sample of the population, it can be thought of as estimators of these quantities). The ROC curve is thus the sensitivity or recall as a function of false positive rate.</p>
-</section>
-<section id="dataset-illustration-wisconsin-breast-cancer-dataset" class="level2">
-<h2 class="anchored" data-anchor-id="dataset-illustration-wisconsin-breast-cancer-dataset">Dataset Illustration: Wisconsin Breast Cancer Dataset</h2>
-<p>To illuminate the relevance of ROC AUC in classification models, we turn to the Wisconsin Breast Cancer dataset. Renowned for predicting tumor malignancy based on features derived from digitized images of breast masses, this dataset encapsulates essential characteristics such as radius, texture, perimeter, area, and other attributes.</p>
-<section id="load-and-prepare-the-wisconsin-breast-cancer-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="load-and-prepare-the-wisconsin-breast-cancer-dataset">Load and Prepare the Wisconsin Breast Cancer Dataset</h3>
-<p>Let’s proceed by loading and preparing the Wisconsin Breast Cancer dataset for analysis. This dataset serves as an excellent resource to showcase the practical applications of ROC AUC in evaluating classification models.</p>
-<div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the breast cancer dataset</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> load_breast_cancer()</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Separate features and target variable</span></span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data.data</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data.target</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Split the dataset into training and testing sets (80% train, 20% test)</span></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Data scaling using StandardScaler</span></span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>X_train_scaled <span class="op">=</span> scaler.fit_transform(X_train)</span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>X_test_scaled <span class="op">=</span> scaler.transform(X_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="understanding-roc-auc-curve" class="level3">
-<h3 class="anchored" data-anchor-id="understanding-roc-auc-curve">Understanding ROC AUC Curve</h3>
-<p>The ROC curve and its AUC metric are vital in evaluating how well a binary classification model performs.</p>
+<p>The following confusion matrix illustrates the relationship between the true positives and false positives:</p>
+<p><img src="./TP_FP.png" class="img-fluid"></p>
 <section id="roc-curve" class="level4">
-<h4 class="anchored" data-anchor-id="roc-curve">ROC Curve:</h4>
+<h4 class="anchored" data-anchor-id="roc-curve">ROC Curve</h4>
 <ul>
 <li>The ROC curve displays how well a model separates true positives from false positives at different classification thresholds.</li>
 <li>True Positive Rate (TPR) measures how often the model correctly identifies positives.</li>
 <li>False Positive Rate (FPR) calculates how often the model wrongly flags negatives.</li>
 </ul>
-<p><span class="math display"> \text{TPR} = \frac{\text{True Positives}}{\text{Actual Positives}} </span></p>
-<p><span class="math display"> \text{FPR} = \frac{\text{False Positives}}{\text{Actual Negatives}} </span></p>
+<p><span class="math display">\[ \text{TPR} = \frac{\text{True Positives}}{\text{True Positives + False Negatives}} \]</span></p>
+<p><span class="math display">\[ \text{FPR} = \frac{\text{False Positives}}{\text{False Positives + True Negatives}} \]</span></p>
 </section>
 <section id="auc" class="level4">
-<h4 class="anchored" data-anchor-id="auc">AUC:</h4>
+<h4 class="anchored" data-anchor-id="auc">AUC</h4>
 <ul>
 <li>The Area Under the Curve (AUC) summarizes the ROC curve’s performance.</li>
 <li>AUC values range from 0 to 1, where higher values imply better discrimination ability.</li>
 <li>AUC = 1 signifies a perfect classifier, while AUC = 0.5 suggests random guessing.</li>
 </ul>
-<p><span class="math display"> \text{AUC} = \int_{x=0}^{1} \text{TPR}(FPR^-(x)) \, d(\text{x}) </span></p>
+<p><span class="math display">\[ \text{AUC} = \int_{x=0}^{1} \text{TPR}(\text{FPR}^-(x)) \, d(\text{x}) \]</span></p>
 <p>The ROC curve shows how well a model distinguishes between classes, while AUC quantifies this performance, aiding in understanding a model’s effectiveness.</p>
-<p>Let’s illustrate the computation of the ROC curve and AUC using a logistic regression model applied to the Wisconsin Breast Cancer dataset:</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit a logistic regression model</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> LogisticRegression()</span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>model.fit(X_train_scaled, y_train)</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probabilities for the positive class</span></span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>y_prob <span class="op">=</span> model.predict_proba(X_test_scaled)[:, <span class="dv">1</span>]</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute ROC curve and AUC</span></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>fpr, tpr, thresholds <span class="op">=</span> roc_curve(y_test, y_prob)</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>roc_auc <span class="op">=</span> auc(fpr, tpr)</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ROC curve</span></span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr, color<span class="op">=</span><span class="st">'darkorange'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'ROC curve (AUC = </span><span class="sc">{</span>roc_auc<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'navy'</span>, lw<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'Random Guessing Estimator'</span>)</span>
-<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate (1 - Specificity)'</span>)</span>
-<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate (Sensitivity)'</span>)</span>
-<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ROC AUC Curve'</span>)</span>
-<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
-<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="roc_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
-</div>
-</div>
-<p>This code snippet demonstrates the calculation and visualization of the ROC curve and AUC for a logistic regression model fitted on the Wisconsin Breast Cancer dataset. The resulting plot showcases the classifier’s discrimination ability in distinguishing between malignant and benign tumors based on various features.</p>
 </section>
+<section id="example-calculation-of-roc-curve-and-auc" class="level3">
+<h3 class="anchored" data-anchor-id="example-calculation-of-roc-curve-and-auc"><strong>Example Calculation of ROC Curve and AUC</strong></h3>
+<p><strong>Given Information</strong></p>
+<p><strong>Actual labels:</strong> [1, 0, 1, 1, 0]</p>
+<p><strong>Predicted probabilities:</strong> [0.8, 0.6, 0.7, 0.4, 0.2]</p>
+<p>Now, let’s sort the predicted probabilities and align them with their corresponding actual labels:</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Predicted Probability</th>
+<th>Actual Label</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.8</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>0.7</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>0.6</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td>0.4</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>0.2</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calculating TPR and FPR for Different Thresholds</strong></p>
+<table class="table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 16%">
+<col style="width: 17%">
+<col style="width: 26%">
+<col style="width: 27%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Threshold</th>
+<th>True Positives</th>
+<th>False Positives</th>
+<th>True Positive Rate (TPR)</th>
+<th>False Positive Rate (FPR)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.8</td>
+<td>1</td>
+<td>0</td>
+<td>1/3 (0.33)</td>
+<td>0/2 (0)</td>
+</tr>
+<tr class="even">
+<td>0.7</td>
+<td>2</td>
+<td>0</td>
+<td>2/3 (0.66)</td>
+<td>0/2 (0)</td>
+</tr>
+<tr class="odd">
+<td>0.6</td>
+<td>2</td>
+<td>1</td>
+<td>2/3 (0.66)</td>
+<td>1/2 (0.5)</td>
+</tr>
+<tr class="even">
+<td>0.4</td>
+<td>3</td>
+<td>1</td>
+<td>3/3 (1)</td>
+<td>1/2 (0.5)</td>
+</tr>
+<tr class="odd">
+<td>0.2</td>
+<td>3</td>
+<td>2</td>
+<td>3/3 (1)</td>
+<td>2/2 (1)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Plotting the ROC Curve</strong></p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>True Positive Rate (TPR)</th>
+<th>False Positive Rate (FPR)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1/3 (0.33)</td>
+<td>0/2 (0)</td>
+</tr>
+<tr class="even">
+<td>2/3 (0.66)</td>
+<td>0/2 (0)</td>
+</tr>
+<tr class="odd">
+<td>2/3 (0.66)</td>
+<td>1/2 (0.5)</td>
+</tr>
+<tr class="even">
+<td>3/3 (1)</td>
+<td>1/2 (0.5)</td>
+</tr>
+<tr class="odd">
+<td>3/3 (1)</td>
+<td>2/2 (1)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Calculating Area Under the ROC Curve (AUC)</strong></p>
+<p>To compute the AUC using the trapezoidal rule:</p>
+<ol type="1">
+<li><p><strong>Calculate the area of the trapezoids formed by adjacent points:</strong></p>
+<ul>
+<li><p><strong>Trapezoid 1:</strong> [(0, 0), (0, 0.67), (0.5, 0), (0.5, 0.67)] with base = 0.5 and height = 0.67.</p>
+<p>Area = base * height = 0.5 * 0.67 = 0.33</p></li>
+<li><p><strong>Trapezoid 2:</strong> [(0.5, 0), (0.5, 1), (1, 0), (1, 1)] with base = 0.5 and height = 1.</p>
+<p>Area = base * height = 0.5 * 1 = 0.5</p></li>
+</ul></li>
+<li><p><strong>Sum up the areas of the trapezoids:</strong></p>
+<p>Total AUC ≈ 0.33 + 0.5 ≈ 0.83</p></li>
+</ol>
+<p><strong>Conclusion:</strong> The calculated approximate AUC for the ROC curve using the trapezoidal rule is approximately 0.83.</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Actual labels and predicted probabilities</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>actual_labels <span class="op">=</span> [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>]</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>predicted_probabilities <span class="op">=</span> [<span class="fl">0.8</span>, <span class="fl">0.6</span>, <span class="fl">0.7</span>, <span class="fl">0.4</span>, <span class="fl">0.2</span>]</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate fpr, tpr, thresholds</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>fpr, tpr, thresholds <span class="op">=</span> roc_curve(actual_labels, predicted_probabilities)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate AUC</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>roc_auc <span class="op">=</span> auc(fpr, tpr)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot ROC curve</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr, tpr, color<span class="op">=</span><span class="st">'blue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'ROC curve (AUC = </span><span class="sc">%0.2f</span><span class="st">)'</span> <span class="op">%</span> roc_auc)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'Random Guessing'</span>)</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>plt.xlim([<span class="fl">0.0</span>, <span class="fl">1.0</span>])</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>plt.ylim([<span class="fl">0.0</span>, <span class="fl">1.05</span>])</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate (FPR)'</span>)</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate (TPR)'</span>)</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Receiver Operating Characteristic (ROC) Curve'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'lower right'</span>)</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="roc_files/figure-html/cell-2-output-1.png" class="img-fluid"></p>
+</div>
+</div>
 </section>
 </section>
 <section id="analyzing-area-under-the-curve-auc-values-across-datasets-and-models" class="level2">
@@ -474,130 +570,129 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="auc-values-understanding-model-performance" class="level3">
 <h3 class="anchored" data-anchor-id="auc-values-understanding-model-performance">AUC Values: Understanding Model Performance</h3>
 <p>Let’s delve into the AUC values obtained across diverse datasets using different classification models.</p>
-</section>
-<section id="code-for-auc-analysis" class="level3">
-<h3 class="anchored" data-anchor-id="code-for-auc-analysis">Code for AUC Analysis</h3>
+<section id="code-for-auc-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="code-for-auc-analysis">Code for AUC Analysis</h4>
 <div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, roc_curve, auc</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, GradientBoostingClassifier</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.exceptions <span class="im">import</span> ConvergenceWarning</span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppress convergence warnings</span></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>, category<span class="op">=</span>ConvergenceWarning)</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_auc(dataset, dataset_name, ax):</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split dataset into features and target</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> dataset[<span class="st">"data"</span>][<span class="st">"features"</span>]</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> dataset[<span class="st">"data"</span>][<span class="st">"targets"</span>]</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    targets <span class="op">=</span> <span class="bu">list</span>(y[y.columns[<span class="dv">0</span>]].unique())</span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> (y.replace({targets[<span class="dv">0</span>]: <span class="dv">0</span>, targets[<span class="dv">1</span>]: <span class="dv">1</span>})).to_numpy().reshape(<span class="op">-</span><span class="dv">1</span>)  <span class="co"># Adjust target labels if needed</span></span>
-<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Identify categorical columns for encoding</span></span>
-<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    categorical_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> X.columns <span class="cf">if</span> X[col].dtype <span class="op">==</span> <span class="st">'object'</span>]</span>
-<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split dataset into train and test sets</span></span>
-<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a>    X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Preprocessing: One-hot encode categorical columns</span></span>
-<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>    preprocessor <span class="op">=</span> ColumnTransformer(</span>
-<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>        transformers<span class="op">=</span>[(<span class="st">'encoder'</span>, OneHotEncoder(), categorical_cols)],</span>
-<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>        remainder<span class="op">=</span><span class="st">'passthrough'</span></span>
-<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define classification models</span></span>
-<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>    models <span class="op">=</span> [</span>
-<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Logistic Regression'</span>, LogisticRegression()),</span>
-<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Random Forest'</span>, RandomForestClassifier()),</span>
-<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Gradient Boosting'</span>, GradientBoostingClassifier()),</span>
-<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'SVM'</span>, SVC(probability<span class="op">=</span><span class="va">True</span>)),</span>
-<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'KNN'</span>, KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">5</span>)),</span>
-<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a>    ]</span>
-<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate AUC for each model</span></span>
-<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>    auc_results <span class="op">=</span> {}</span>
-<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, model <span class="kw">in</span> models:</span>
-<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>        pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'scaling'</span>, StandardScaler(with_mean<span class="op">=</span><span class="va">False</span>)), (<span class="st">'classifier'</span>, model)])</span>
-<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>        pipeline.fit(X_train, y_train)</span>
-<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>        y_prob <span class="op">=</span> pipeline.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
-<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>        auc_value <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
-<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>        auc_results[name] <span class="op">=</span> auc_value</span>
-<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>        fpr, tpr, thresholds <span class="op">=</span> roc_curve(y_test, y_prob)</span>
-<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>        roc_auc <span class="op">=</span> auc(fpr, tpr)</span>
-<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>        ax.plot(fpr, tpr, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> (AUC = </span><span class="sc">{</span>roc_auc<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb3-58"><a href="#cb3-58" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb3-59"><a href="#cb3-59" aria-hidden="true" tabindex="-1"></a>    auc_results[<span class="st">'Class_Ratio 1:0'</span>] <span class="op">=</span> <span class="bu">len</span>(y[y <span class="op">==</span> <span class="dv">1</span>]) <span class="op">/</span> <span class="bu">len</span>(y[y <span class="op">==</span> <span class="dv">0</span>])</span>
-<span id="cb3-60"><a href="#cb3-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-61"><a href="#cb3-61" aria-hidden="true" tabindex="-1"></a>    ax.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'navy'</span>, lw<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb3-62"><a href="#cb3-62" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'False Positive Rate'</span>)</span>
-<span id="cb3-63"><a href="#cb3-63" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'True Positive Rate'</span>)</span>
-<span id="cb3-64"><a href="#cb3-64" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"ROC AUC Curves for Different Models on </span><span class="sc">{</span>dataset_name<span class="sc">}</span><span class="ss"> Dataset"</span>)</span>
-<span id="cb3-65"><a href="#cb3-65" aria-hidden="true" tabindex="-1"></a>    ax.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
-<span id="cb3-66"><a href="#cb3-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-67"><a href="#cb3-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> auc_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score, roc_curve, auc</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier, GradientBoostingClassifier</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.svm <span class="im">import</span> SVC</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.exceptions <span class="im">import</span> ConvergenceWarning</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppress convergence warnings</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>, category<span class="op">=</span>ConvergenceWarning)</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> calculate_auc(dataset, dataset_name, ax):</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split dataset into features and target</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> dataset[<span class="st">"data"</span>][<span class="st">"features"</span>]</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> dataset[<span class="st">"data"</span>][<span class="st">"targets"</span>]</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>    targets <span class="op">=</span> <span class="bu">list</span>(y[y.columns[<span class="dv">0</span>]].unique())</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> (y.replace({targets[<span class="dv">0</span>]: <span class="dv">0</span>, targets[<span class="dv">1</span>]: <span class="dv">1</span>})).to_numpy().reshape(<span class="op">-</span><span class="dv">1</span>)  <span class="co"># Adjust target labels if needed</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Identify categorical columns for encoding</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>    categorical_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> X.columns <span class="cf">if</span> X[col].dtype <span class="op">==</span> <span class="st">'object'</span>]</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Split dataset into train and test sets</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>    X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Preprocessing: One-hot encode categorical columns</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>    preprocessor <span class="op">=</span> ColumnTransformer(</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>        transformers<span class="op">=</span>[(<span class="st">'encoder'</span>, OneHotEncoder(), categorical_cols)],</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        remainder<span class="op">=</span><span class="st">'passthrough'</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define classification models</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>    models <span class="op">=</span> [</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Logistic Regression'</span>, LogisticRegression()),</span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Random Forest'</span>, RandomForestClassifier()),</span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'Gradient Boosting'</span>, GradientBoostingClassifier()),</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'SVM'</span>, SVC(probability<span class="op">=</span><span class="va">True</span>)),</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'KNN'</span>, KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">5</span>)),</span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calculate AUC for each model</span></span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true" tabindex="-1"></a>    auc_results <span class="op">=</span> {}</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> name, model <span class="kw">in</span> models:</span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true" tabindex="-1"></a>        pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'scaling'</span>, StandardScaler(with_mean<span class="op">=</span><span class="va">False</span>)), (<span class="st">'classifier'</span>, model)])</span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true" tabindex="-1"></a>        pipeline.fit(X_train, y_train)</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true" tabindex="-1"></a>        y_prob <span class="op">=</span> pipeline.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true" tabindex="-1"></a>        auc_value <span class="op">=</span> roc_auc_score(y_test, y_prob)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true" tabindex="-1"></a>        auc_results[name] <span class="op">=</span> auc_value</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true" tabindex="-1"></a>        fpr, tpr, thresholds <span class="op">=</span> roc_curve(y_test, y_prob)</span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true" tabindex="-1"></a>        roc_auc <span class="op">=</span> auc(fpr, tpr)</span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true" tabindex="-1"></a>        ax.plot(fpr, tpr, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> (AUC = </span><span class="sc">{</span>roc_auc<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true" tabindex="-1"></a>    auc_results[<span class="st">'Class_Ratio 1:0'</span>] <span class="op">=</span> <span class="bu">len</span>(y[y <span class="op">==</span> <span class="dv">1</span>]) <span class="op">/</span> <span class="bu">len</span>(y[y <span class="op">==</span> <span class="dv">0</span>])</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true" tabindex="-1"></a>    ax.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'navy'</span>, lw<span class="op">=</span><span class="dv">2</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'False Positive Rate'</span>)</span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="st">'True Positive Rate'</span>)</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="ss">f"ROC AUC Curves for Different Models on </span><span class="sc">{</span>dataset_name<span class="sc">}</span><span class="ss"> Dataset"</span>)</span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true" tabindex="-1"></a>    ax.legend(loc<span class="op">=</span><span class="st">"lower right"</span>)</span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> auc_results</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>htru <span class="op">=</span> pd.read_csv(<span class="st">"data/HTRU_2.csv"</span>, header<span class="op">=</span><span class="va">None</span>)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>htru_2 <span class="op">=</span> {</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">"data"</span>: {</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"features"</span>: htru.drop(<span class="dv">8</span>, axis<span class="op">=</span><span class="dv">1</span>),</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"targets"</span>: htru[<span class="dv">8</span>].to_frame()</span>
-<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>   }</span>
-<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> [</span>
-<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>   (htru_2, <span class="st">"htru_2"</span>),</span>
-<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">222</span>), <span class="st">'bank_marketing'</span>),  <span class="co"># bank_marketing</span></span>
-<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">144</span>), <span class="st">'statlog_german_credit_data'</span>),  <span class="co"># statlog_german_credit_data</span></span>
-<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">52</span>), <span class="st">'ionosphere'</span>),  <span class="co"># ionosphere</span></span>
-<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">73</span>), <span class="st">'mushroom'</span>),  <span class="co"># mushroom</span></span>
-<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">545</span>), <span class="st">'rice_cammeo_and_osmancik'</span>),  <span class="co"># rice_cammeo_and_osmancik</span></span>
-<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">94</span>), <span class="st">'spambase'</span>),  <span class="co"># spambase</span></span>
-<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">105</span>), <span class="st">'congressional_voting_records'</span>),  <span class="co"># congressional_voting_records</span></span>
-<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>htru <span class="op">=</span> pd.read_csv(<span class="st">"data/HTRU_2.csv"</span>, header<span class="op">=</span><span class="va">None</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>htru_2 <span class="op">=</span> {</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   <span class="st">"data"</span>: {</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>      <span class="st">"features"</span>: htru.drop(<span class="dv">8</span>, axis<span class="op">=</span><span class="dv">1</span>),</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>      <span class="st">"targets"</span>: htru[<span class="dv">8</span>].to_frame()</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   }</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>datasets <span class="op">=</span> [</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>   (htru_2, <span class="st">"htru_2"</span>),</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">222</span>), <span class="st">'bank_marketing'</span>),  <span class="co"># bank_marketing</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">144</span>), <span class="st">'statlog_german_credit_data'</span>),  <span class="co"># statlog_german_credit_data</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">52</span>), <span class="st">'ionosphere'</span>),  <span class="co"># ionosphere</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">73</span>), <span class="st">'mushroom'</span>),  <span class="co"># mushroom</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">545</span>), <span class="st">'rice_cammeo_and_osmancik'</span>),  <span class="co"># rice_cammeo_and_osmancik</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">94</span>), <span class="st">'spambase'</span>),  <span class="co"># spambase</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>   (fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">105</span>), <span class="st">'congressional_voting_records'</span>),  <span class="co"># congressional_voting_records</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create subplots in a 4x2 grid (4 rows, 2 columns)</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">20</span>))</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>axs <span class="op">=</span> axs.flatten()</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>auc_results_dict <span class="op">=</span> {}</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (dataset, dataset_name) <span class="kw">in</span> <span class="bu">enumerate</span>(datasets):</span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    auc_results_dict[dataset_name] <span class="op">=</span> calculate_auc(dataset, dataset_name, axs[i])</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide empty subplots if there are fewer than 8 datasets</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(datasets), <span class="bu">len</span>(axs)):</span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    axs[i].axis(<span class="st">'off'</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust layout</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create subplots in a 4x2 grid (4 rows, 2 columns)</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>fig, axs <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">20</span>))</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>axs <span class="op">=</span> axs.flatten()</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>auc_results_dict <span class="op">=</span> {}</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, (dataset, dataset_name) <span class="kw">in</span> <span class="bu">enumerate</span>(datasets):</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>    auc_results_dict[dataset_name] <span class="op">=</span> calculate_auc(dataset, dataset_name, axs[i])</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Hide empty subplots if there are fewer than 8 datasets</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(datasets), <span class="bu">len</span>(axs)):</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>    axs[i].axis(<span class="st">'off'</span>)</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Adjust layout</span></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
-<p><img src="roc_files/figure-html/cell-6-output-1.png" class="img-fluid"></p>
+<p><img src="roc_files/figure-html/cell-5-output-1.png" class="img-fluid"></p>
 </div>
 </div>
 <div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the dictionary to a DataFrame for easy visualization</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>auc_results_df <span class="op">=</span> pd.DataFrame(auc_results_dict).T</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure columns are of numeric data type (float)</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>auc_results_df <span class="op">=</span> auc_results_df.astype(<span class="bu">float</span>)</span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort columns by name (if needed)</span></span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>auc_results_df <span class="op">=</span> auc_results_df.reindex(<span class="bu">sorted</span>(auc_results_df.columns), axis<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>auc_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the dictionary to a DataFrame for easy visualization</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>auc_results_df <span class="op">=</span> pd.DataFrame(auc_results_dict).T</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ensure columns are of numeric data type (float)</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>auc_results_df <span class="op">=</span> auc_results_df.astype(<span class="bu">float</span>)</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort columns by name (if needed)</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>auc_results_df <span class="op">=</span> auc_results_df.reindex(<span class="bu">sorted</span>(auc_results_df.columns), axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>auc_results_df</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display" data-execution_count="6">
 <div>
 
@@ -694,6 +789,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
+</section>
 <section id="interpretation-of-auc-values" class="level3">
 <h3 class="anchored" data-anchor-id="interpretation-of-auc-values">Interpretation of AUC Values</h3>
 <ol type="1">
@@ -725,17 +821,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="precision" class="level3">
 <h3 class="anchored" data-anchor-id="precision">Precision</h3>
 <p>Precision gauges the accuracy of positive predictions made by the model, measuring the ratio of true positives to the total predicted positives. Higher precision implies fewer false positives, making it crucial when minimizing false identifications is a priority.</p>
-<p><span class="math display"> \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} </span></p>
+<p><span class="math display">\[ \text{Precision} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Positives}} \]</span></p>
 </section>
 <section id="recall-sensitivity" class="level3">
 <h3 class="anchored" data-anchor-id="recall-sensitivity">Recall (Sensitivity)</h3>
 <p>Recall evaluates the model’s ability to correctly identify all positive instances, calculating the ratio of true positives to the actual positives. Higher recall indicates capturing a larger proportion of actual positive instances, essential in scenarios where missing positives is a greater concern.</p>
-<p><span class="math display"> \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} </span></p>
+<p><span class="math display">\[ \text{Recall} = \frac{\text{True Positives}}{\text{True Positives} + \text{False Negatives}} \]</span></p>
 </section>
 <section id="f1-score" class="level3">
 <h3 class="anchored" data-anchor-id="f1-score">F1-score</h3>
 <p>The F1-score, a harmonic mean of precision and recall, offers a balanced assessment by considering false positives and false negatives. It becomes valuable when both precision and recall are equally important and provides a single metric summarizing their trade-offs.</p>
-<p><span class="math display"> \text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} </span></p>
+<p><span class="math display">\[ \text{F1-score} = 2 \times \frac{\text{Precision} \times \text{Recall}}{\text{Precision} + \text{Recall}} \]</span></p>
 <p>When to Prioritize Precision, Recall, and F1-score over ROC AUC:</p>
 <ul>
 <li><strong>Precision:</strong> When minimizing false positives is critical, e.g., medical diagnoses where avoiding misdiagnoses is crucial.</li>
@@ -743,173 +839,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><strong>F1-score:</strong> When seeking a balance between precision and recall is essential, offering a consolidated metric.</li>
 </ul>
 <p>These metrics serve as complementary tools to ROC AUC, offering specific insights into different aspects of a model’s performance, allowing for informed decision-making based on specific priorities and constraints in various real-world applications.</p>
-</section>
-</section>
-<section id="real-world-scenarios-leveraging-roc-auc" class="level2">
-<h2 class="anchored" data-anchor-id="real-world-scenarios-leveraging-roc-auc">Real-World Scenarios: Leveraging ROC AUC</h2>
-<p>Exploring the practical implications of the Receiver Operating Characteristic (ROC) curve and its Area Under the Curve (AUC) metric, let’s venture into real-world scenarios using the UCI German Credit Data and UCI Bank Marketing Dataset.</p>
-<section id="assessing-credit-risk-with-uci-german-credit-data" class="level3">
-<h3 class="anchored" data-anchor-id="assessing-credit-risk-with-uci-german-credit-data">Assessing Credit Risk with UCI German Credit Data</h3>
-<p>Imagine a financial institution evaluating credit risk accurately. Utilizing the UCI German Credit Data, ROC AUC facilitates model comparison for predicting creditworthiness. Let’s visualize the ROC AUC scores:</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> RandomForestClassifier</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo </span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.exceptions <span class="im">import</span> ConvergenceWarning</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Suppress convergence warnings</span></span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">"ignore"</span>, category<span class="op">=</span>ConvergenceWarning)</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a><span class="co"># fetch dataset </span></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>statlog_german_credit_data <span class="op">=</span> fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">144</span>) </span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a><span class="co"># data (as pandas dataframes) </span></span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> statlog_german_credit_data.data.features </span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> statlog_german_credit_data.data.targets</span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (y.replace({<span class="dv">1</span>: <span class="dv">0</span>, <span class="dv">2</span>: <span class="dv">1</span>})).to_numpy().reshape(<span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Split dataset into train and test sets</span></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify categorical columns</span></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>categorical_cols <span class="op">=</span> X.select_dtypes(include<span class="op">=</span>[<span class="st">'object'</span>]).columns.tolist()</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocessing: One-hot encode categorical columns</span></span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer(</span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    transformers<span class="op">=</span>[</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'cat'</span>, OneHotEncoder(), categorical_cols)</span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    ],</span>
-<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    remainder<span class="op">=</span><span class="st">'passthrough'</span></span>
-<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Define models</span></span>
-<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>logistic_regression <span class="op">=</span> LogisticRegression()</span>
-<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>random_forest <span class="op">=</span> RandomForestClassifier()</span>
-<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Create pipelines with preprocessing and model fitting</span></span>
-<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>logreg_pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'scaling'</span>, StandardScaler()), (<span class="st">'classifier'</span>, logistic_regression)])</span>
-<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a>rf_pipeline <span class="op">=</span> Pipeline(steps<span class="op">=</span>[(<span class="st">'preprocessor'</span>, preprocessor), (<span class="st">'classifier'</span>, random_forest)])</span>
-<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-46"><a href="#cb7-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit models</span></span>
-<span id="cb7-47"><a href="#cb7-47" aria-hidden="true" tabindex="-1"></a>logreg_pipeline.fit(X_train, y_train)</span>
-<span id="cb7-48"><a href="#cb7-48" aria-hidden="true" tabindex="-1"></a>rf_pipeline.fit(X_train, y_train)</span>
-<span id="cb7-49"><a href="#cb7-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-50"><a href="#cb7-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probabilities</span></span>
-<span id="cb7-51"><a href="#cb7-51" aria-hidden="true" tabindex="-1"></a>logreg_probs <span class="op">=</span> logreg_pipeline.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
-<span id="cb7-52"><a href="#cb7-52" aria-hidden="true" tabindex="-1"></a>rf_probs <span class="op">=</span> rf_pipeline.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
-<span id="cb7-53"><a href="#cb7-53" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-54"><a href="#cb7-54" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute ROC curves and AUCs</span></span>
-<span id="cb7-55"><a href="#cb7-55" aria-hidden="true" tabindex="-1"></a>fpr_logreg, tpr_logreg, thresholds_logreg <span class="op">=</span> roc_curve(y_test, logreg_probs)</span>
-<span id="cb7-56"><a href="#cb7-56" aria-hidden="true" tabindex="-1"></a>roc_auc_logreg <span class="op">=</span> auc(fpr_logreg, tpr_logreg)</span>
-<span id="cb7-57"><a href="#cb7-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-58"><a href="#cb7-58" aria-hidden="true" tabindex="-1"></a>fpr_rf, tpr_rf, thresholds_rf <span class="op">=</span> roc_curve(y_test, rf_probs)</span>
-<span id="cb7-59"><a href="#cb7-59" aria-hidden="true" tabindex="-1"></a>roc_auc_rf <span class="op">=</span> auc(fpr_rf, tpr_rf)</span>
-<span id="cb7-60"><a href="#cb7-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-61"><a href="#cb7-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize ROC AUC curves</span></span>
-<span id="cb7-62"><a href="#cb7-62" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb7-63"><a href="#cb7-63" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_logreg, tpr_logreg, color<span class="op">=</span><span class="st">'blue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Logistic Regression (AUC = </span><span class="sc">{</span>roc_auc_logreg<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb7-64"><a href="#cb7-64" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_rf, tpr_rf, color<span class="op">=</span><span class="st">'green'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Random Forest (AUC = </span><span class="sc">{</span>roc_auc_rf<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb7-65"><a href="#cb7-65" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, lw<span class="op">=</span><span class="dv">1</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb7-66"><a href="#cb7-66" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
-<span id="cb7-67"><a href="#cb7-67" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
-<span id="cb7-68"><a href="#cb7-68" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ROC Curve for Financial Risk Assessment Models'</span>)</span>
-<span id="cb7-69"><a href="#cb7-69" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb7-70"><a href="#cb7-70" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="roc_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
-</div>
-</div>
-<section id="interpretation" class="level4">
-<h4 class="anchored" data-anchor-id="interpretation">Interpretation</h4>
-<ul>
-<li><p><strong>Logistic Regression (AUC = 0.82):</strong> This model effectively distinguishes creditworthy from non-creditworthy individuals with an AUC of 0.82, showcasing consistent reliability in predicting creditworthiness.</p></li>
-<li><p><strong>Random Forest (AUC = 0.83):</strong> The Random Forest model demonstrates an AUC of 0.83, indicating a slight improvement over the Logistic Regression model’s performance. While it is marginally better by only 0.01, the Random Forest model still maintains a commendable ability to assess credit risk.</p></li>
-<li><p><strong>Overall Interpretation:</strong> Both models exhibit above-average discriminatory abilities, with the Random Forest model showing a minor edge in performance with its 0.01 higher AUC compared to Logistic Regression. This modest improvement reaffirms its capability in credit risk assessment, offering financial institutions an alternative approach without a substantial margin of difference from the Logistic Regression model.</p></li>
-</ul>
-</section>
-</section>
-<section id="optimizing-marketing-campaigns-with-uci-bank-marketing-dataset" class="level3">
-<h3 class="anchored" data-anchor-id="optimizing-marketing-campaigns-with-uci-bank-marketing-dataset">Optimizing Marketing Campaigns with UCI Bank Marketing Dataset</h3>
-<p>Shifting focus to marketing analytics, ROC AUC becomes pivotal in predicting customer response to campaigns. Using the UCI Bank Marketing Dataset, let’s visualize ROC AUC scores:</p>
-<div class="cell" data-execution_count="8">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> OneHotEncoder, StandardScaler</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> GradientBoostingClassifier</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_curve, auc</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ucimlrepo <span class="im">import</span> fetch_ucirepo </span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># fetch dataset </span></span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>bank_marketing <span class="op">=</span> fetch_ucirepo(<span class="bu">id</span><span class="op">=</span><span class="dv">222</span>) </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># data (as pandas dataframes) </span></span>
-<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> bank_marketing.data.features </span>
-<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> bank_marketing.data.targets</span>
-<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> (y.replace({<span class="st">'no'</span>: <span class="dv">0</span>, <span class="st">'yes'</span>: <span class="dv">1</span>})).to_numpy().reshape(<span class="op">-</span><span class="dv">1</span>)</span>
-<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Identify categorical columns for encoding</span></span>
-<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>categorical_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> X.columns <span class="cf">if</span> X[col].dtype <span class="op">==</span> <span class="st">'object'</span>]</span>
-<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Split dataset into train and test sets</span></span>
-<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Preprocessing: One-hot encode categorical columns</span></span>
-<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>preprocessor <span class="op">=</span> ColumnTransformer(transformers<span class="op">=</span>[(<span class="st">'encoder'</span>, OneHotEncoder(), categorical_cols)], remainder<span class="op">=</span><span class="st">'passthrough'</span>)</span>
-<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a>X_train_encoded <span class="op">=</span> preprocessor.fit_transform(X_train)</span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>X_test_encoded <span class="op">=</span> preprocessor.transform(X_test)</span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>X_train_encoded <span class="op">=</span> scaler.fit_transform(X_train_encoded)</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>X_test_encoded <span class="op">=</span> scaler.transform(X_test_encoded)</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit models</span></span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>gradient_boosting <span class="op">=</span> GradientBoostingClassifier()</span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>neural_network <span class="op">=</span> MLPClassifier()</span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>gradient_boosting.fit(X_train_encoded, y_train)</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>neural_network.fit(X_train_encoded, y_train)</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Predict probabilities</span></span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>gradient_boosting_probs <span class="op">=</span> gradient_boosting.predict_proba(X_test_encoded)[:, <span class="dv">1</span>]</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>neural_network_probs <span class="op">=</span> neural_network.predict_proba(X_test_encoded)[:, <span class="dv">1</span>]</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Compute ROC curves and AUCs</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>fpr_gb, tpr_gb, thresholds_gb <span class="op">=</span> roc_curve(y_test, gradient_boosting_probs)</span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>roc_auc_gb <span class="op">=</span> auc(fpr_gb, tpr_gb)</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>fpr_nn, tpr_nn, thresholds_nn <span class="op">=</span> roc_curve(y_test, neural_network_probs)</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>roc_auc_nn <span class="op">=</span> auc(fpr_nn, tpr_nn)</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualize ROC AUC curves</span></span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_gb, tpr_gb, color<span class="op">=</span><span class="st">'blue'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Gradient Boosting (AUC = </span><span class="sc">{</span>roc_auc_gb<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>plt.plot(fpr_nn, tpr_nn, color<span class="op">=</span><span class="st">'green'</span>, lw<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="ss">f'Neural Network (AUC = </span><span class="sc">{</span>roc_auc_nn<span class="sc">:.2f}</span><span class="ss">)'</span>)</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>plt.plot([<span class="dv">0</span>, <span class="dv">1</span>], [<span class="dv">0</span>, <span class="dv">1</span>], color<span class="op">=</span><span class="st">'red'</span>, lw<span class="op">=</span><span class="dv">1</span>, linestyle<span class="op">=</span><span class="st">'--'</span>)</span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'False Positive Rate'</span>)</span>
-<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'True Positive Rate'</span>)</span>
-<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'ROC Curve for Marketing Campaign Models'</span>)</span>
-<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
-<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="roc_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
-</div>
-</div>
-<section id="interpretation-1" class="level4">
-<h4 class="anchored" data-anchor-id="interpretation-1">Interpretation</h4>
-<ul>
-<li><p><strong>Gradient Boosting (AUC = 0.92):</strong> This model excels with an AUC of 0.92, displaying strong predictive power for assessing customer responses in marketing campaigns. Its high AUC indicates a remarkable ability to distinguish between positive and negative instances, making it a top choice for forecasting customer outcomes.</p></li>
-<li><p><strong>Neural Network (AUC = 0.91):</strong> Despite a slightly lower AUC of 0.91 compared to Gradient Boosting, the Neural Network still demonstrates commendable predictive performance in the UCI Bank Marketing Dataset. However, it might not capture certain subtleties of customer responses as effectively as the Gradient Boosting model.</p></li>
-<li><p><strong>Overall Interpretation:</strong> The AUC scores provide crucial insights into the models’ discriminatory abilities when predicting customer responses to marketing campaigns. Stakeholders should carefully consider trade-offs between model performance and complexity. The Gradient Boosting model, with its slightly higher AUC, could be preferred for applications where precise predictions of positive outcomes are particularly crucial. These interpretations guide decision-making by offering a nuanced understanding of each model’s performance in the UCI Bank Marketing Dataset.</p></li>
-</ul>
-</section>
 </section>
 </section>
 <section id="conclusion" class="level2">

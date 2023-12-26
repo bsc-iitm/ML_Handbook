@@ -1,0 +1,1915 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ML Handbook - Predictive Modeling of Patient Status in Primary Biliary Cirrhosis</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../pages/Probabilistic_PCA.html" rel="prev">
+<link href="../images/logo.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<meta property="og:title" content="ML Handbook - Predictive Modeling of Patient Status in Primary Biliary Cirrhosis">
+<meta property="og:image" content="https://upload.wikimedia.org/wikipedia/commons/f/fa/Primary_biliary_cirrhosis_intermed_mag_much_cropping.jpg">
+<meta property="og:site-name" content="ML Handbook">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/cirrhosis.html">Case Studies</a></li><li class="breadcrumb-item"><a href="../pages/cirrhosis.html">Predictive Modeling of Patient Status in Primary Biliary Cirrhosis</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/bsc-iitm/ML_Handbook" rel="" title="GitHub Repo" class="quarto-navigation-tool px-1" aria-label="GitHub Repo"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Home</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Preprocessing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/dealing_with_missing_values.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dealing with missing-values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Scaling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Scaling multi-dataset multi-algo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/standard.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Standard Scaling</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Observing Data</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Visualization</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/vis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/vis2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprehensive Data Visualization</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Evaluation Metrics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/accuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Accuracy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/roc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ROC-AUC</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Special Topics in ML</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Inductive_Bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inductive Bias</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Ordinal_Classification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ordinal Classification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/EM_Algorithm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EM Algorithm</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Probabilistic_PCA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probabilistic PCA</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Case Studies</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/cirrhosis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Predictive Modeling of Patient Status in Primary Biliary Cirrhosis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-and-dataset-overview" id="toc-introduction-and-dataset-overview" class="nav-link active" data-scroll-target="#introduction-and-dataset-overview">Introduction and Dataset Overview</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#objective" id="toc-objective" class="nav-link" data-scroll-target="#objective">Objective</a></li>
+  <li><a href="#dataset-overview" id="toc-dataset-overview" class="nav-link" data-scroll-target="#dataset-overview">Dataset Overview</a></li>
+  </ul></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data Exploration</a>
+  <ul class="collapse">
+  <li><a href="#dataset-snapshot" id="toc-dataset-snapshot" class="nav-link" data-scroll-target="#dataset-snapshot">Dataset Snapshot</a></li>
+  <li><a href="#dataset-information-summary" id="toc-dataset-information-summary" class="nav-link" data-scroll-target="#dataset-information-summary">Dataset Information Summary</a></li>
+  <li><a href="#statistical-summary-of-the-dataset" id="toc-statistical-summary-of-the-dataset" class="nav-link" data-scroll-target="#statistical-summary-of-the-dataset">Statistical Summary of the Dataset</a></li>
+  <li><a href="#pie-plot-analysis" id="toc-pie-plot-analysis" class="nav-link" data-scroll-target="#pie-plot-analysis">Pie Plot Analysis</a></li>
+  </ul></li>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#one-hot-encoding-and-data-preparation" id="toc-one-hot-encoding-and-data-preparation" class="nav-link" data-scroll-target="#one-hot-encoding-and-data-preparation">One-Hot Encoding and Data Preparation</a></li>
+  <li><a href="#scaling-using-robustscaler" id="toc-scaling-using-robustscaler" class="nav-link" data-scroll-target="#scaling-using-robustscaler">Scaling using RobustScaler</a></li>
+  <li><a href="#handling-missing-values-knnimputer" id="toc-handling-missing-values-knnimputer" class="nav-link" data-scroll-target="#handling-missing-values-knnimputer">Handling Missing Values: KNNImputer</a></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</a>
+  <ul class="collapse">
+  <li><a href="#correlation-analysis" id="toc-correlation-analysis" class="nav-link" data-scroll-target="#correlation-analysis">Correlation Analysis</a></li>
+  </ul></li>
+  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">Model Building</a>
+  <ul class="collapse">
+  <li><a href="#cross-validation-and-train-test-split" id="toc-cross-validation-and-train-test-split" class="nav-link" data-scroll-target="#cross-validation-and-train-test-split">Cross-validation and Train-Test Split</a></li>
+  <li><a href="#training-multiple-lightgbm-models-with-cross-validation" id="toc-training-multiple-lightgbm-models-with-cross-validation" class="nav-link" data-scroll-target="#training-multiple-lightgbm-models-with-cross-validation">Training Multiple LightGBM Models with Cross-Validation</a></li>
+  <li><a href="#training-multiple-xgboost-models-with-cross-validation" id="toc-training-multiple-xgboost-models-with-cross-validation" class="nav-link" data-scroll-target="#training-multiple-xgboost-models-with-cross-validation">Training Multiple XGBoost Models with Cross-Validation</a></li>
+  <li><a href="#training-catboost-models-and-evaluating-performance" id="toc-training-catboost-models-and-evaluating-performance" class="nav-link" data-scroll-target="#training-catboost-models-and-evaluating-performance">Training CatBoost Models and Evaluating Performance</a></li>
+  <li><a href="#elevating-predictive-power-with-stacked-ensemble-model" id="toc-elevating-predictive-power-with-stacked-ensemble-model" class="nav-link" data-scroll-target="#elevating-predictive-power-with-stacked-ensemble-model">Elevating Predictive Power with Stacked Ensemble Model</a></li>
+  </ul></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#evaluating-stacked-ensemble-model-performance" id="toc-evaluating-stacked-ensemble-model-performance" class="nav-link" data-scroll-target="#evaluating-stacked-ensemble-model-performance">Evaluating Stacked Ensemble Model Performance</a></li>
+  <li><a href="#analysis-of-stacked-ensemble-model-performance" id="toc-analysis-of-stacked-ensemble-model-performance" class="nav-link" data-scroll-target="#analysis-of-stacked-ensemble-model-performance">Analysis of Stacked Ensemble Model Performance</a></li>
+  </ul></li>
+  <li><a href="#conclusion-and-future-steps" id="toc-conclusion-and-future-steps" class="nav-link" data-scroll-target="#conclusion-and-future-steps">Conclusion and Future Steps</a>
+  <ul class="collapse">
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings">Key Findings</a></li>
+  <li><a href="#insights-for-improvement" id="toc-insights-for-improvement" class="nav-link" data-scroll-target="#insights-for-improvement">Insights for Improvement</a></li>
+  <li><a href="#future-steps" id="toc-future-steps" class="nav-link" data-scroll-target="#future-steps">Future Steps</a></li>
+  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note">Final Note</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/cirrhosis.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Predictive Modeling of Patient Status in Primary Biliary Cirrhosis</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction-and-dataset-overview" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-and-dataset-overview">Introduction and Dataset Overview</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://upload.wikimedia.org/wikipedia/commons/f/fa/Primary_biliary_cirrhosis_intermed_mag_much_cropping.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Micrograph of PBC showing bile duct inflammation and injury, H&amp;E stain</figcaption>
+</figure>
+</div>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>Cirrhosis stands as a severe consequence of liver diseases, where extensive scarring compromises liver function. The dataset at hand originates from the Mayo Clinic’s trial addressing primary biliary cirrhosis (PBC) during 1974-1984. This collection of data encompasses crucial insights gleaned from 424 PBC patients, marking a pivotal endeavor in understanding the clinical landscape of this condition.</p>
+<p>The dataset, meticulously gathered as part of a randomized placebo-controlled trial involving D-penicillamine, presents a comprehensive array of covariates. Each entry comprises fundamental patient attributes, ranging from clinical measurements to key indicators of liver health.</p>
+</section>
+<section id="objective" class="level3">
+<h3 class="anchored" data-anchor-id="objective">Objective</h3>
+<p>The primary aim of this notebook is to harness machine learning methodologies to predict the status of PBC patients based on a diverse set of features. The ‘Status’ variable, delineated as C (censored), CL (censored due to liver tx), or D (death), serves as the focal point for predictive modeling. Leveraging the patient-specific attributes provided, the goal is to construct robust predictive models capable of discerning and forecasting patient outcomes within the scope of the study period.</p>
+</section>
+<section id="dataset-overview" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-overview">Dataset Overview</h3>
+<ol type="1">
+<li><strong>Size:</strong> The dataset contains information on 424 PBC patients, amalgamating both trial participants and supplementary cases with recorded measurements.</li>
+<li><strong>Features:</strong> Comprising 19 attributes encompassing a spectrum of patient-related variables, including demographic data, clinical measurements, and indicators of liver health.</li>
+<li><strong>Context:</strong> The features encapsulate critical facets of patient health, such as age, sex, presence of specific symptoms (ascites, hepatomegaly, spiders, edema), laboratory test results (bilirubin, cholesterol, albumin, copper, alkaline phosphatase, SGOT, triglycerides, platelets, prothrombin), and histologic staging of the disease.</li>
+</ol>
+<p>Throughout this notebook, we embark on a journey through data exploration, preprocessing, model selection, and evaluation, culminating in the development of predictive models aimed at discerning and forecasting the status of PBC patients.</p>
+<p>Let’s delve into the intricate realm of predictive modeling in the context of primary biliary cirrhosis, unraveling insights and patterns within this comprehensive dataset.</p>
+</section>
+</section>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
+<section id="dataset-snapshot" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-snapshot">Dataset Snapshot</h3>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'datasets/dataset.csv'</span>, index_col<span class="op">=</span><span class="st">'ID'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">'datasets/test.csv'</span>, index_col<span class="op">=</span><span class="st">'id'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">N_Days</th>
+<th data-quarto-table-cell-role="th">Status</th>
+<th data-quarto-table-cell-role="th">Drug</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">Sex</th>
+<th data-quarto-table-cell-role="th">Ascites</th>
+<th data-quarto-table-cell-role="th">Hepatomegaly</th>
+<th data-quarto-table-cell-role="th">Spiders</th>
+<th data-quarto-table-cell-role="th">Edema</th>
+<th data-quarto-table-cell-role="th">Bilirubin</th>
+<th data-quarto-table-cell-role="th">Cholesterol</th>
+<th data-quarto-table-cell-role="th">Albumin</th>
+<th data-quarto-table-cell-role="th">Copper</th>
+<th data-quarto-table-cell-role="th">Alk_Phos</th>
+<th data-quarto-table-cell-role="th">SGOT</th>
+<th data-quarto-table-cell-role="th">Tryglicerides</th>
+<th data-quarto-table-cell-role="th">Platelets</th>
+<th data-quarto-table-cell-role="th">Prothrombin</th>
+<th data-quarto-table-cell-role="th">Stage</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">ID</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">1</td>
+<td>400</td>
+<td>D</td>
+<td>D-penicillamine</td>
+<td>21464</td>
+<td>F</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>Y</td>
+<td>14.5</td>
+<td>261.0</td>
+<td>2.60</td>
+<td>156.0</td>
+<td>1718.0</td>
+<td>137.95</td>
+<td>172.0</td>
+<td>190.0</td>
+<td>12.2</td>
+<td>4.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">2</td>
+<td>4500</td>
+<td>C</td>
+<td>D-penicillamine</td>
+<td>20617</td>
+<td>F</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>1.1</td>
+<td>302.0</td>
+<td>4.14</td>
+<td>54.0</td>
+<td>7394.8</td>
+<td>113.52</td>
+<td>88.0</td>
+<td>221.0</td>
+<td>10.6</td>
+<td>3.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">3</td>
+<td>1012</td>
+<td>D</td>
+<td>D-penicillamine</td>
+<td>25594</td>
+<td>M</td>
+<td>N</td>
+<td>N</td>
+<td>N</td>
+<td>S</td>
+<td>1.4</td>
+<td>176.0</td>
+<td>3.48</td>
+<td>210.0</td>
+<td>516.0</td>
+<td>96.10</td>
+<td>55.0</td>
+<td>151.0</td>
+<td>12.0</td>
+<td>4.0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">4</td>
+<td>1925</td>
+<td>D</td>
+<td>D-penicillamine</td>
+<td>19994</td>
+<td>F</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>S</td>
+<td>1.8</td>
+<td>244.0</td>
+<td>2.54</td>
+<td>64.0</td>
+<td>6121.8</td>
+<td>60.63</td>
+<td>92.0</td>
+<td>183.0</td>
+<td>10.3</td>
+<td>4.0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">5</td>
+<td>1504</td>
+<td>CL</td>
+<td>Placebo</td>
+<td>13918</td>
+<td>F</td>
+<td>N</td>
+<td>Y</td>
+<td>Y</td>
+<td>N</td>
+<td>3.4</td>
+<td>279.0</td>
+<td>3.53</td>
+<td>143.0</td>
+<td>671.0</td>
+<td>113.15</td>
+<td>72.0</td>
+<td>136.0</td>
+<td>10.9</td>
+<td>3.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The initial entries of the dataset, as revealed by the <code>train.head()</code> command, offer a glimpse into the fundamental attributes and features characterizing the primary biliary cirrhosis (PBC) dataset. These entries encompass a diverse range of patient-related information, providing crucial insights into the condition and status of the individuals under study.</p>
+<p><strong>Attributes Overview:</strong></p>
+<ol type="1">
+<li><strong>ID:</strong> A unique identifier assigned to each patient within the dataset.</li>
+<li><strong>N_Days:</strong> The number of days between registration and the earlier occurrence of death, liver transplantation, or the study analysis time in July 1986.</li>
+<li><strong>Status:</strong> Categorization of the patient’s status denoted as C (censored), CL (censored due to liver tx), or D (death).</li>
+<li><strong>Drug:</strong> Indicates the type of drug administered to the patient, specifying either D-penicillamine or Placebo.</li>
+<li><strong>Age:</strong> Age of the patient represented in days.</li>
+<li><strong>Sex:</strong> Gender classification denoted as M (male) or F (female).</li>
+<li><strong>Ascites:</strong> Presence or absence of ascites, indicated by Y (Yes) or N (No), respectively.</li>
+<li><strong>Hepatomegaly:</strong> Identification of hepatomegaly, denoted by Y (Yes) or N (No).</li>
+<li><strong>Spiders:</strong> Presence or absence of spiders, indicating Y (Yes) or N (No), respectively.</li>
+<li><strong>Edema:</strong> Details the presence and management of edema, categorized as S (edema present without diuretics, or edema resolved by diuretics), Y (edema despite diuretic therapy), or N (no edema and no diuretic therapy for edema).</li>
+<li><strong>Bilirubin:</strong> Serum bilirubin levels measured in mg/dl.</li>
+<li><strong>Cholesterol:</strong> Serum cholesterol levels measured in mg/dl.</li>
+<li><strong>Albumin:</strong> Albumin levels in gm/dl.</li>
+<li><strong>Copper:</strong> Urine copper levels recorded in ug/day.</li>
+<li><strong>Alk_Phos:</strong> Alkaline phosphatase levels in U/liter.</li>
+<li><strong>SGOT:</strong> SGOT (Serum Glutamic Oxaloacetic Transaminase) levels measured in U/ml.</li>
+<li><strong>Tryglicerides:</strong> Triglyceride levels measured in mg/dl.</li>
+<li><strong>Platelets:</strong> Platelet count per cubic ml/1000.</li>
+<li><strong>Prothrombin:</strong> Prothrombin time measured in seconds (s).</li>
+<li><strong>Stage:</strong> Histologic stage of the disease categorized as 1, 2, 3, or 4.</li>
+</ol>
+<p>This snapshot serves as a foundational view of the dataset, highlighting the diverse array of attributes and their corresponding values that will be further explored, analyzed, and utilized in the predictive modeling and analysis undertaken in this notebook.</p>
+</section>
+<section id="dataset-information-summary" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-information-summary">Dataset Information Summary</h3>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Index: 418 entries, 1 to 418
+Data columns (total 19 columns):
+ #   Column         Non-Null Count  Dtype  
+---  ------         --------------  -----  
+ 0   N_Days         418 non-null    int64  
+ 1   Status         418 non-null    object 
+ 2   Drug           312 non-null    object 
+ 3   Age            418 non-null    int64  
+ 4   Sex            418 non-null    object 
+ 5   Ascites        312 non-null    object 
+ 6   Hepatomegaly   312 non-null    object 
+ 7   Spiders        312 non-null    object 
+ 8   Edema          418 non-null    object 
+ 9   Bilirubin      418 non-null    float64
+ 10  Cholesterol    284 non-null    float64
+ 11  Albumin        418 non-null    float64
+ 12  Copper         310 non-null    float64
+ 13  Alk_Phos       312 non-null    float64
+ 14  SGOT           312 non-null    float64
+ 15  Tryglicerides  282 non-null    float64
+ 16  Platelets      407 non-null    float64
+ 17  Prothrombin    416 non-null    float64
+ 18  Stage          412 non-null    float64
+dtypes: float64(10), int64(2), object(7)
+memory usage: 65.3+ KB</code></pre>
+</div>
+</div>
+<p>The output from <code>train.info()</code> furnishes essential insights into the structure and composition of the primary biliary cirrhosis (PBC) dataset, providing a comprehensive understanding of the data types, non-null counts, and overall characteristics of the dataset’s columns.</p>
+<p><strong>Key Observations:</strong></p>
+<ol type="1">
+<li><p><strong>Total Entries:</strong> The dataset comprises 418 entries or records, each representing an individual patient case, spanning a range from 0 to 417.</p></li>
+<li><p><strong>Columns and Non-Null Counts:</strong> The dataset incorporates 19 columns, each delineating a specific attribute. Notably, several columns showcase discrepancies in non-null counts, indicating missing or null values within the dataset.</p>
+<ul>
+<li><p><strong>Categorical Variables:</strong> Columns such as ‘Drug,’ ‘Ascites,’ ‘Hepatomegaly,’ ‘Spiders,’ ‘Edema,’ and ‘Status’ are represented as object data types, signifying categorical information regarding medications, symptoms, and patient status. Among these, ‘Drug,’ ‘Ascites,’ ‘Hepatomegaly,’ and ‘Spiders’ exhibit missing values.</p></li>
+<li><p><strong>Numerical Variables:</strong> The dataset also contains numerical variables denoted by float64 and int64 data types, encompassing clinical measurements and patient-specific information such as age, laboratory test results, and disease stage. Notably, columns like ‘Cholesterol,’ ‘Copper,’ ‘Alk_Phos,’ ‘SGOT,’ ‘Tryglicerides,’ ‘Platelets,’ ‘Prothrombin,’ and ‘Stage’ display missing values.</p></li>
+</ul></li>
+<li><p><strong>Memory Usage:</strong> The dataset’s memory usage is estimated to be approximately 65.4 KB, reflecting the computational footprint of the dataset in memory.</p></li>
+</ol>
+<p><strong>Data Completeness and Challenges:</strong></p>
+<ul>
+<li>The presence of missing values across various columns warrants attention and necessitates strategies for data imputation or handling missing data during the preprocessing phase.</li>
+</ul>
+<p>This information overview lays the groundwork for comprehensive data exploration, cleaning, and preprocessing steps essential for building robust predictive models in the subsequent sections of this analysis.</p>
+</section>
+<section id="statistical-summary-of-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="statistical-summary-of-the-dataset">Statistical Summary of the Dataset</h3>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">N_Days</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">Bilirubin</th>
+<th data-quarto-table-cell-role="th">Cholesterol</th>
+<th data-quarto-table-cell-role="th">Albumin</th>
+<th data-quarto-table-cell-role="th">Copper</th>
+<th data-quarto-table-cell-role="th">Alk_Phos</th>
+<th data-quarto-table-cell-role="th">SGOT</th>
+<th data-quarto-table-cell-role="th">Tryglicerides</th>
+<th data-quarto-table-cell-role="th">Platelets</th>
+<th data-quarto-table-cell-role="th">Prothrombin</th>
+<th data-quarto-table-cell-role="th">Stage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>418.000000</td>
+<td>418.000000</td>
+<td>418.000000</td>
+<td>284.000000</td>
+<td>418.000000</td>
+<td>310.000000</td>
+<td>312.000000</td>
+<td>312.000000</td>
+<td>282.000000</td>
+<td>407.000000</td>
+<td>416.000000</td>
+<td>412.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>1917.782297</td>
+<td>18533.351675</td>
+<td>3.220813</td>
+<td>369.510563</td>
+<td>3.497440</td>
+<td>97.648387</td>
+<td>1982.655769</td>
+<td>122.556346</td>
+<td>124.702128</td>
+<td>257.024570</td>
+<td>10.731731</td>
+<td>3.024272</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>1104.672992</td>
+<td>3815.845055</td>
+<td>4.407506</td>
+<td>231.944545</td>
+<td>0.424972</td>
+<td>85.613920</td>
+<td>2140.388824</td>
+<td>56.699525</td>
+<td>65.148639</td>
+<td>98.325585</td>
+<td>1.022000</td>
+<td>0.882042</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>41.000000</td>
+<td>9598.000000</td>
+<td>0.300000</td>
+<td>120.000000</td>
+<td>1.960000</td>
+<td>4.000000</td>
+<td>289.000000</td>
+<td>26.350000</td>
+<td>33.000000</td>
+<td>62.000000</td>
+<td>9.000000</td>
+<td>1.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>1092.750000</td>
+<td>15644.500000</td>
+<td>0.800000</td>
+<td>249.500000</td>
+<td>3.242500</td>
+<td>41.250000</td>
+<td>871.500000</td>
+<td>80.600000</td>
+<td>84.250000</td>
+<td>188.500000</td>
+<td>10.000000</td>
+<td>2.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>1730.000000</td>
+<td>18628.000000</td>
+<td>1.400000</td>
+<td>309.500000</td>
+<td>3.530000</td>
+<td>73.000000</td>
+<td>1259.000000</td>
+<td>114.700000</td>
+<td>108.000000</td>
+<td>251.000000</td>
+<td>10.600000</td>
+<td>3.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>2613.500000</td>
+<td>21272.500000</td>
+<td>3.400000</td>
+<td>400.000000</td>
+<td>3.770000</td>
+<td>123.000000</td>
+<td>1980.000000</td>
+<td>151.900000</td>
+<td>151.000000</td>
+<td>318.000000</td>
+<td>11.100000</td>
+<td>4.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>4795.000000</td>
+<td>28650.000000</td>
+<td>28.000000</td>
+<td>1775.000000</td>
+<td>4.640000</td>
+<td>588.000000</td>
+<td>13862.400000</td>
+<td>457.250000</td>
+<td>598.000000</td>
+<td>721.000000</td>
+<td>18.000000</td>
+<td>4.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The <code>train.describe()</code> output provides a comprehensive statistical overview of the numerical columns present in the PBC dataset, offering insights into the central tendencies, dispersion, and distribution of various clinical measurements and patient-specific attributes.</p>
+<p><strong>Key Observations:</strong></p>
+<ol type="1">
+<li><p><strong>Count:</strong> The count for each column signifies the number of non-null entries available for the corresponding attribute. Discrepancies in counts indicate the presence of missing or null values across different features.</p></li>
+<li><p><strong>Central Tendencies:</strong></p>
+<ul>
+<li><p><strong>N_Days (Number of Days):</strong> The average time between registration and events (death, transplantation, or study analysis) is approximately 1917.78 days, with a wide range from 41 days to 4795 days.</p></li>
+<li><p><strong>Age:</strong> The average age in days stands at approximately 18533.35, with a minimum of 9598 days and a maximum of 28650 days, showcasing the wide age range of patients included in the dataset.</p></li>
+<li><p><strong>Clinical Measurements:</strong> Various clinical measurements like bilirubin, cholesterol, albumin, copper, alkaline phosphatase (Alk_Phos), SGOT, triglycerides, platelets, prothrombin, and disease stage (Stage) display different mean values and ranges, indicating diversity in patient conditions and responses to treatment.</p></li>
+</ul></li>
+<li><p><strong>Dispersion:</strong></p>
+<ul>
+<li><strong>Standard Deviation:</strong> The standard deviation illustrates the dispersion or spread of values around the mean for each numerical attribute. Higher standard deviations, as observed in bilirubin, cholesterol, Alk_Phos, SGOT, and others, suggest greater variability in these measurements across patients.</li>
+</ul></li>
+<li><p><strong>Minimum, Maximum, and Quartiles:</strong></p>
+<ul>
+<li><p>The minimum and maximum values signify the range of values observed within each attribute.</p></li>
+<li><p>Quartiles (25%, 50%, and 75%) offer insights into the distribution of values, providing information on the spread of data and potential presence of outliers within each variable.</p></li>
+</ul></li>
+</ol>
+<p><strong>Data Interpretation:</strong></p>
+<ul>
+<li><p>The wide range of values across different clinical measurements and patient-specific attributes underlines the heterogeneity of patient conditions within the PBC dataset.</p></li>
+<li><p>The presence of missing values, particularly notable in columns like ‘Cholesterol,’ ‘Copper,’ ‘Tryglicerides,’ ‘Platelets,’ and ‘Stage,’ indicates the necessity for appropriate handling of missing data during data preprocessing and analysis stages.</p></li>
+</ul>
+<p>This statistical summary lays the foundation for a deeper exploration and analysis of the dataset, guiding further preprocessing, feature engineering, and model development in subsequent sections of the analysis.</p>
+</section>
+<section id="pie-plot-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="pie-plot-analysis">Pie Plot Analysis</h3>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cat_cols <span class="op">=</span> data.drop([<span class="st">"Status"</span>], axis<span class="op">=</span><span class="dv">1</span>).select_dtypes(include<span class="op">=</span><span class="st">'object'</span>).columns.tolist()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> data.select_dtypes(exclude<span class="op">=</span><span class="st">'object'</span>).columns.tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_target(data: pd.DataFrame, col: <span class="bu">str</span>, title: <span class="bu">str</span>, pie_colors: <span class="bu">list</span>, test_df: pd.DataFrame <span class="op">=</span> pd.DataFrame()) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> test_df.empty:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">6</span>), gridspec_kw<span class="op">=</span>{<span class="st">'width_ratios'</span>: [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>]})</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, data <span class="kw">in</span> <span class="bu">enumerate</span>([data, test_df]):</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            textprops<span class="op">=</span>{<span class="st">'fontsize'</span>: <span class="dv">12</span>, <span class="st">'weight'</span>: <span class="st">'bold'</span>, <span class="st">'color'</span>: <span class="st">'black'</span>}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            ax <span class="op">=</span> axes[i <span class="op">*</span> <span class="dv">2</span>]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            ax.pie(data[col].value_counts().to_list(),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                colors<span class="op">=</span>pie_colors,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                labels<span class="op">=</span>data[col].value_counts().index.to_list(),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                autopct<span class="op">=</span><span class="st">'%1.f</span><span class="sc">%%</span><span class="st">'</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                explode<span class="op">=</span>([<span class="fl">.05</span>] <span class="op">*</span> data[col].nunique()),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                pctdistance<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                wedgeprops<span class="op">=</span>{<span class="st">'linewidth'</span>: <span class="dv">1</span>, <span class="st">'edgecolor'</span>: <span class="st">'black'</span>},</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                textprops<span class="op">=</span>textprops)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            sns.countplot(x<span class="op">=</span>col, data<span class="op">=</span>data, palette<span class="op">=</span><span class="st">'pastel6'</span>, hue<span class="op">=</span>col, order<span class="op">=</span>data[col].value_counts().to_dict().keys(), ax<span class="op">=</span>axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>])</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> p, count <span class="kw">in</span> <span class="bu">enumerate</span>(data[col].value_counts().to_dict().values(), <span class="dv">0</span>):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].text(p <span class="op">-</span> <span class="fl">0.1</span>, count <span class="op">+</span> (np.sqrt(count)), count, color<span class="op">=</span><span class="st">'black'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>            plt.setp(axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].get_xticklabels(), fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>            plt.yticks([], ax<span class="op">=</span>axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>])</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>            axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].set_ylabel(<span class="st">''</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>            axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].set_xlabel(<span class="st">''</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># axes[i * 2 + 1].get_legend().remove()</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>            <span class="co"># plt.box(False, ax=axes[i * 2 + 1])</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            axes[i <span class="op">*</span> <span class="dv">2</span>].set_title(<span class="ss">f'Distribution in </span><span class="sc">{</span><span class="st">"Train"</span> <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"Test"</span><span class="sc">}</span><span class="ss"> Set'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        fig.suptitle(x<span class="op">=</span><span class="fl">0.5</span>, y<span class="op">=</span><span class="fl">1.05</span>, t<span class="op">=</span><span class="ss">f'► </span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Distribution ◄'</span>, fontsize<span class="op">=</span><span class="dv">18</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>,figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">6</span>), width_ratios<span class="op">=</span>[<span class="dv">2</span>,<span class="dv">1</span>])</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        textprops<span class="op">=</span>{<span class="st">'fontsize'</span>: <span class="dv">12</span>, <span class="st">'weight'</span>: <span class="st">'bold'</span>,<span class="st">"color"</span>: <span class="st">"black"</span>}</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        ax[<span class="dv">0</span>].pie(data[col].value_counts().to_list(),</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>                colors<span class="op">=</span>pie_colors,</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>                labels<span class="op">=</span>data[col].value_counts().index.to_list(),</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>                autopct<span class="op">=</span><span class="st">'%1.f</span><span class="sc">%%</span><span class="st">'</span>, </span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>                explode<span class="op">=</span>([<span class="fl">.05</span>]<span class="op">*</span>data[col].nunique()),</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>                pctdistance<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>                wedgeprops<span class="op">=</span>{<span class="st">'linewidth'</span> : <span class="dv">1</span>, <span class="st">'edgecolor'</span> : <span class="st">'black'</span>}, </span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>                textprops<span class="op">=</span>textprops)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        sns.countplot(x <span class="op">=</span> col, data<span class="op">=</span>data, palette <span class="op">=</span> <span class="st">"pastel6"</span>, hue<span class="op">=</span>col, order<span class="op">=</span>data[col].value_counts().to_dict().keys())</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> p, count <span class="kw">in</span> <span class="bu">enumerate</span>(data[col].value_counts().to_dict().values(),<span class="dv">0</span>):</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>            ax[<span class="dv">1</span>].text(p<span class="op">-</span><span class="fl">0.1</span>, count<span class="op">+</span>(np.sqrt(count)), count, color<span class="op">=</span><span class="st">'black'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        plt.setp(ax[<span class="dv">1</span>].get_xticklabels(), fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        plt.yticks([])</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        plt.box()</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        fig.suptitle(x<span class="op">=</span><span class="fl">0.56</span>, t<span class="op">=</span><span class="ss">f'► </span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Distribution ◄'</span>, fontsize<span class="op">=</span><span class="dv">18</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>        plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="status-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="status-distribution">Status Distribution</h4>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plot_target(data,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>            col<span class="op">=</span><span class="st">'Status'</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>            title<span class="op">=</span><span class="st">'Status'</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>            pie_colors<span class="op">=</span>[<span class="st">'lightblue'</span>, <span class="st">'lightgreen'</span>, <span class="st">'orange'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The pie chart representing the distribution of patient statuses (‘C’, ‘D’, ‘CL’) revealed the following ratios:</p>
+<ul>
+<li><strong>C (censored):</strong> 56%</li>
+<li><strong>D (death):</strong> 39%</li>
+<li><strong>CL (censored due to liver tx):</strong> 6%</li>
+</ul>
+<p>This distribution indicates that a majority of the patients (56%) had a status of ‘C’ (censored), followed by 39% classified as ‘D’ (death) and a smaller portion, 6%, categorized as ‘CL’ (censored due to liver tx). This insight provides an initial understanding of the imbalance in patient statuses within the dataset.</p>
+</section>
+<section id="categorical-variable-distributions-train-and-test-sets" class="level4">
+<h4 class="anchored" data-anchor-id="categorical-variable-distributions-train-and-test-sets">Categorical Variable Distributions (Train and Test Sets)</h4>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat_col <span class="kw">in</span> cat_cols:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    plot_target(data<span class="op">=</span>data,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                test_df<span class="op">=</span>test_df, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                col<span class="op">=</span>cat_col, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                title<span class="op">=</span>cat_col, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                pie_colors<span class="op">=</span>[<span class="st">'lightblue'</span>, <span class="st">'lightgreen'</span>, <span class="st">'orange'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-8-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-8-output-4.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-8-output-5.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-8-output-6.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Analysis of categorical variable distributions across both the train and test datasets demonstrated highly similar distributions for all categorical columns. These columns, encompassing attributes such as ‘Drug,’ ‘Ascites,’ ‘Hepatomegaly,’ ‘Spiders,’ ‘Edema,’ and others, showcased consistent patterns across both datasets.</p>
+<p>The similarity in distributions suggests that the categorical variables exhibit consistent trends and distributions between the train and test datasets. This consistency is vital when deploying machine learning models trained on the train dataset to make predictions on unseen test data, ensuring that the model generalizes well to new, unseen observations.</p>
+<p>Overall, the plots depicting categorical variable distributions across train and test datasets reveal remarkable coherence, implying a uniform representation of categorical attributes between the datasets.</p>
+</section>
+</section>
+</section>
+<section id="data-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h2>
+<section id="one-hot-encoding-and-data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="one-hot-encoding-and-data-preparation">One-Hot Encoding and Data Preparation</h3>
+<section id="one-hot-encoding-categorical-variables" class="level4">
+<h4 class="anchored" data-anchor-id="one-hot-encoding-categorical-variables">One-Hot Encoding Categorical Variables</h4>
+<p>To facilitate the utilization of categorical variables in machine learning models, a process known as one-hot encoding was applied to the categorical columns present in the primary biliary cirrhosis (PBC) dataset.</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>data_cat <span class="op">=</span> pd.get_dummies(data, columns<span class="op">=</span>cat_cols, drop_first<span class="op">=</span><span class="va">True</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>pd.get_dummies()</code> function from the Pandas library was used to convert categorical variables into numerical representations suitable for model training. This process expanded the categorical columns into binary columns, creating new binary features for each category within the original categorical variables. The <code>drop_first=True</code> parameter was employed to drop the first level of each categorical variable to prevent multicollinearity in the dataset, reducing the risk of introducing redundant information.</p>
+</section>
+<section id="feature-target-splitting" class="level4">
+<h4 class="anchored" data-anchor-id="feature-target-splitting">Feature-Target Splitting</h4>
+<p>Following the one-hot encoding, the dataset was prepared for machine learning modeling by splitting it into feature variables (X) and the target variable (y).</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data_cat.drop([<span class="st">"Status"</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data_cat[<span class="st">"Status"</span>].<span class="bu">map</span>({<span class="st">"C"</span>: <span class="dv">0</span>, <span class="st">"CL"</span>: <span class="dv">1</span>, <span class="st">"D"</span>: <span class="dv">2</span>}).to_numpy().reshape((<span class="op">-</span><span class="dv">1</span>,))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p><strong>Feature Variables (X):</strong> The feature variables (X) were derived by excluding the ‘Status’ column, which serves as the target variable for prediction. These feature variables encompass the encoded categorical attributes and numerical features, ready to be used for training predictive models.</p></li>
+<li><p><strong>Target Variable (y):</strong> The ‘Status’ column was transformed into numerical labels representing the classes ‘C’, ‘CL’, and ‘D’. This transformation was performed using the <code>map()</code> function to assign numerical values (0, 1, 2) to the respective classes. The resulting ‘y’ variable constitutes the target labels for training the machine learning models, enabling the models to learn and predict the patient statuses based on the provided features.</p></li>
+</ul>
+<p>This process of encoding categorical variables and preparing the feature-target split lays the groundwork for subsequent model training and evaluation tasks within the predictive modeling pipeline.</p>
+</section>
+</section>
+<section id="scaling-using-robustscaler" class="level3">
+<h3 class="anchored" data-anchor-id="scaling-using-robustscaler">Scaling using RobustScaler</h3>
+<p>In the realm of data preprocessing, scaling plays a pivotal role in standardizing numerical features, ensuring a level playing field for different attributes that might have varying scales and distributions. For this dataset concerning primary biliary cirrhosis (PBC), employing the RobustScaler technique proves advantageous due to its robustness against outliers.</p>
+<section id="robustscaler-explanation" class="level4">
+<h4 class="anchored" data-anchor-id="robustscaler-explanation">RobustScaler Explanation:</h4>
+<p>RobustScaler is a scaling technique that utilizes robust statistics to scale features. It operates by centering and scaling data based on the interquartile range (IQR). Unlike standard scaling methods (e.g., MinMaxScaler, StandardScaler), RobustScaler relies on the median and the IQR, making it less sensitive to outliers. It scales features by subtracting the median and then dividing by the IQR, effectively reducing the influence of outliers on the scaling process.</p>
+</section>
+<section id="application-of-robustscaler" class="level4">
+<h4 class="anchored" data-anchor-id="application-of-robustscaler">Application of RobustScaler:</h4>
+<p>In the context of the PBC dataset, several numerical attributes such as bilirubin, cholesterol, copper, alkaline phosphatase, SGOT, triglycerides, platelets, prothrombin, and others might exhibit potential outliers due to variations in patient conditions or laboratory measurements. Applying RobustScaler to these features can help normalize their scales, mitigating the impact of outliers and ensuring that the machine learning models are less influenced by extreme values.</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> RobustScaler</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Extracting numerical columns</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> X.select_dtypes(exclude<span class="op">=</span><span class="st">'object'</span>).columns.tolist()</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing RobustScaler</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> RobustScaler()</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Scaling numerical features in the train dataset</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>X[num_cols] <span class="op">=</span> scaler.fit_transform(X[num_cols])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The RobustScaler instance is instantiated and applied to the numerical columns in both the train and test datasets. This process ensures that numerical features are transformed and standardized using robust statistics, contributing to improved model performance and stability.</p>
+</section>
+</section>
+<section id="handling-missing-values-knnimputer" class="level3">
+<h3 class="anchored" data-anchor-id="handling-missing-values-knnimputer">Handling Missing Values: KNNImputer</h3>
+<p>Missing values are a common occurrence in datasets and necessitate careful handling to ensure the integrity and effectiveness of machine learning models. In the context of the primary biliary cirrhosis (PBC) dataset, several columns exhibit missing values across different attributes, requiring an effective strategy for imputation.</p>
+<section id="knnimputer-explanation" class="level4">
+<h4 class="anchored" data-anchor-id="knnimputer-explanation">KNNImputer Explanation:</h4>
+<p>KNNImputer is an imputation technique that leverages the concept of k-nearest neighbors to estimate and fill missing values in a dataset. This imputer calculates the missing values based on the values of neighboring data points (samples) in the dataset. It identifies the k nearest neighbors of each sample with missing features and imputes the missing values by taking the average (or another user-defined function) of those neighbors’ values for the specific feature.</p>
+</section>
+<section id="application-of-knnimputer" class="level4">
+<h4 class="anchored" data-anchor-id="application-of-knnimputer">Application of KNNImputer:</h4>
+<p>Given the complexity and diversity of patient-related attributes in the PBC dataset, utilizing KNNImputer proves beneficial. It accounts for the relationships and similarities between samples, allowing for more informed imputation of missing values. By considering the nearest neighbors, KNNImputer provides a robust strategy for imputing missing values in a dataset with complex patterns and diverse patient profiles.</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.impute <span class="im">import</span> KNNImputer</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing KNNImputer with the desired number of neighbors (n_neighbors)</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>imputer <span class="op">=</span> KNNImputer(n_neighbors<span class="op">=</span><span class="dv">5</span>)</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imputing missing values in the train dataset</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>X_imputed <span class="op">=</span> pd.DataFrame(imputer.fit_transform(X), columns<span class="op">=</span>X.columns)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The KNNImputer instance is initialized with the desired number of neighbors (e.g., 5) and applied to impute missing values in both the train and test datasets. This method leverages the similarities between samples to estimate and fill missing values in the dataset effectively.</p>
+</section>
+</section>
+</section>
+<section id="exploratory-data-analysis-eda" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</h2>
+<section id="correlation-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-analysis">Correlation Analysis</h3>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating correlation matrix</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> pd.concat([X_imputed, pd.DataFrame(y, columns<span class="op">=</span>[<span class="st">"Status"</span>])], axis<span class="op">=</span><span class="dv">1</span>).corr()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting a heatmap to visualize correlations</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>))</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, fmt<span class="op">=</span><span class="st">'.2f'</span>, linewidths<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Heatmap of Features'</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Features'</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Features'</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="cirrhosis_files/figure-html/cell-13-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The correlation heatmap above displays the pairwise correlations between the features present in the Primary Biliary Cirrhosis (PBC) dataset after preprocessing and imputation. Each cell in the heatmap represents the correlation coefficient between two variables, ranging from -1 to 1.</p>
+<p><strong>Interpreting the Heatmap:</strong></p>
+<ul>
+<li><strong>Positive Correlation:</strong> Values closer to 1 indicate a strong positive relationship, implying that as one variable increases, the other tends to increase as well.</li>
+<li><strong>Negative Correlation:</strong> Values closer to -1 signify a strong negative relationship, indicating that as one variable increases, the other tends to decrease.</li>
+<li><strong>Correlation Close to 0:</strong> Values close to 0 suggest a weak or no linear relationship between variables.</li>
+</ul>
+<p><strong>Insights from Correlation Analysis:</strong></p>
+<p>The correlation matrix reveals valuable insights into the relationships between various features and the target variable (‘Status’) in the Primary Biliary Cirrhosis (PBC) dataset. Here are key observations:</p>
+<ul>
+<li><p><strong>Strong Correlations with ‘Status’:</strong></p>
+<ul>
+<li><strong>Bilirubin (0.43):</strong> Exhibits a moderate positive correlation with ‘Status’, indicating a considerable association between higher levels of bilirubin and the patient’s status.</li>
+<li><strong>Albumin (-0.26):</strong> Shows a moderate negative correlation, suggesting that lower levels of albumin might be associated with a deteriorating patient status.</li>
+<li><strong>Copper (0.41):</strong> Demonstrates a significant positive correlation, implying a potential relationship between higher copper levels and a positive patient status.</li>
+</ul></li>
+<li><p><strong>Other Significant Correlations:</strong></p>
+<ul>
+<li><strong>SGOT (0.31):</strong> Shows a moderate positive correlation with ‘Status’, indicating a potential influence on patient status.</li>
+<li><strong>Prothrombin (0.34):</strong> Displays a moderate positive correlation, suggesting a possible impact on the patient’s status.</li>
+<li><strong>Edema_Y (0.25):</strong> Indicates a moderate positive correlation, suggesting a correlation between the presence of edema and patient status.</li>
+</ul></li>
+<li><p><strong>Weak Correlations:</strong></p>
+<ul>
+<li><strong>Age (0.19):</strong> Shows a weak positive correlation with ‘Status’, suggesting a mild association between age and patient status.</li>
+<li><strong>Cholesterol (0.20):</strong> Displays a weak positive correlation with ‘Status’, indicating a subtle relationship.</li>
+</ul></li>
+<li><p><strong>Inverse Correlation:</strong></p>
+<ul>
+<li><strong>Platelets (-0.09):</strong> Exhibits a weak negative correlation, implying a minor association between platelet count and patient status.</li>
+</ul></li>
+</ul>
+<p>These correlation insights provide a preliminary understanding of potential influential factors in predicting the status of PBC patients. However, correlation doesn’t imply causation. Further analysis, such as feature importance determination using machine learning models or domain-specific investigations, is crucial for accurate predictive modeling and clinical interpretations.</p>
+</section>
+</section>
+<section id="model-building" class="level2">
+<h2 class="anchored" data-anchor-id="model-building">Model Building</h2>
+<section id="cross-validation-and-train-test-split" class="level3">
+<h3 class="anchored" data-anchor-id="cross-validation-and-train-test-split">Cross-validation and Train-Test Split</h3>
+<section id="stratified-k-fold-cross-validation" class="level4">
+<h4 class="anchored" data-anchor-id="stratified-k-fold-cross-validation">Stratified K-Fold Cross-Validation</h4>
+<p>Cross-validation is a crucial technique used to assess the performance and generalizability of machine learning models. Stratified K-Fold cross-validation, implemented through <code>StratifiedKFold</code>, is particularly advantageous when working with classification tasks, maintaining the distribution of the target variable’s classes across folds.</p>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split, StratifiedKFold</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing Stratified K-Fold with 5 folds</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this code snippet, the <code>StratifiedKFold</code> object is created with parameters: - <code>n_splits=5</code>: Divides the dataset into 5 folds for cross-validation. - <code>shuffle=True</code>: Shuffles the data before splitting to ensure randomness. - <code>random_state=42</code>: Sets a random seed for reproducibility.</p>
+</section>
+<section id="train-test-split" class="level4">
+<h4 class="anchored" data-anchor-id="train-test-split">Train-Test Split</h4>
+<p>The <code>train_test_split</code> function partitions the dataset into training and testing sets, facilitating model training and evaluation.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Splitting the dataset into training (80%) and testing (20%) sets</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X_imputed, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">3935</span>, stratify<span class="op">=</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, <code>train_test_split</code>:</p>
+<ul>
+<li><code>X_imputed</code> and <code>y</code> are the feature and target variables, respectively.</li>
+<li><code>test_size=0.2</code>: Allocates 20% of the data for testing, leaving 80% for training.</li>
+<li><code>random_state=3935</code>: Sets a specific seed for reproducibility in random sampling.</li>
+<li><code>stratify=y</code>: Ensures that the splitting preserves the proportion of classes in the target variable ‘y’.</li>
+</ul>
+<p>Combining <code>StratifiedKFold</code> for cross-validation and <code>train_test_split</code> for initial training and testing partitions ensures robust model validation and evaluation, contributing to more reliable model performance estimation.</p>
+<p>This approach facilitates both cross-validation to assess model performance across multiple folds and the creation of distinct training and testing sets for initial model training and evaluation.</p>
+</section>
+</section>
+<section id="training-multiple-lightgbm-models-with-cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="training-multiple-lightgbm-models-with-cross-validation">Training Multiple LightGBM Models with Cross-Validation</h3>
+<p>The code snippet demonstrates the training of multiple LightGBM models using <code>StratifiedKFold</code> for cross-validation and evaluating their performance.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> lightgbm <span class="im">as</span> lgb</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> log_loss</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store trained LightGBM models</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>lg_models <span class="op">=</span> []</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the LightGBM model</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'objective'</span>: <span class="st">'multiclass'</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'metric'</span>: <span class="st">'multi_logloss'</span>, </span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: <span class="dv">15</span>, </span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_child_samples'</span>: <span class="dv">13</span>, </span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.05285597081335651</span>, </span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: <span class="dv">284</span>, </span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_child_weight'</span>: <span class="dv">5</span>, </span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: <span class="fl">0.7717873512945741</span>,</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bytree'</span>: <span class="fl">0.10012816493265511</span>, </span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'reg_alpha'</span>: <span class="fl">0.8767668608061822</span>, </span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'reg_lambda'</span>: <span class="fl">0.8705834466355764</span>,</span>
+<span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_state'</span>: <span class="dv">42</span>,</span>
+<span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'verbose'</span>: <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Training multiple LightGBM models using Stratified K-Fold</span></span>
+<span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_idx, val_idx <span class="kw">in</span> skf.split(X_train, y_train):</span>
+<span id="cb16-28"><a href="#cb16-28" aria-hidden="true" tabindex="-1"></a>    LGBModel <span class="op">=</span> lgb.LGBMClassifier(<span class="op">**</span>params)</span>
+<span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>    LGBModel.fit(X_train.iloc[x_idx], y_train[x_idx], eval_set<span class="op">=</span>[(X_train.iloc[val_idx], y_train[val_idx])])</span>
+<span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    lg_models.append(LGBModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Explanation:</p>
+<ul>
+<li><strong><code>lg_models</code>:</strong> This list stores trained LightGBM models.</li>
+<li><strong><code>params</code>:</strong> Represents the hyperparameters configuration for the LightGBM model.</li>
+<li><strong><code>for x_idx, val_idx in skf.split(X_train, y_train):</code></strong> Iterates over the folds generated by Stratified K-Fold.</li>
+<li><strong><code>LGBModel.fit()</code>:</strong> Trains the LightGBM model on the training data using <code>fit()</code> method. The <code>eval_set</code> parameter enables tracking model performance on the validation set during training.</li>
+<li><strong><code>lg_score</code>:</strong> Initializes a variable to store the cumulative log loss across all models.</li>
+<li><strong><code>for i, LGBModel in enumerate(lg_models):</code></strong> Loops through the trained models and evaluates each on the test set using <code>log_loss()</code> function. It prints the log loss for each model.</li>
+</ul>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluating the models on the test set</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, LGBModel <span class="kw">in</span> <span class="bu">enumerate</span>(lg_models):</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> LGBModel.predict_proba(X_test)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Model </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Log Loss: '</span>, log_loss(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 1 Log Loss:  0.7048019339936583
+Model 2 Log Loss:  0.6668449298711905
+Model 3 Log Loss:  0.6558914179839223
+Model 4 Log Loss:  0.67101782116581
+Model 5 Log Loss:  0.7453997236011517</code></pre>
+</div>
+</div>
+<p>The log loss values obtained from the five LightGBM models showcase varying predictive performance. Models 3 and 2 exhibit relatively lower log loss values of 0.656 and 0.667, respectively, suggesting higher predictive accuracy compared to other models. Conversely, Model 5 presents the highest log loss of 0.745, indicating comparatively weaker predictive performance. These divergent log loss values underline differing levels of accuracy and precision across the models, suggesting a need for deeper investigation into the features and parameters influencing their respective performances.</p>
+</section>
+<section id="training-multiple-xgboost-models-with-cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="training-multiple-xgboost-models-with-cross-validation">Training Multiple XGBoost Models with Cross-Validation</h3>
+<p>The following code trains multiple XGBoost models using <code>StratifiedKFold</code> for cross-validation and evaluates their performance using log loss.</p>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store trained XGBoost models</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>xgb_models <span class="op">=</span> []</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the XGBoost model</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span>{</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'objective'</span>: <span class="st">'multiclass'</span>,</span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'metric'</span>: <span class="st">'multi_logloss'</span>,</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: <span class="dv">397</span>,</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: <span class="dv">44</span>,</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_child_weight'</span>: <span class="fl">4.8419409783368215</span>,</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.049792103525168455</span>,</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: <span class="fl">0.7847543051746505</span>,</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'gamma'</span>: <span class="fl">0.4377096783729759</span>,</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bytree'</span>: <span class="fl">0.22414960640035653</span>,</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bylevel'</span>: <span class="fl">0.8173336142032213</span>,</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bynode'</span>: <span class="fl">0.9468109886478254</span>,</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_state'</span>: <span class="dv">42</span>,</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'verbose'</span>: <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Training multiple XGBoost models using Stratified K-Fold</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_idx, val_idx <span class="kw">in</span> skf.split(X_train, y_train):</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>    xgb_model <span class="op">=</span> xgb.XGBClassifier(<span class="op">**</span>params)</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>    xgb_model.fit(X_train.iloc[x_idx], y_train[x_idx], eval_set<span class="op">=</span>[(X_train.iloc[val_idx], y_train[val_idx])], verbose<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>    xgb_models.append(xgb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Explanation:</p>
+<ul>
+<li><strong><code>xgb_models</code>:</strong> This list stores trained XGBoost models.</li>
+<li><strong><code>params</code>:</strong> Represents the hyperparameters configuration for the XGBoost model.</li>
+<li><strong><code>for x_idx, val_idx in skf.split(X_train, y_train):</code></strong> Iterates over the folds generated by Stratified K-Fold.</li>
+<li><strong><code>xgb_model.fit()</code>:</strong> Trains the XGBoost model on the training data using <code>fit()</code> method. The <code>eval_set</code> parameter enables tracking model performance on the validation set during training.</li>
+<li><strong><code>xgb_score</code>:</strong> Initializes a variable to store the cumulative log loss across all models.</li>
+<li><strong><code>for i, xgb_model in enumerate(xgb_models):</code></strong> Loops through the trained models and evaluates each on the test set using <code>log_loss()</code> function. It prints the log loss for each model.</li>
+</ul>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluating the models on the test set</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, xgb_model <span class="kw">in</span> <span class="bu">enumerate</span>(xgb_models):</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> xgb_model.predict_proba(X_test)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Model </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Log Loss: '</span>, log_loss(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 1 Log Loss:  0.6815692319610926
+Model 2 Log Loss:  0.6508326753005506
+Model 3 Log Loss:  0.6568453212687483
+Model 4 Log Loss:  0.6553995987447889
+Model 5 Log Loss:  0.6723285733325526</code></pre>
+</div>
+</div>
+<p>The obtained log loss values from the five XGBoost models reveal varying performance levels. Models 2 and 3 exhibit relatively lower log loss values of approximately 0.651 and 0.657, respectively, indicating higher predictive accuracy compared to the other models. Conversely, Models 1, 4, and 5 present slightly higher log loss values, suggesting relatively weaker predictive performance. These diverse log loss scores indicate differing levels of predictive accuracy across the trained XGBoost models, highlighting potential variations in their learned patterns and the need for further investigation into their individual characteristics to improve overall model performance.</p>
+</section>
+<section id="training-catboost-models-and-evaluating-performance" class="level3">
+<h3 class="anchored" data-anchor-id="training-catboost-models-and-evaluating-performance">Training CatBoost Models and Evaluating Performance</h3>
+<p>The following code trains multiple CatBoost models using Stratified K-Fold cross-validation and assesses their performance using log loss:</p>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> catboost <span class="im">import</span> CatBoostClassifier</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store trained CatBoost models</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>cat_models <span class="op">=</span> []</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the CatBoost model</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'logging_level'</span>: <span class="st">'Silent'</span>, </span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_seed'</span>: <span class="dv">42</span>, </span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'iterations'</span>: <span class="dv">593</span>,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'depth'</span>: <span class="dv">43</span>,</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_data_in_leaf'</span>: <span class="dv">42</span>,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.023456006693305914</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: <span class="fl">0.8018560299887264</span>,</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_strength'</span>: <span class="fl">0.04176274518438195</span>,</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'grow_policy'</span>: <span class="st">'Lossguide'</span>,</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'bootstrap_type'</span> : <span class="st">'Bernoulli'</span>,</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 'bootstrap_type': 'Poisson'</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Training multiple CatBoost models using Stratified K-Fold</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_idx, val_idx <span class="kw">in</span> skf.split(X_train, y_train):</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    cat_model <span class="op">=</span> CatBoostClassifier(<span class="op">**</span>params)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>    cat_model.fit(X<span class="op">=</span>X_train.iloc[x_idx], y<span class="op">=</span>y_train[x_idx], eval_set<span class="op">=</span>[(X_train.iloc[val_idx], y_train[val_idx])])</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    cat_models.append(cat_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Explanation:</p>
+<ul>
+<li><strong><code>cat_models</code>:</strong> This list stores trained CatBoost models.</li>
+<li><strong><code>params</code>:</strong> Represents the hyperparameters configuration for the CatBoost model.</li>
+<li><strong><code>for x_idx, val_idx in skf.split(X_train, y_train):</code></strong> Iterates over the folds generated by Stratified K-Fold.</li>
+<li><strong><code>CatBoostClassifier.fit()</code>:</strong> Trains the CatBoost model on the training data using <code>fit()</code> method. The <code>eval_set</code> parameter enables tracking model performance on the validation set during training.</li>
+<li><strong><code>cat_score</code>:</strong> Initializes a variable to store the cumulative log loss across all CatBoost models.</li>
+<li><strong><code>for i, cat_model in enumerate(cat_models):</code></strong> Loops through the trained models and evaluates each on the test set using <code>log_loss()</code> function. It prints the log loss for each model.</li>
+</ul>
+<p>This section demonstrates the training of multiple CatBoost models using cross-validation and subsequent evaluation of their performance using log loss on the test set. The log loss metric measures the accuracy of the model’s predicted probabilities compared to the true labels. Adjustments to hyperparameters or model evaluation strategies can further refine model performance.</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluating the models on the test set</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, cat_model <span class="kw">in</span> <span class="bu">enumerate</span>(cat_models):</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> cat_model.predict_proba(X_test)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Model </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> Log Loss: '</span>, log_loss(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 1 Log Loss:  0.6411249325455535
+Model 2 Log Loss:  0.6347449226539893
+Model 3 Log Loss:  0.6667271272394244
+Model 4 Log Loss:  0.6372961395542406
+Model 5 Log Loss:  0.6731041546602471</code></pre>
+</div>
+</div>
+<p>The log loss values obtained from the five CatBoost models suggest varying degrees of predictive performance. Model 2 showcases the lowest log loss of 0.635, indicating higher predictive accuracy compared to the other models. Conversely, Model 5 exhibits the highest log loss of 0.673, signifying relatively weaker predictive performance. These divergent log loss values signify differing levels of precision across the models, emphasizing the need for deeper exploration into the models’ attributes, such as hyperparameters or feature importance, to ascertain the factors influencing their respective performances.</p>
+</section>
+<section id="elevating-predictive-power-with-stacked-ensemble-model" class="level3">
+<h3 class="anchored" data-anchor-id="elevating-predictive-power-with-stacked-ensemble-model">Elevating Predictive Power with Stacked Ensemble Model</h3>
+<p>Now, let’s explore the construction of a more robust predictive model through a technique called <strong>Stacking</strong>. Stacking involves combining multiple machine learning models, leveraging their diverse strengths to enhance overall predictive performance. In this section, we’ll build a Stacked Ensemble Model using an MLPClassifier as the final estimator.</p>
+<section id="model-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="model-configuration">Model Configuration:</h4>
+<ul>
+<li><strong>MLPClassifier:</strong> A Multi-layer Perceptron (MLP) neural network with 64 and 32 neurons in its hidden layers, employing the ‘relu’ activation function, ‘adam’ solver, and various hyperparameters for optimization.</li>
+</ul>
+</section>
+<section id="stackingclassifier-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="stackingclassifier-configuration">StackingClassifier Configuration:</h4>
+<ul>
+<li><strong>Estimators:</strong> The StackingClassifier utilizes predictions from previously trained models, including LGBM, XGBoost, and CatBoost.</li>
+<li><strong>Final Estimator:</strong> The final estimator, an MLPClassifier, aggregates predictions from the base models.</li>
+<li><strong>Cross-Validation (cv):</strong> Employing Stratified K-Fold cross-validation ensures robustness in model evaluation and performance estimation.</li>
+</ul>
+</section>
+<section id="implementation" class="level4">
+<h4 class="anchored" data-anchor-id="implementation">Implementation:</h4>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> StackingClassifier</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing an MLPClassifier</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>mlp <span class="op">=</span> MLPClassifier(</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    hidden_layer_sizes<span class="op">=</span>(<span class="dv">64</span>, <span class="dv">32</span>),</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>    max_iter<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    activation<span class="op">=</span><span class="st">'relu'</span>,</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    learning_rate_init<span class="op">=</span><span class="fl">0.001</span>,</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>    solver<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>    validation_fraction<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>    momentum<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>    nesterovs_momentum<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>    beta_1<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>    beta_2<span class="op">=</span><span class="fl">0.999</span></span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a StackingClassifier</span></span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>stacking_model <span class="op">=</span> StackingClassifier(</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>    estimators<span class="op">=</span>[</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'LGBM'</span>, LGBModel),</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'XGB'</span>, xgb_model),</span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'CAT'</span>, cat_model)</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>    final_estimator<span class="op">=</span>mlp,</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>skf</span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting the StackingClassifier on the training data</span></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>stacking_model.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explanation" class="level4">
+<h4 class="anchored" data-anchor-id="explanation">Explanation:</h4>
+<p>The StackingClassifier combines predictions from diverse base models (LGBM, XGBoost, CatBoost) and utilizes an MLPClassifier as the final layer to learn and make predictions based on the diverse outputs. This stacking technique aims to improve predictive accuracy by leveraging the collective knowledge of multiple models, potentially capturing a more nuanced understanding of the data and enhancing overall performance on unseen test data. The model fitting is conducted using the training data, and subsequent predictions are generated for evaluation and assessment of the ensemble model’s effectiveness.</p>
+</section>
+</section>
+</section>
+<section id="model-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
+<section id="evaluating-stacked-ensemble-model-performance" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-stacked-ensemble-model-performance">Evaluating Stacked Ensemble Model Performance</h3>
+<section id="model-evaluation-metrics" class="level4">
+<h4 class="anchored" data-anchor-id="model-evaluation-metrics">Model Evaluation Metrics:</h4>
+<p>To assess the performance of the Stacked Ensemble Model, several evaluation metrics are computed using the model’s predictions on the test dataset.</p>
+</section>
+<section id="evaluation-metrics-computed" class="level4">
+<h4 class="anchored" data-anchor-id="evaluation-metrics-computed">Evaluation Metrics Computed:</h4>
+<ul>
+<li><strong>Log Loss:</strong> A measure of uncertainty in the model’s predictions.</li>
+<li><strong>Accuracy:</strong> Proportion of correctly predicted outcomes.</li>
+<li><strong>Precision:</strong> Measure of the model’s exactness in predicting each class.</li>
+<li><strong>Recall:</strong> Measure of the model’s completeness in capturing each class.</li>
+<li><strong>F1 Score:</strong> Harmonic mean of precision and recall, providing a balanced assessment.</li>
+</ul>
+</section>
+<section id="confusion-matrix-and-classification-report" class="level4">
+<h4 class="anchored" data-anchor-id="confusion-matrix-and-classification-report">Confusion Matrix and Classification Report:</h4>
+<ul>
+<li><strong>Confusion Matrix:</strong> Tabulation of actual vs.&nbsp;predicted class counts, aiding in understanding misclassifications.</li>
+<li><strong>Classification Report:</strong> Detailed summary showcasing precision, recall, F1 score, and support for each class.</li>
+</ul>
+</section>
+<section id="evaluation-process-and-metrics-computation" class="level4">
+<h4 class="anchored" data-anchor-id="evaluation-process-and-metrics-computation">Evaluation Process and Metrics Computation:</h4>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the test data</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> stacking_model.predict_proba(X_test)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>lloss <span class="op">=</span> log_loss(y_test, y_pred)</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Log loss on test data: </span><span class="sc">{</span>lloss<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Round probabilities to get hard predictions</span></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>y_pred_hard <span class="op">=</span> np.argmax(y_pred, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>y_test_hard <span class="op">=</span> y_test</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate and print evaluation metrics</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test_hard, y_pred_hard)</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> precision_score(y_test_hard, y_pred_hard, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> recall_score(y_test_hard, y_pred_hard, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> f1_score(y_test_hard, y_pred_hard, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>conf_matrix <span class="op">=</span> confusion_matrix(y_test_hard, y_pred_hard)</span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-19"><a href="#cb27-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb27-20"><a href="#cb27-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb27-21"><a href="#cb27-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Recall: </span><span class="sc">{</span>recall<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb27-22"><a href="#cb27-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"F1 Score: </span><span class="sc">{</span>f1<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb27-23"><a href="#cb27-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-24"><a href="#cb27-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Print classification report and confusion matrix</span></span>
+<span id="cb27-25"><a href="#cb27-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Classification Report:"</span>)</span>
+<span id="cb27-26"><a href="#cb27-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test_hard, y_pred_hard))</span>
+<span id="cb27-27"><a href="#cb27-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Confusion Matrix:"</span>)</span>
+<span id="cb27-28"><a href="#cb27-28" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(conf_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Log loss on test data: 0.6094441313988819
+Accuracy: 0.7500
+Precision: 0.7648
+Recall: 0.7500
+F1 Score: 0.7345
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.74      0.89      0.81        47
+           1       1.00      0.20      0.33         5
+           2       0.77      0.62      0.69        32
+
+    accuracy                           0.75        84
+   macro avg       0.84      0.57      0.61        84
+weighted avg       0.76      0.75      0.73        84
+
+
+Confusion Matrix:
+[[42  0  5]
+ [ 3  1  1]
+ [12  0 20]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="analysis-of-stacked-ensemble-model-performance" class="level3">
+<h3 class="anchored" data-anchor-id="analysis-of-stacked-ensemble-model-performance">Analysis of Stacked Ensemble Model Performance</h3>
+<p>The evaluation metrics obtained from the Stacked Ensemble Model’s predictions on the test dataset are instrumental in understanding its performance.</p>
+<section id="insights-from-evaluation-metrics" class="level4">
+<h4 class="anchored" data-anchor-id="insights-from-evaluation-metrics">Insights from Evaluation Metrics:</h4>
+<ul>
+<li><p><strong>Log Loss:</strong> The model’s log loss of 0.6094 indicates moderate uncertainty in its predictions, with lower values being desirable.</p></li>
+<li><p><strong>Accuracy (0.7500):</strong> The model accurately predicted 75% of instances in the test dataset.</p></li>
+<li><p><strong>Precision (0.7648):</strong> The precision score of 0.7648 suggests that when the model predicts a certain class, it is correct approximately 76.48% of the time on average across all classes.</p></li>
+<li><p><strong>Recall (0.7500):</strong> The recall score of 0.7500 indicates that the model identified 75% of all actual instances for each class.</p></li>
+<li><p><strong>F1 Score (0.7345):</strong> The F1 score, at 0.7345, demonstrates the harmonic mean of precision and recall, reflecting the model’s balance between these metrics.</p></li>
+</ul>
+</section>
+<section id="detailed-class-wise-performance" class="level4">
+<h4 class="anchored" data-anchor-id="detailed-class-wise-performance">Detailed Class-wise Performance:</h4>
+<p>The classification report and confusion matrix offer insights into the model’s performance for each class:</p>
+<section id="class-0" class="level5">
+<h5 class="anchored" data-anchor-id="class-0">Class 0:</h5>
+<ul>
+<li><strong>Precision (0.74):</strong> The model achieved 74% precision in correctly identifying instances of Class 0.</li>
+<li><strong>Recall (0.89):</strong> It captured 89% of all actual instances of Class 0.</li>
+<li><strong>F1 Score (0.81):</strong> The harmonic mean of precision and recall for Class 0 is 0.81.</li>
+</ul>
+</section>
+<section id="class-1" class="level5">
+<h5 class="anchored" data-anchor-id="class-1">Class 1:</h5>
+<ul>
+<li><strong>Precision (1.00):</strong> Perfect precision was observed for Class 1, albeit from a relatively small number of instances.</li>
+<li><strong>Recall (0.20):</strong> The recall score for Class 1 is lower, capturing only 20% of all actual instances.</li>
+</ul>
+</section>
+<section id="class-2" class="level5">
+<h5 class="anchored" data-anchor-id="class-2">Class 2:</h5>
+<ul>
+<li><strong>Precision (0.77):</strong> The model exhibited 77% precision in predicting instances of Class 2.</li>
+<li><strong>Recall (0.62):</strong> It captured 62% of all actual instances of Class 2.</li>
+<li><strong>F1 Score (0.69):</strong> The F1 score for Class 2, at 0.69, signifies a balance between precision and recall.</li>
+</ul>
+</section>
+</section>
+<section id="overall-summary" class="level4">
+<h4 class="anchored" data-anchor-id="overall-summary">Overall Summary:</h4>
+<p>The model performed relatively well in identifying instances of Class 0, showcasing strong precision and recall. However, for Classes 1 and 2, while precision was moderate, recall varied, indicating room for improvement, especially in identifying Class 1 instances.</p>
+<p>The confusion matrix illustrates specific misclassifications between classes, aiding in understanding where the model struggles and excels. This analysis helps identify the model’s strengths and areas that require further refinement for more robust predictions.</p>
+</section>
+</section>
+</section>
+<section id="conclusion-and-future-steps" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-and-future-steps">Conclusion and Future Steps</h2>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>The Stacked Ensemble Model exhibited promising performance in predicting classes across the dataset. It achieved an overall accuracy of 75%, demonstrating a fair ability to classify instances into their respective classes. However, a closer examination reveals areas for enhancement.</p>
+</section>
+<section id="key-findings" class="level3">
+<h3 class="anchored" data-anchor-id="key-findings">Key Findings</h3>
+<ul>
+<li><strong>Performance Variability:</strong> The model showcased strong precision and recall for Class 0, while Classes 1 and 2 demonstrated varying results, particularly lower recall in Class 1.</li>
+<li><strong>Log Loss:</strong> The moderate log loss of 0.6094 suggests room for improvement in reducing prediction uncertainty.</li>
+</ul>
+</section>
+<section id="insights-for-improvement" class="level3">
+<h3 class="anchored" data-anchor-id="insights-for-improvement">Insights for Improvement</h3>
+<ol type="1">
+<li><p><strong>Class Imbalance Handling:</strong> Addressing class imbalances, especially for Class 1, could enhance the model’s ability to recognize these instances more accurately.</p></li>
+<li><p><strong>Model Tuning:</strong> Further optimization of hyperparameters, especially related to individual base learners and the final stacked model, may refine its predictive capabilities.</p></li>
+<li><p><strong>Feature Engineering:</strong> Exploring additional features or engineering existing ones might offer a deeper understanding of the data, potentially leading to improved model performance.</p></li>
+</ol>
+</section>
+<section id="future-steps" class="level3">
+<h3 class="anchored" data-anchor-id="future-steps">Future Steps</h3>
+<ol type="1">
+<li><p><strong>Fine-Tuning Hyperparameters:</strong> Conduct more extensive hyperparameter tuning to seek better combinations that enhance the model’s performance across all classes.</p></li>
+<li><p><strong>Feature Enhancement:</strong> Engage in thorough feature analysis and engineering to uncover more informative features or transformations that can contribute positively to the model’s predictive power.</p></li>
+<li><p><strong>Ensemble Diversification:</strong> Experiment with diverse base models or ensemble techniques to enhance the model’s diversity and, consequently, its overall predictive ability.</p></li>
+<li><p><strong>Robust Validation:</strong> Consider employing additional cross-validation strategies or validation techniques to validate the model’s consistency and generalization.</p></li>
+<li><p><strong>Model Interpretation:</strong> Explore methods to interpret the model’s decisions, aiding in understanding its behavior and potentially identifying areas for improvement.</p></li>
+</ol>
+</section>
+<section id="final-note" class="level3">
+<h3 class="anchored" data-anchor-id="final-note">Final Note</h3>
+<p>Continued refinement and exploration of advanced techniques are vital for enhancing the model’s predictive performance. By addressing the identified areas for improvement and leveraging sophisticated methodologies, the model can evolve into a more robust and accurate predictor, proving invaluable in various real-world applications.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pages/Probabilistic_PCA.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Probabilistic PCA</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+</body></html>
