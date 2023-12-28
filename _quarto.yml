@@ -60,6 +60,12 @@ website:
         contents:
           - href: ./pages/accuracy.ipynb
             text: Accuracy
+          - href: ./pages/f1.ipynb
+            text: F1 Score
+          - href: ./pages/recall.ipynb
+            text: Recall
+          - href: ./pages/precision.ipynb
+            text: Precision
           - href: ./pages/roc.ipynb
             text: ROC-AUC
       - section: "Special Topics in ML"

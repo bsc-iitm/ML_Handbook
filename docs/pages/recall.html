@@ -6,9 +6,9 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="Vivek Sivaramakrishnan">
+<meta name="author" content="Alape Aniruddha">
 
-<title>ML Handbook - Ordinal Classification</title>
+<title>ML Handbook - Recall in Classification Metrics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -64,8 +64,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../pages/EM_Algorithm.html" rel="next">
-<link href="../pages/Inductive_Bias.html" rel="prev">
+<link href="../pages/precision.html" rel="next">
+<link href="../pages/f1.html" rel="prev">
 <link href="../images/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -116,9 +116,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </script>
   <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
-<meta property="og:title" content="ML Handbook - Ordinal Classification">
+<meta property="og:title" content="ML Handbook - Recall in Classification Metrics">
 <meta property="og:description" content="">
+<meta property="og:image" content="https://bsc-iitm.github.io/ML_Handbook/pages/recall_files/figure-html/cell-4-output-2.png">
 <meta property="og:site-name" content="ML Handbook">
+<meta property="og:image:height" content="432">
+<meta property="og:image:width" content="498">
 </head>
 
 <body class="nav-sidebar docked">
@@ -130,7 +133,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/Inductive_Bias.html">Special Topics in ML</a></li><li class="breadcrumb-item"><a href="../pages/Ordinal_Classification.html">Ordinal Classification</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/accuracy.html">Evaluation Metrics</a></li><li class="breadcrumb-item"><a href="../pages/recall.html">Recall</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -253,13 +256,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true">
  <span class="menu-text">Evaluation Metrics</span></a>
-          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/accuracy.html" class="sidebar-item-text sidebar-link">
@@ -274,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/recall.html" class="sidebar-item-text sidebar-link">
+  <a href="../pages/recall.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Recall</span></a>
   </div>
 </li>
@@ -294,13 +297,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
  <span class="menu-text">Special Topics in ML</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../pages/Inductive_Bias.html" class="sidebar-item-text sidebar-link">
@@ -309,7 +312,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../pages/Ordinal_Classification.html" class="sidebar-item-text sidebar-link active">
+  <a href="../pages/Ordinal_Classification.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Ordinal Classification</span></a>
   </div>
 </li>
@@ -354,29 +357,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#ordinal-measurement" id="toc-ordinal-measurement" class="nav-link active" data-scroll-target="#ordinal-measurement">Ordinal Measurement</a></li>
-  <li><a href="#regression-assumption" id="toc-regression-assumption" class="nav-link" data-scroll-target="#regression-assumption">Regression Assumption</a>
-  <ul class="collapse">
-  <li><a href="#synthetic-data-creation" id="toc-synthetic-data-creation" class="nav-link" data-scroll-target="#synthetic-data-creation">Synthetic Data Creation</a></li>
-  </ul></li>
-  <li><a href="#ovr-approach" id="toc-ovr-approach" class="nav-link" data-scroll-target="#ovr-approach">OvR approach</a>
-  <ul class="collapse">
-  <li><a href="#can-we-do-better" id="toc-can-we-do-better" class="nav-link" data-scroll-target="#can-we-do-better">Can we do better?</a></li>
-  </ul></li>
-  <li><a href="#ordinal-classification-scheme" id="toc-ordinal-classification-scheme" class="nav-link" data-scroll-target="#ordinal-classification-scheme">Ordinal Classification Scheme</a>
-  <ul class="collapse">
-  <li><a href="#how-to-predict" id="toc-how-to-predict" class="nav-link" data-scroll-target="#how-to-predict">How to predict?</a></li>
-  </ul></li>
-  <li><a href="#one-hot-encoding-bias-term---another-approach" id="toc-one-hot-encoding-bias-term---another-approach" class="nav-link" data-scroll-target="#one-hot-encoding-bias-term---another-approach">One Hot Encoding Bias Term - Another approach</a></li>
+  <li><a href="#calculating-recall-for-binary-classification-problems" id="toc-calculating-recall-for-binary-classification-problems" class="nav-link active" data-scroll-target="#calculating-recall-for-binary-classification-problems">Calculating Recall for Binary Classification Problems</a></li>
+  <li><a href="#where-can-recall-be-used" id="toc-where-can-recall-be-used" class="nav-link" data-scroll-target="#where-can-recall-be-used">Where can Recall be used?</a></li>
+  <li><a href="#recall-in-sklearn" id="toc-recall-in-sklearn" class="nav-link" data-scroll-target="#recall-in-sklearn">Recall in sklearn</a></li>
+  <li><a href="#recall-on-a-real-world-dataset" id="toc-recall-on-a-real-world-dataset" class="nav-link" data-scroll-target="#recall-on-a-real-world-dataset">Recall on a real-world dataset</a></li>
   </ul>
-<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/Ordinal_Classification.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/recall.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Ordinal Classification</h1>
+<h1 class="title">Recall in Classification Metrics</h1>
 </div>
 
 
@@ -386,7 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Author</div>
     <div class="quarto-title-meta-contents">
-             <p>Vivek Sivaramakrishnan </p>
+             <p>Alape Aniruddha </p>
           </div>
   </div>
     
@@ -397,251 +390,83 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Colab Link: <a href="https://colab.research.google.com/drive/1sjVezMTcf4xjVKLS5YxDBAD3Nmq96YHI?usp=sharing" target="_blank">Click here!</a></p>
-<section id="ordinal-measurement" class="level1">
-<h1>Ordinal Measurement</h1>
-<p>Let <span class="math inline">Y^*</span> be the ordinal variable (with <span class="math inline">J</span> classes) we want to predict. We denote <span class="math inline">Y^*</span> in terms of the latent continuous variable <span class="math inline">Y</span> and <em>cutpoints</em> <span class="math inline">\alpha_0, \alpha_1, ..., \alpha_J</span> as follows <span class="math display">
-\begin{align*}
-Y^* &amp;= j \; \text{if} \; \alpha_{j-1} \le Y&lt; \alpha_j \\
-&amp;(j = 1, ..., J)
-\end{align*}
-</span></p>
+<p>Recall, also known as sensitivity or true positive rate, is a classification metric that measures the ability of a model to capture all instances of the positive class. It is defined as the ratio of true positives to the sum of true positives and false negatives.</p>
+<p><span class="math display">\displaystyle \text{Recall} = \frac{\text{True Positives}}{\text{True Positives + False Negatives}}</span></p>
+<p>Recall is particularly important in situations where missing positive instances is costly.</p>
+<section id="calculating-recall-for-binary-classification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-recall-for-binary-classification-problems">Calculating Recall for Binary Classification Problems</h2>
+<p><span class="math display">\displaystyle \text{Recall} = \frac{\text{TP}}{\text{TP + FN}}</span></p>
+<p>Where, TP = True Positives FN = False Negatives</p>
 </section>
-<section id="regression-assumption" class="level1">
-<h1>Regression Assumption</h1>
-<p>We model latent variable <span class="math inline">Y</span> as follows:</p>
-<p><span class="math display">
-Y = \beta X + ϵ
-</span></p>
-<p>where <span class="math inline">\beta</span> us our slope parameter that needs to be estimated, and <span class="math inline">ϵ</span> a randomly distributed error uncorrelated with X (0 mean) with variance 1.</p>
-<section id="synthetic-data-creation" class="level2">
-<h2 class="anchored" data-anchor-id="synthetic-data-creation">Synthetic Data Creation</h2>
-<p>We will consider an ordinal classification problem with 4 classes. We randomly sample 1000 points from a standard normal distribution. We fix <span class="math inline">\beta = \begin{pmatrix} -1 \\ 1 \end{pmatrix}</span>, and cutpoints <span class="math inline">\alpha_0 = -\infty, \alpha_1 = -2, \alpha_2 = -1, \alpha_3 = 2, \alpha_4 = \infty</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">69</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.random.normal(scale<span class="op">=</span><span class="dv">1</span>, size<span class="op">=</span>(<span class="dv">1000</span>, <span class="dv">2</span>))</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> np.array([<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>])</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>cutpoints <span class="op">=</span> np.array([<span class="op">-</span>np.inf, <span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>, np.inf])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> X<span class="op">@</span>beta</span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> ordify(cutpoints):</span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="kw">def</span> hlo(x):</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(cutpoints)<span class="op">-</span><span class="dv">1</span>):</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>      <span class="cf">if</span> cutpoints[i] <span class="op">&lt;=</span> x <span class="op">&lt;</span> cutpoints[i<span class="op">+</span><span class="dv">1</span>]:</span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> i<span class="op">+</span><span class="dv">1</span></span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> hlo</span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>ordinate <span class="op">=</span> ordify(cutpoints)</span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>Y_ord <span class="op">=</span> np.array([ordinate(i) <span class="cf">for</span> i <span class="kw">in</span> Y])</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="co"># X_train, X_test, y_train, y_test = train_test_split(X, Y_ord, test_size=0.33, random_state=42)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
+<section id="where-can-recall-be-used" class="level2">
+<h2 class="anchored" data-anchor-id="where-can-recall-be-used">Where can Recall be used?</h2>
+<p>Recall is a useful metric when missing positive instances is more critical then incorrectly classifying negative instances. - Consider the case of disease diagnosis. If the patient has the disease(positive) and our model predicts it as negative, then our model has failed to detect the disease and this can have crucial consequences. - In Fraud detection, if the primary objective is to capture as many fraudulent transactions as possible even at the cost of flagging legitimate transactions as fraud. If our model predicts fradulent transaction as legitimate, this increases the value of False Negatives thereby reducing the value of recall</p>
 </section>
-</section>
-<section id="ovr-approach" class="level1">
-<h1>OvR approach</h1>
-<p>We will fit a LR model using the one-vs-rest approach, which just considers our target to be a Nominal variable, and trains 4 classifiers.</p>
-<div class="cell" data-outputid="f2b2769b-a010-4d87-b0ae-4acf32c27364">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>OvR_LR <span class="op">=</span> LogisticRegression(multi_class<span class="op">=</span><span class="st">'ovr'</span>).fit(X, Y_ord)</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>OvR_LR.score(X, Y_ord)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="134">
-<pre><code>0.797</code></pre>
-</div>
-</div>
-<div class="cell" data-outputid="4d67b446-de75-4c07-ecde-600fc5b3030f">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Beta estimates and biases'</span>)</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(OvR_LR.coef_)):</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  x <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">*</span> OvR_LR.coef_[i][<span class="dv">0</span>]</span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="bu">print</span>(OvR_LR.coef_[i]<span class="op">/</span>x, OvR_LR.intercept_[i]<span class="op">/</span>x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Beta estimates and biases
-[-1.          1.02454387] 2.1044752205291597
-[-1.          1.07017873] 2.088226413125316
-[-1.          1.33242037] 1.5887705536936128
-[-1.          0.97466832] -2.050381104615722</code></pre>
-</div>
-</div>
-<section id="can-we-do-better" class="level3">
-<h3 class="anchored" data-anchor-id="can-we-do-better">Can we do better?</h3>
-<p>We see that by converting to a Nominal approach we are losing out on some data - namely, the ordering present within the target variables themselves.</p>
-<p>Is there any way to capture this ordering, while not impacting the underlying learning scheme (LR in this case)?</p>
-</section>
-</section>
-<section id="ordinal-classification-scheme" class="level1">
-<h1>Ordinal Classification Scheme</h1>
-<p>We can construct <span class="math inline">K-1</span> new variables for an observed datapoint <span class="math inline">x_i</span> (with corresponding class <span class="math inline">y_i</span>) in the following manner (Ex with K=4):</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Condition</th>
-<th><span class="math inline">N_1</span></th>
-<th><span class="math inline">N_2</span></th>
-<th><span class="math inline">N_3</span></th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">\text{if } y_i = 1</span></td>
-<td>0</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\text{if } y_i = 2</span></td>
-<td>1</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">\text{if } y_i = 3</span></td>
-<td>1</td>
-<td>1</td>
-<td>0</td>
-</tr>
-<tr class="even">
-<td><span class="math inline">\text{if } y_i = 4</span></td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>In other words, generate for <span class="math inline">i = 1, 2, \cdots, K-1</span> <span class="math display">N_i = \mathbb{1}(y_1 &gt; i)</span></p>
-<p>We then construct <span class="math inline">K-1</span> binary classification problems, where the target of the <span class="math inline">i</span>th problem is <span class="math inline">N_i</span>. We can go ahead and train <span class="math inline">K-1</span> classifiers using our preferred learning scheme.</p>
-<section id="how-to-predict" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-predict">How to predict?</h2>
-<p>For a validation datapoint <span class="math inline">x_i</span>, use the trained models to calculate estimates <span class="math inline">\hat{N_i} \text{ for } i = 1, 2, \cdots, K-1</span>. We then use these to calculate probabilities of each class as follows:</p>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Class</th>
-<th>Probability</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><span class="math inline">1</span></td>
-<td><span class="math inline">1 - \hat{N_1}</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">2</span></td>
-<td><span class="math inline">\hat{N_1} - \hat{N_2}</span></td>
-</tr>
-<tr class="odd">
-<td><span class="math inline">i</span></td>
-<td><span class="math inline">\hat{N_{i-1}} - \hat{N_i}</span></td>
-</tr>
-<tr class="even">
-<td><span class="math inline">K-1</span></td>
-<td><span class="math inline">\hat{N_{K-1}}</span></td>
-</tr>
-</tbody>
-</table>
-<p>The first and last class probabilites are from a single classifier, where as the others are the difference of the outputs from a pair of <em>consecutive</em> (w.r.t <span class="math inline">i</span>) classifiers.</p>
-<p>Note that <span class="math inline">\hat{N_i} = \text{Pr}(y_i &gt; i)</span>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.base <span class="im">import</span> clone, BaseEstimator, ClassifierMixin</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils.validation <span class="im">import</span> check_X_y, check_is_fitted, check_array</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.utils.multiclass <span class="im">import</span> check_classification_targets</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> OrdinalClassifier(BaseEstimator, ClassifierMixin):</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>,learner):</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.learner <span class="op">=</span> learner</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.ordered_learners <span class="op">=</span> <span class="bu">dict</span>()</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.classes <span class="op">=</span> []</span>
-<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>,X,y):</span>
-<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>        <span class="va">self</span>.classes <span class="op">=</span> np.sort(np.unique(y))</span>
-<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>        <span class="cf">assert</span> <span class="va">self</span>.classes.shape[<span class="dv">0</span>] <span class="op">&gt;=</span> <span class="dv">3</span>, <span class="ss">f'OrdinalClassifier needs at least 3 classes, only </span><span class="sc">{</span><span class="va">self</span><span class="sc">.</span>classes<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> found'</span></span>
-<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="va">self</span>.classes.shape[<span class="dv">0</span>]<span class="op">-</span><span class="dv">1</span>):</span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>            N_i <span class="op">=</span> np.vectorize(<span class="bu">int</span>)(y <span class="op">&gt;</span> <span class="va">self</span>.classes[i])</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>            learner <span class="op">=</span> clone(<span class="va">self</span>.learner).fit(X,N_i)</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.ordered_learners[i] <span class="op">=</span> learner</span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict(<span class="va">self</span>,X):</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> np.vectorize(<span class="kw">lambda</span> i: <span class="va">self</span>.classes[i])(np.argmax(<span class="va">self</span>.predict_proba(X), axis<span class="op">=</span><span class="dv">1</span>))</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> predict_proba(<span class="va">self</span>,X):</span>
-<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        predicted <span class="op">=</span> [<span class="va">self</span>.ordered_learners[k].predict_proba(X)[:,<span class="dv">1</span>].reshape(<span class="op">-</span><span class="dv">1</span>,<span class="dv">1</span>) <span class="cf">for</span> k <span class="kw">in</span> <span class="va">self</span>.ordered_learners]</span>
-<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>        N_1 <span class="op">=</span> <span class="dv">1</span><span class="op">-</span>predicted[<span class="dv">0</span>]</span>
-<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>        N_K  <span class="op">=</span> predicted[<span class="op">-</span><span class="dv">1</span>]</span>
-<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>        N_i<span class="op">=</span> [predicted[i] <span class="op">-</span> predicted[i<span class="op">+</span><span class="dv">1</span>] <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(predicted) <span class="op">-</span> <span class="dv">1</span>)]</span>
-<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>        probs <span class="op">=</span> np.hstack([N_1, <span class="op">*</span>N_i, N_K])</span>
-<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> probs</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-outputid="8fec8805-cd29-4885-a2bb-d97f05ebcdd6">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LogisticRegression</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> OrdinalClassifier(LogisticRegression())</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>model.fit(X, Y_ord)</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>model.score(X, Y_ord)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="25">
-<pre><code>0.975</code></pre>
+<section id="recall-in-sklearn" class="level2">
+<h2 class="anchored" data-anchor-id="recall-in-sklearn">Recall in sklearn</h2>
+<p><a href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.recall_score.html"><code>recall_score</code></a> is the function in scikit-learn used to calculate recall.</p>
+<p>The parameters are as follows:</p>
+<ul>
+<li><code>y_true</code>: Ground truth (correct) labels.</li>
+<li><code>y_pred</code>: Predicted labels, as returned by a classifier.</li>
+<li><code>labels</code> (None): The set of labels to include when <code>average</code> is not None.</li>
+<li><code>pos_label</code> (1): The label of the positive class.</li>
+<li><code>average</code> (‘binary’): The averaging strategy for multiclass settings.</li>
+<li><code>sample_weight</code> (None): Sample weights.</li>
+</ul>
+<div class="cell" data-outputid="f616bc58-e0fa-43ec-f227-d77d658856e8">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> recall_score</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>recall_score(y_true, y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<pre><code>0.75</code></pre>
 </div>
 </div>
 </section>
-</section>
-<section id="one-hot-encoding-bias-term---another-approach" class="level1">
-<h1>One Hot Encoding Bias Term - Another approach</h1>
-<p>We construct a dataset similar to the above, but one-hot encode biases based on the true-class; this enables our estimate for <span class="math inline">\beta</span> to be more closer to the actual (due to large sample size)</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> encoder(X, Y):</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  segments <span class="op">=</span> []</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  segments_y <span class="op">=</span> []</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  n, J <span class="op">=</span> <span class="bu">len</span>(X), <span class="bu">max</span>(Y)</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, J):</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    segment <span class="op">=</span> np.hstack((np.zeros((n, J<span class="op">-</span><span class="dv">1</span>)), X))</span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>    segment[:, i<span class="op">-</span><span class="dv">1</span>] <span class="op">=</span> <span class="op">-</span><span class="dv">1</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>    segments.append(segment)</span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    segments_y.append(np.vectorize(<span class="bu">int</span>)(Y<span class="op">&gt;</span>i))</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> (np.vstack(segments), np.hstack(segments_y))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell" data-outputid="9b989574-4135-48f8-e0f7-7dcc548157dc">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>X_e, y_e <span class="op">=</span> encoder(X, Y_ord)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>OE_LR <span class="op">=</span> LogisticRegression(fit_intercept<span class="op">=</span><span class="va">False</span>).fit(X_e, y_e)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Bias (first 3 terms) and beta (rest) estimates'</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(OE_LR.coef_[<span class="dv">0</span>]<span class="op">/</span>(<span class="op">-</span><span class="dv">1</span><span class="op">*</span>OE_LR.coef_[<span class="dv">0</span>][<span class="op">-</span><span class="dv">2</span>]))</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>a1, a2, a3, b1, b2 <span class="op">=</span> OE_LR.coef_[<span class="dv">0</span>]<span class="op">/</span>(<span class="op">-</span><span class="dv">1</span><span class="op">*</span>OE_LR.coef_[<span class="dv">0</span>][<span class="op">-</span><span class="dv">2</span>])</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>beta_pred <span class="op">=</span> np.array([b1, b2])</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>cutpoints_pred <span class="op">=</span> np.array([<span class="op">-</span>np.inf, a1, a2, a3, np.inf])</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>ordinate <span class="op">=</span> ordify(cutpoints_pred)</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> np.array([ordinate(i) <span class="cf">for</span> i <span class="kw">in</span> X<span class="op">@</span>beta_pred])</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(accuracy_score(Y_ord, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Bias (first 3 terms) and beta (rest) estimates
-[-2.04249489 -1.03041969  2.02754915 -1.          1.01914656]
-0.99</code></pre>
+<section id="recall-on-a-real-world-dataset" class="level2">
+<h2 class="anchored" data-anchor-id="recall-on-a-real-world-dataset">Recall on a real-world dataset</h2>
+<p>We are going to calculate the recall of a decision tree classifier model on the breast_cancer dataset using sklearn.</p>
+<div class="cell" data-outputid="88ab3411-19b0-4901-9a6d-ecf9f879e839">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.datasets <span class="im">import</span> load_breast_cancer</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.tree <span class="im">import</span> DecisionTreeClassifier</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>X, y <span class="op">=</span> load_breast_cancer(return_X_y<span class="op">=</span><span class="va">True</span>, as_frame<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> DecisionTreeClassifier()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>recall_score(y_test, y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="2">
+<pre><code>0.9325842696629213</code></pre>
 </div>
 </div>
+<div class="cell" data-outputid="00a22736-3be2-4325-ab0c-a3c59d2567ab">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_estimator(model, X_test, y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7987c534c670&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="recall_files/figure-html/cell-4-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>In the above matrix, we can see that: TP = 83, TN = 51, FP = 3, FN = 6</p>
+<span class="math display">\begin{aligned}
+{\displaystyle \text{Recall}} &amp; ={\displaystyle \frac{\text{TP}}{\text{TP} + \text{FN}}}\\
+&amp; \\
+&amp; {\displaystyle =\frac{\text{83}}{\text{83 + 6}}}\\
+&amp; \\
+&amp; {\displaystyle =\ \frac{\text{83}}{\text{89}}}\\
+&amp; \\
+&amp; {\displaystyle =\ 0.9325}
+\end{aligned}</span>
 
 
 </section>
@@ -997,13 +822,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../pages/Inductive_Bias.html" class="pagination-link">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Inductive Bias</span>
+      <a href="../pages/f1.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">F1 Score</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../pages/EM_Algorithm.html" class="pagination-link">
-        <span class="nav-page-text">EM Algorithm</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../pages/precision.html" class="pagination-link">
+        <span class="nav-page-text">Precision</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../pages/roc.html" rel="next">
+<link href="../pages/f1.html" rel="next">
 <link href="../pages/vis2.html" rel="prev">
 <link href="../images/logo.png" rel="icon" type="image/png">
 <script src="../site_libs/quarto-html/quarto.js"></script>
@@ -118,7 +118,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <meta property="og:title" content="ML Handbook - Accuracy">
 <meta property="og:description" content="">
+<meta property="og:image" content="https://bsc-iitm.github.io/ML_Handbook/pages/accuracy_files/figure-html/cell-9-output-2.png">
 <meta property="og:site-name" content="ML Handbook">
+<meta property="og:image:height" content="432">
+<meta property="og:image:width" content="498">
 </head>
 
 <body class="nav-sidebar docked">
@@ -268,6 +271,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../pages/f1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">F1 Score</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/recall.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Recall</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/precision.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precision</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../pages/roc.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">ROC-AUC</span></a>
   </div>
@@ -408,30 +429,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>normalize (True) : If False, return the number of correctly classified samples. Otherwise, return the fraction of correctly classified samples.</li>
 <li>sample_weight (None) : Sample weights.</li>
 </ul>
-<div class="cell" data-outputid="bb80ed77-b666-407b-b92c-e9ae4bc4e577">
+<div class="cell" data-outputid="5da041ec-c006-4b22-bf15-dd6d4ebadecb">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">3</span>]</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>y_true <span class="op">=</span> [<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_true, y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="41">
+<div class="cell-output cell-output-display" data-execution_count="1">
 <pre><code>0.5</code></pre>
 </div>
 </div>
-<div class="cell" data-outputid="c25c50e5-e442-4ab8-f6ca-5b2af82ce99f">
+<div class="cell" data-outputid="c18e8b09-5182-4b1f-e089-05a82fd9031b">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#normalize=False gives the count of correctly classified samples</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_true, y_pred, normalize<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="42">
+<div class="cell-output cell-output-display" data-execution_count="2">
 <pre><code>2</code></pre>
 </div>
 </div>
-<div class="cell" data-outputid="be04fa80-3d0e-4684-882d-ab7479baf6b7">
+<div class="cell" data-outputid="824a01f3-768f-43d9-be8b-2f3571211882">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Sample weights can be varied for each point</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_true, y_pred, sample_weight<span class="op">=</span>[<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="43">
+<div class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>1.0</code></pre>
 </div>
 </div>
@@ -452,38 +473,59 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(X, y, test_size<span class="op">=</span><span class="fl">0.25</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-outputid="2b3f6d9c-3d38-49d3-d08e-cdf25b21bed6">
+<div class="cell" data-outputid="03e90e9f-7ce7-47c4-c423-6047b4d989ec">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> KNeighborsClassifier()</span>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>model.fit(X_train,y_train)</span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>model.score(X_test,y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="45">
+<div class="cell-output cell-output-display" data-execution_count="6">
 <pre><code>0.965034965034965</code></pre>
 </div>
 </div>
-<div class="cell" data-outputid="e33a12c0-fb85-4f57-e529-459e7eb73380">
+<div class="cell" data-outputid="7e4db9a7-eb0d-4656-d560-1a34af5d8c14">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> model.predict(X_test)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>accuracy_score(y_test,y_pred)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="46">
+<div class="cell-output cell-output-display" data-execution_count="7">
 <pre><code>0.965034965034965</code></pre>
 </div>
 </div>
+<div class="cell" data-outputid="8875f39a-c5c5-423a-c438-5f1121cb32e4">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> ConfusionMatrixDisplay</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>ConfusionMatrixDisplay.from_estimator(model, X_test, y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<pre><code>&lt;sklearn.metrics._plot.confusion_matrix.ConfusionMatrixDisplay at 0x7d7a6fb661a0&gt;</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="accuracy_files/figure-html/cell-9-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>In the above matrix, we can see that: TP = 88, TN = 50, FP = 4, FN = 1</p>
+<span class="math display">\begin{aligned}
+{\displaystyle \text{Accuracy}} &amp; ={\displaystyle \frac{\text{TP + TN}}{\text{TP + FP +TN + FN}}}\\
+&amp; \\
+&amp; {\displaystyle =\frac{\text{88 + 50}}{\text{88 + 4 + 50 + 1}}}\\
+&amp; \\
+&amp; {\displaystyle =\ \frac{\text{138}}{\text{143}}}\\
+&amp; \\
+&amp; {\displaystyle =\ 0.965}
+\end{aligned}</span>
 </section>
 <section id="tuning-for-accuracy" class="level2">
 <h2 class="anchored" data-anchor-id="tuning-for-accuracy">Tuning for accuracy</h2>
 <p>We use GridSearchCV for hyperparameter tuning and cross validation. We can change the scoring metric to tune the model as per our requirement.</p>
-<div class="cell" data-outputid="8df78124-17fb-4266-99ba-21598be8d036">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {<span class="st">'n_neighbors'</span>:[<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>]}</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>model_tuned <span class="op">=</span> GridSearchCV(estimator<span class="op">=</span>KNeighborsClassifier(),param_grid<span class="op">=</span>param_grid,scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>model_tuned.fit(X_train,y_train)</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>model_tuned.score(X_test,y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display" data-execution_count="47">
+<div class="cell" data-outputid="f9485076-9816-4682-c195-1bd65c27b823">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> GridSearchCV</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>param_grid <span class="op">=</span> {<span class="st">'n_neighbors'</span>:[<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">20</span>]}</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>model_tuned <span class="op">=</span> GridSearchCV(estimator<span class="op">=</span>KNeighborsClassifier(),param_grid<span class="op">=</span>param_grid,scoring<span class="op">=</span><span class="st">'accuracy'</span>)</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>model_tuned.fit(X_train,y_train)</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>model_tuned.score(X_test,y_test)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
 <pre><code>0.972027972027972</code></pre>
 </div>
 </div>
@@ -854,8 +896,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../pages/roc.html" class="pagination-link">
-        <span class="nav-page-text">ROC-AUC</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../pages/f1.html" class="pagination-link">
+        <span class="nav-page-text">F1 Score</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
