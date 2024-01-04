@@ -1,0 +1,1922 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>ML Handbook - Predicting Bank Customer Churn</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../pages/cirrhosis.html" rel="prev">
+<link href="../images/logo.png" rel="icon" type="image/png">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-dark.min.css" rel="prefetch" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.6/require.min.js" integrity="sha512-c3Nl8+7g4LMSTdrm621y7kf9v3SDPnhxLNhcjFJbKECVnmZHTdo+IRO05sNLTH/D3vA6u1X32ehoLC7WFVdheg==" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js" integrity="sha512-bLT0Qm9VnAYZDflyKcBaQ2gg0hSYNQrJ8RilYldYQ1FxQYoCLtUjuuRuZo+fjqhx/qtq/1itJ0C2ejDxltZVFg==" crossorigin="anonymous"></script>
+<script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
+
+
+<meta property="og:title" content="ML Handbook - Predicting Bank Customer Churn">
+<meta property="og:image" content="https://live.staticflickr.com/7137/13890661614_b35e77b9b0_b.jpg">
+<meta property="og:site-name" content="ML Handbook">
+</head>
+
+<body class="nav-sidebar docked">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../pages/cirrhosis.html">Case Studies</a></li><li class="breadcrumb-item"><a href="../pages/bank_churn.html">Predicting Bank Customer Churn</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-center sidebar-header">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/logo.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      <div class="sidebar-tools-main">
+    <a href="https://github.com/bsc-iitm/ML_Handbook" rel="" title="GitHub Repo" class="quarto-navigation-tool px-1" aria-label="GitHub Repo"><i class="bi bi-github"></i></a>
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false">
+ <span class="menu-text">Home</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">About</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="px-0"><hr class="sidebar-divider hi "></li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false">
+ <span class="menu-text">Preprocessing</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/dealing_with_missing_values.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Dealing with missing-values</span></a>
+  </div>
+</li>
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
+ <span class="menu-text">Scaling</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Scaling multi-dataset multi-algo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/standard.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Standard Scaling</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false">
+ <span class="menu-text">Observing Data</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false">
+ <span class="menu-text">Visualization</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth2 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/vis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Overview</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/vis2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Comprehensive Data Visualization</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false">
+ <span class="menu-text">Evaluation Metrics</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-6" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-6" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/accuracy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Accuracy</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/f1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">F1 Score</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/recall.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Recall</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/precision.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Precision</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/roc.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">ROC-AUC</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false">
+ <span class="menu-text">Special Topics in ML</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-7" aria-expanded="false" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-7" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Inductive_Bias.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Inductive Bias</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Ordinal_Classification.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Ordinal Classification</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/EM_Algorithm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EM Algorithm</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/Probabilistic_PCA.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Probabilistic PCA</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true">
+ <span class="menu-text">Case Studies</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-8" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-8" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/cirrhosis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Predictive Modeling of Patient Status in Primary Biliary Cirrhosis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../pages/bank_churn.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Predicting Bank Customer Churn</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction-and-dataset-overview" id="toc-introduction-and-dataset-overview" class="nav-link active" data-scroll-target="#introduction-and-dataset-overview">Introduction and Dataset Overview</a>
+  <ul class="collapse">
+  <li><a href="#introduction" id="toc-introduction" class="nav-link" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#about-the-dataset" id="toc-about-the-dataset" class="nav-link" data-scroll-target="#about-the-dataset">About the Dataset</a></li>
+  <li><a href="#objective" id="toc-objective" class="nav-link" data-scroll-target="#objective">Objective</a></li>
+  </ul></li>
+  <li><a href="#data-exploration" id="toc-data-exploration" class="nav-link" data-scroll-target="#data-exploration">Data Exploration</a>
+  <ul class="collapse">
+  <li><a href="#dataset-snapshot" id="toc-dataset-snapshot" class="nav-link" data-scroll-target="#dataset-snapshot">Dataset Snapshot</a></li>
+  <li><a href="#dataset-information-summary" id="toc-dataset-information-summary" class="nav-link" data-scroll-target="#dataset-information-summary">Dataset Information Summary</a></li>
+  <li><a href="#statistical-summary-of-the-dataset" id="toc-statistical-summary-of-the-dataset" class="nav-link" data-scroll-target="#statistical-summary-of-the-dataset">Statistical Summary of the Dataset</a></li>
+  <li><a href="#pie-plot-analysis-of-categorical-variables" id="toc-pie-plot-analysis-of-categorical-variables" class="nav-link" data-scroll-target="#pie-plot-analysis-of-categorical-variables">Pie Plot Analysis of Categorical Variables</a></li>
+  </ul></li>
+  <li><a href="#data-preprocessing" id="toc-data-preprocessing" class="nav-link" data-scroll-target="#data-preprocessing">Data Preprocessing</a>
+  <ul class="collapse">
+  <li><a href="#one-hot-encoding-and-data-preparation" id="toc-one-hot-encoding-and-data-preparation" class="nav-link" data-scroll-target="#one-hot-encoding-and-data-preparation">One-Hot Encoding and Data Preparation</a></li>
+  <li><a href="#scaling-using-standardscaler" id="toc-scaling-using-standardscaler" class="nav-link" data-scroll-target="#scaling-using-standardscaler">Scaling using StandardScaler</a></li>
+  </ul></li>
+  <li><a href="#exploratory-data-analysis-eda" id="toc-exploratory-data-analysis-eda" class="nav-link" data-scroll-target="#exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</a>
+  <ul class="collapse">
+  <li><a href="#correlation-analysis" id="toc-correlation-analysis" class="nav-link" data-scroll-target="#correlation-analysis">Correlation Analysis</a></li>
+  </ul></li>
+  <li><a href="#model-building" id="toc-model-building" class="nav-link" data-scroll-target="#model-building">Model Building</a>
+  <ul class="collapse">
+  <li><a href="#cross-validation-and-train-test-split" id="toc-cross-validation-and-train-test-split" class="nav-link" data-scroll-target="#cross-validation-and-train-test-split">Cross-validation and Train-Test Split</a></li>
+  <li><a href="#training-multiple-lightgbm-models-with-cross-validation" id="toc-training-multiple-lightgbm-models-with-cross-validation" class="nav-link" data-scroll-target="#training-multiple-lightgbm-models-with-cross-validation">Training Multiple LightGBM Models with Cross-Validation</a></li>
+  <li><a href="#training-multiple-xgboost-models-with-cross-validation" id="toc-training-multiple-xgboost-models-with-cross-validation" class="nav-link" data-scroll-target="#training-multiple-xgboost-models-with-cross-validation">Training Multiple XGBoost Models with Cross-Validation</a></li>
+  <li><a href="#training-catboost-models-and-evaluating-performance" id="toc-training-catboost-models-and-evaluating-performance" class="nav-link" data-scroll-target="#training-catboost-models-and-evaluating-performance">Training CatBoost Models and Evaluating Performance</a></li>
+  <li><a href="#elevating-predictive-power-with-stacked-ensemble-model" id="toc-elevating-predictive-power-with-stacked-ensemble-model" class="nav-link" data-scroll-target="#elevating-predictive-power-with-stacked-ensemble-model">Elevating Predictive Power with Stacked Ensemble Model</a></li>
+  </ul></li>
+  <li><a href="#model-evaluation" id="toc-model-evaluation" class="nav-link" data-scroll-target="#model-evaluation">Model Evaluation</a>
+  <ul class="collapse">
+  <li><a href="#evaluating-stacked-ensemble-model-performance" id="toc-evaluating-stacked-ensemble-model-performance" class="nav-link" data-scroll-target="#evaluating-stacked-ensemble-model-performance">Evaluating Stacked Ensemble Model Performance</a></li>
+  <li><a href="#insights-from-evaluation-metrics" id="toc-insights-from-evaluation-metrics" class="nav-link" data-scroll-target="#insights-from-evaluation-metrics">Insights from Evaluation Metrics</a></li>
+  </ul></li>
+  <li><a href="#conclusion-and-future-steps" id="toc-conclusion-and-future-steps" class="nav-link" data-scroll-target="#conclusion-and-future-steps">Conclusion and Future Steps</a>
+  <ul class="collapse">
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#key-findings" id="toc-key-findings" class="nav-link" data-scroll-target="#key-findings">Key Findings</a></li>
+  <li><a href="#insights-for-improvement" id="toc-insights-for-improvement" class="nav-link" data-scroll-target="#insights-for-improvement">Insights for Improvement</a></li>
+  <li><a href="#future-steps" id="toc-future-steps" class="nav-link" data-scroll-target="#future-steps">Future Steps</a></li>
+  <li><a href="#final-note" id="toc-final-note" class="nav-link" data-scroll-target="#final-note">Final Note</a></li>
+  </ul></li>
+  <li><a href="#generating-predictions-for-test-data" id="toc-generating-predictions-for-test-data" class="nav-link" data-scroll-target="#generating-predictions-for-test-data">Generating Predictions for Test Data</a></li>
+  </ul>
+<div class="toc-actions"><div><i class="bi bi-github"></i></div><div class="action-links"><p><a href="https://github.dev/bsc-iitm/ML_Handbook/blob/main/pages/bank_churn.ipynb" class="toc-action">Edit this page</a></p><p><a href="https://github.com/bsc-iitm/ML_Handbook/issues/new" class="toc-action">Report an issue</a></p></div></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Predicting Bank Customer Churn</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="introduction-and-dataset-overview" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-and-dataset-overview">Introduction and Dataset Overview</h2>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://live.staticflickr.com/7137/13890661614_b35e77b9b0_b.jpg" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">image</figcaption>
+</figure>
+</div>
+<section id="introduction" class="level3">
+<h3 class="anchored" data-anchor-id="introduction">Introduction</h3>
+<p>Customer churn, the act of customers discontinuing their relationship with a business, poses a significant challenge across industries, particularly within the banking sector. This Jupyter notebook focuses on predictive analysis of customer churn using a comprehensive dataset that captures various attributes of bank customers.</p>
+</section>
+<section id="about-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="about-the-dataset">About the Dataset</h3>
+<p>The dataset utilized in this analysis comprises crucial information about bank customers, distinguishing between those who have chosen to exit the bank and those who have remained as customers.</p>
+</section>
+<section id="objective" class="level3">
+<h3 class="anchored" data-anchor-id="objective">Objective</h3>
+<p>The primary objective of this analysis is to employ machine learning techniques to develop predictive models capable of determining whether a customer is likely to churn based on the provided dataset. By conducting exploratory data analysis (EDA), performing feature engineering, and building predictive models, this analysis aims to uncover underlying patterns and insights that can assist in identifying potential churn risks among bank customers.</p>
+</section>
+</section>
+<section id="data-exploration" class="level2">
+<h2 class="anchored" data-anchor-id="data-exploration">Data Exploration</h2>
+<section id="dataset-snapshot" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-snapshot">Dataset Snapshot</h3>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_csv(<span class="st">'train.csv'</span>, index_col<span class="op">=</span><span class="st">'id'</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">'test.csv'</span>, index_col<span class="op">=</span><span class="st">'id'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>data.head()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">CustomerId</th>
+<th data-quarto-table-cell-role="th">Surname</th>
+<th data-quarto-table-cell-role="th">CreditScore</th>
+<th data-quarto-table-cell-role="th">Geography</th>
+<th data-quarto-table-cell-role="th">Gender</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">Tenure</th>
+<th data-quarto-table-cell-role="th">Balance</th>
+<th data-quarto-table-cell-role="th">NumOfProducts</th>
+<th data-quarto-table-cell-role="th">HasCrCard</th>
+<th data-quarto-table-cell-role="th">IsActiveMember</th>
+<th data-quarto-table-cell-role="th">EstimatedSalary</th>
+<th data-quarto-table-cell-role="th">Exited</th>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">id</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">0</td>
+<td>15674932</td>
+<td>Okwudilichukwu</td>
+<td>668</td>
+<td>France</td>
+<td>Male</td>
+<td>33.0</td>
+<td>3</td>
+<td>0.00</td>
+<td>2</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>181449.97</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">1</td>
+<td>15749177</td>
+<td>Okwudiliolisa</td>
+<td>627</td>
+<td>France</td>
+<td>Male</td>
+<td>33.0</td>
+<td>1</td>
+<td>0.00</td>
+<td>2</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>49503.50</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">2</td>
+<td>15694510</td>
+<td>Hsueh</td>
+<td>678</td>
+<td>France</td>
+<td>Male</td>
+<td>40.0</td>
+<td>10</td>
+<td>0.00</td>
+<td>2</td>
+<td>1.0</td>
+<td>0.0</td>
+<td>184866.69</td>
+<td>0</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">3</td>
+<td>15741417</td>
+<td>Kao</td>
+<td>581</td>
+<td>France</td>
+<td>Male</td>
+<td>34.0</td>
+<td>2</td>
+<td>148882.54</td>
+<td>1</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>84560.88</td>
+<td>0</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">4</td>
+<td>15766172</td>
+<td>Chiemenam</td>
+<td>716</td>
+<td>Spain</td>
+<td>Male</td>
+<td>33.0</td>
+<td>5</td>
+<td>0.00</td>
+<td>2</td>
+<td>1.0</td>
+<td>1.0</td>
+<td>15068.83</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<section id="observations" class="level4">
+<h4 class="anchored" data-anchor-id="observations">Observations:</h4>
+<ul>
+<li><strong>CustomerID:</strong> Unique identifiers for each customer.</li>
+<li><strong>Surname:</strong> Last name of the customers.</li>
+<li><strong>CreditScore:</strong> Numerical representation of the customer’s credit score.</li>
+<li><strong>Geography:</strong> Country of residence, including France and Spain.</li>
+<li><strong>Gender:</strong> Gender of the customers, primarily Male in this subset.</li>
+<li><strong>Age:</strong> Age of the customers, varying between 33 and 40.</li>
+<li><strong>Tenure:</strong> The duration, in years, of the customer’s relationship with the bank.</li>
+<li><strong>Balance:</strong> Account balance, with some entries showing 0.00.</li>
+<li><strong>NumOfProducts:</strong> The number of bank products utilized by customers, mostly 2.</li>
+<li><strong>HasCrCard:</strong> Indicates whether the customer has a credit card (1 = yes, 0 = no).</li>
+<li><strong>IsActiveMember:</strong> Indicates whether the customer is an active member (1 = yes, 0 = no).</li>
+<li><strong>EstimatedSalary:</strong> The estimated salary of the customers, with varying values.</li>
+</ul>
+</section>
+<section id="insights" class="level4">
+<h4 class="anchored" data-anchor-id="insights">Insights:</h4>
+<ul>
+<li>Several customers have a balance of 0.00, suggesting potential areas for further investigation.</li>
+<li>Most customers have more than one bank product.</li>
+<li>The dataset includes customers from different countries with varying credit scores, ages, and tenure.</li>
+</ul>
+<p>This initial glimpse provides a snapshot of the dataset, setting the stage for further exploratory analysis and model development.</p>
+</section>
+</section>
+<section id="dataset-information-summary" class="level3">
+<h3 class="anchored" data-anchor-id="dataset-information-summary">Dataset Information Summary</h3>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>data.info()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;class 'pandas.core.frame.DataFrame'&gt;
+Index: 165034 entries, 0 to 165033
+Data columns (total 13 columns):
+ #   Column           Non-Null Count   Dtype  
+---  ------           --------------   -----  
+ 0   CustomerId       165034 non-null  int64  
+ 1   Surname          165034 non-null  object 
+ 2   CreditScore      165034 non-null  int64  
+ 3   Geography        165034 non-null  object 
+ 4   Gender           165034 non-null  object 
+ 5   Age              165034 non-null  float64
+ 6   Tenure           165034 non-null  int64  
+ 7   Balance          165034 non-null  float64
+ 8   NumOfProducts    165034 non-null  int64  
+ 9   HasCrCard        165034 non-null  float64
+ 10  IsActiveMember   165034 non-null  float64
+ 11  EstimatedSalary  165034 non-null  float64
+ 12  Exited           165034 non-null  int64  
+dtypes: float64(5), int64(5), object(3)
+memory usage: 17.6+ MB</code></pre>
+</div>
+</div>
+<p>The dataset summary obtained from the <code>train.info()</code> function offers valuable insights into the dataset structure and characteristics:</p>
+<ul>
+<li><strong>Total Rows:</strong> The dataset contains a total of 165,034 entries, indexed from 0 to 165,033.</li>
+<li><strong>Columns:</strong> There are 13 columns in total, each representing a specific attribute of the dataset.</li>
+<li><strong>Data Types:</strong>
+<ul>
+<li><strong>Integer (int64):</strong> Columns like <code>CustomerId</code>, <code>CreditScore</code>, <code>Tenure</code>, <code>NumOfProducts</code>, and <code>Exited</code> are stored as integers.</li>
+<li><strong>Float (float64):</strong> Attributes such as <code>Age</code>, <code>Balance</code>, <code>HasCrCard</code>, <code>IsActiveMember</code>, and <code>EstimatedSalary</code> are represented as floating-point numbers.</li>
+<li><strong>Object (string):</strong> <code>Surname</code>, <code>Geography</code>, and <code>Gender</code> columns contain string (object) data types.</li>
+</ul></li>
+<li><strong>Memory Usage:</strong> The dataset consumes approximately 17.6+ MB of memory.</li>
+</ul>
+<section id="observations-1" class="level4">
+<h4 class="anchored" data-anchor-id="observations-1">Observations:</h4>
+<ul>
+<li><strong>Non-Null Counts:</strong> All columns exhibit a non-null count of 165,034, indicating that there are no missing values present in the dataset.</li>
+<li><strong>Column Types:</strong> The dataset consists of a balanced combination of numerical (integer and float) and categorical (object) columns, enabling a diverse analysis of customer attributes.</li>
+</ul>
+</section>
+<section id="insights-1" class="level4">
+<h4 class="anchored" data-anchor-id="insights-1">Insights:</h4>
+<ul>
+<li>The absence of missing values across all columns ensures a complete dataset, facilitating a comprehensive analysis.</li>
+<li>The diverse data types suggest the necessity for appropriate preprocessing steps, such as encoding categorical variables and scaling numerical attributes, before feeding the data into machine learning models.</li>
+</ul>
+</section>
+</section>
+<section id="statistical-summary-of-the-dataset" class="level3">
+<h3 class="anchored" data-anchor-id="statistical-summary-of-the-dataset">Statistical Summary of the Dataset</h3>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data.describe()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="3">
+<div>
+
+
+<table class="dataframe table table-sm table-striped small" data-quarto-postprocess="true" data-border="1">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">CustomerId</th>
+<th data-quarto-table-cell-role="th">CreditScore</th>
+<th data-quarto-table-cell-role="th">Age</th>
+<th data-quarto-table-cell-role="th">Tenure</th>
+<th data-quarto-table-cell-role="th">Balance</th>
+<th data-quarto-table-cell-role="th">NumOfProducts</th>
+<th data-quarto-table-cell-role="th">HasCrCard</th>
+<th data-quarto-table-cell-role="th">IsActiveMember</th>
+<th data-quarto-table-cell-role="th">EstimatedSalary</th>
+<th data-quarto-table-cell-role="th">Exited</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">count</td>
+<td>1.650340e+05</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+<td>165034.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">mean</td>
+<td>1.569201e+07</td>
+<td>656.454373</td>
+<td>38.125888</td>
+<td>5.020353</td>
+<td>55478.086689</td>
+<td>1.554455</td>
+<td>0.753954</td>
+<td>0.497770</td>
+<td>112574.822734</td>
+<td>0.211599</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">std</td>
+<td>7.139782e+04</td>
+<td>80.103340</td>
+<td>8.867205</td>
+<td>2.806159</td>
+<td>62817.663278</td>
+<td>0.547154</td>
+<td>0.430707</td>
+<td>0.499997</td>
+<td>50292.865585</td>
+<td>0.408443</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">min</td>
+<td>1.556570e+07</td>
+<td>350.000000</td>
+<td>18.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>1.000000</td>
+<td>0.000000</td>
+<td>0.000000</td>
+<td>11.580000</td>
+<td>0.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">25%</td>
+<td>1.563314e+07</td>
+<td>597.000000</td>
+<td>32.000000</td>
+<td>3.000000</td>
+<td>0.000000</td>
+<td>1.000000</td>
+<td>1.000000</td>
+<td>0.000000</td>
+<td>74637.570000</td>
+<td>0.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">50%</td>
+<td>1.569017e+07</td>
+<td>659.000000</td>
+<td>37.000000</td>
+<td>5.000000</td>
+<td>0.000000</td>
+<td>2.000000</td>
+<td>1.000000</td>
+<td>0.000000</td>
+<td>117948.000000</td>
+<td>0.000000</td>
+</tr>
+<tr class="odd">
+<td data-quarto-table-cell-role="th">75%</td>
+<td>1.575682e+07</td>
+<td>710.000000</td>
+<td>42.000000</td>
+<td>7.000000</td>
+<td>119939.517500</td>
+<td>2.000000</td>
+<td>1.000000</td>
+<td>1.000000</td>
+<td>155152.467500</td>
+<td>0.000000</td>
+</tr>
+<tr class="even">
+<td data-quarto-table-cell-role="th">max</td>
+<td>1.581569e+07</td>
+<td>850.000000</td>
+<td>92.000000</td>
+<td>10.000000</td>
+<td>250898.090000</td>
+<td>4.000000</td>
+<td>1.000000</td>
+<td>1.000000</td>
+<td>199992.480000</td>
+<td>1.000000</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The statistical summary provides key insights into the numerical attributes of the dataset:</p>
+<ul>
+<li><strong>CustomerID:</strong>
+<ul>
+<li><strong>Count:</strong> 165,034 unique customer IDs are available in the dataset.</li>
+</ul></li>
+<li><strong>CreditScore:</strong>
+<ul>
+<li><strong>Mean:</strong> The average credit score of customers is approximately 656.45.</li>
+<li><strong>Minimum:</strong> The minimum credit score observed is 350.</li>
+<li><strong>Maximum:</strong> The maximum credit score recorded is 850.</li>
+</ul></li>
+<li><strong>Age:</strong>
+<ul>
+<li><strong>Mean:</strong> The average age of customers is around 38.13 years.</li>
+<li><strong>Minimum:</strong> The youngest customer in the dataset is 18 years old.</li>
+<li><strong>Maximum:</strong> The oldest customer recorded is 92 years old.</li>
+</ul></li>
+<li><strong>Tenure:</strong>
+<ul>
+<li><strong>Mean:</strong> The average tenure of customers with the bank is approximately 5.02 years.</li>
+<li><strong>Minimum:</strong> The minimum tenure observed is 0 years.</li>
+<li><strong>Maximum:</strong> The maximum tenure recorded is 10 years.</li>
+</ul></li>
+<li><strong>Balance:</strong>
+<ul>
+<li><strong>Mean:</strong> The mean account balance of customers is approximately 55,478.09.</li>
+<li><strong>Minimum:</strong> Some customers have a zero balance in their accounts.</li>
+<li><strong>Maximum:</strong> The highest account balance observed is around 250,898.09.</li>
+</ul></li>
+<li><strong>NumOfProducts:</strong>
+<ul>
+<li><strong>Mean:</strong> On average, customers utilize around 1.55 bank products.</li>
+<li><strong>Minimum:</strong> The minimum number of bank products used is 1.</li>
+<li><strong>Maximum:</strong> The maximum number of bank products used is 4.</li>
+</ul></li>
+<li><strong>HasCrCard:</strong>
+<ul>
+<li><strong>Mean:</strong> Around 75.4% of customers have a credit card.</li>
+</ul></li>
+<li><strong>IsActiveMember:</strong>
+<ul>
+<li><strong>Mean:</strong> Approximately 49.8% of customers are active members.</li>
+</ul></li>
+<li><strong>EstimatedSalary:</strong>
+<ul>
+<li><strong>Mean:</strong> The average estimated salary of customers is roughly 112,574.82.</li>
+<li><strong>Minimum:</strong> The minimum estimated salary recorded is 11.58.</li>
+<li><strong>Maximum:</strong> The highest estimated salary observed is around 199,992.48.</li>
+</ul></li>
+<li><strong>Exited:</strong>
+<ul>
+<li><strong>Mean:</strong> Around 21.2% of customers have churned.</li>
+</ul></li>
+</ul>
+<section id="observations-2" class="level4">
+<h4 class="anchored" data-anchor-id="observations-2">Observations:</h4>
+<ul>
+<li>The dataset contains diverse ranges of attributes, including credit scores, ages, tenures, account balances, and estimated salaries.</li>
+<li>Notably, a significant portion of customers have zero balance in their accounts.</li>
+<li>The average number of products used by customers is approximately 1.55, with a maximum of 4 products.</li>
+<li>Roughly 21.2% of customers in the dataset have churned.</li>
+</ul>
+</section>
+<section id="insights-2" class="level4">
+<h4 class="anchored" data-anchor-id="insights-2">Insights:</h4>
+<ul>
+<li>Understanding the distribution and range of these attributes will be crucial for feature selection and building predictive models to identify potential churn risks among customers.</li>
+</ul>
+</section>
+</section>
+<section id="pie-plot-analysis-of-categorical-variables" class="level3">
+<h3 class="anchored" data-anchor-id="pie-plot-analysis-of-categorical-variables">Pie Plot Analysis of Categorical Variables</h3>
+<div class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a threshold to determine categorical columns based on unique value counts</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>categorical_threshold <span class="op">=</span> <span class="dv">10</span>  <span class="co"># You can adjust this threshold based on your dataset characteristics</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Get columns with less than the defined threshold as categorical columns</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>cat_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> data.drop([<span class="st">"Exited"</span>, <span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>], axis<span class="op">=</span><span class="dv">1</span>) </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> data[col].nunique() <span class="op">&lt;</span> categorical_threshold]</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Remaining columns are considered numerical</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> [col <span class="cf">for</span> col <span class="kw">in</span> data.drop([<span class="st">"Exited"</span>, <span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>], axis<span class="op">=</span><span class="dv">1</span>) <span class="cf">if</span> col <span class="kw">not</span> <span class="kw">in</span> cat_cols]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_target(data: pd.DataFrame, col: <span class="bu">str</span>, title: <span class="bu">str</span>, pie_colors: <span class="bu">list</span>, test_df: pd.DataFrame <span class="op">=</span> pd.DataFrame()) <span class="op">-&gt;</span> <span class="va">None</span>:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="kw">not</span> test_df.empty:</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>        fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">4</span>, figsize<span class="op">=</span>(<span class="dv">20</span>, <span class="dv">6</span>), gridspec_kw<span class="op">=</span>{<span class="st">'width_ratios'</span>: [<span class="dv">2</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">1</span>]})</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> i, data <span class="kw">in</span> <span class="bu">enumerate</span>([data, test_df]):</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            textprops<span class="op">=</span>{<span class="st">'fontsize'</span>: <span class="dv">12</span>, <span class="st">'weight'</span>: <span class="st">'bold'</span>, <span class="st">'color'</span>: <span class="st">'black'</span>}</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            ax <span class="op">=</span> axes[i <span class="op">*</span> <span class="dv">2</span>]</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>            </span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>            ax.pie(data[col].value_counts().to_list(),</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>                colors<span class="op">=</span>pie_colors,</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>                labels<span class="op">=</span>data[col].value_counts().index.to_list(),</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>                autopct<span class="op">=</span><span class="st">'%1.f</span><span class="sc">%%</span><span class="st">'</span>,</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>                explode<span class="op">=</span>([<span class="fl">.05</span>] <span class="op">*</span> data[col].nunique()),</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>                pctdistance<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>                wedgeprops<span class="op">=</span>{<span class="st">'linewidth'</span>: <span class="dv">1</span>, <span class="st">'edgecolor'</span>: <span class="st">'black'</span>},</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>                textprops<span class="op">=</span>textprops)</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>            sns.countplot(x<span class="op">=</span>col, data<span class="op">=</span>data, palette<span class="op">=</span><span class="st">'pastel6'</span>, hue<span class="op">=</span>col, order<span class="op">=</span>data[col].value_counts().to_dict().keys(), ax<span class="op">=</span>axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>])</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>            <span class="cf">for</span> p, count <span class="kw">in</span> <span class="bu">enumerate</span>(data[col].value_counts().to_dict().values(), <span class="dv">0</span>):</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>                axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].text(p <span class="op">-</span> <span class="fl">0.1</span>, count <span class="op">+</span> (np.sqrt(count)), count, color<span class="op">=</span><span class="st">'black'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>            plt.setp(axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].get_xticklabels(), fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a>            plt.yticks([], ax<span class="op">=</span>axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>])</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>            axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].set_ylabel(<span class="st">''</span>)</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>            axes[i <span class="op">*</span> <span class="dv">2</span> <span class="op">+</span> <span class="dv">1</span>].set_xlabel(<span class="st">''</span>)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>            <span class="co"># axes[i * 2 + 1].get_legend().remove()</span></span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>            <span class="co"># plt.box(False, ax=axes[i * 2 + 1])</span></span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a>            axes[i <span class="op">*</span> <span class="dv">2</span>].set_title(<span class="ss">f'Distribution in </span><span class="sc">{</span><span class="st">"Train"</span> <span class="cf">if</span> i <span class="op">==</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"Test"</span><span class="sc">}</span><span class="ss"> Set'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>        fig.suptitle(x<span class="op">=</span><span class="fl">0.5</span>, y<span class="op">=</span><span class="fl">1.05</span>, t<span class="op">=</span><span class="ss">f'► </span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Distribution ◄'</span>, fontsize<span class="op">=</span><span class="dv">18</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>        plt.show()</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>        fig, ax <span class="op">=</span> plt.subplots(<span class="dv">1</span>,<span class="dv">2</span>,figsize<span class="op">=</span>(<span class="dv">15</span>, <span class="dv">6</span>), width_ratios<span class="op">=</span>[<span class="dv">2</span>,<span class="dv">1</span>])</span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>        textprops<span class="op">=</span>{<span class="st">'fontsize'</span>: <span class="dv">12</span>, <span class="st">'weight'</span>: <span class="st">'bold'</span>,<span class="st">"color"</span>: <span class="st">"black"</span>}</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a>        ax[<span class="dv">0</span>].pie(data[col].value_counts().to_list(),</span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>                colors<span class="op">=</span>pie_colors,</span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>                labels<span class="op">=</span>data[col].value_counts().index.to_list(),</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>                autopct<span class="op">=</span><span class="st">'%1.f</span><span class="sc">%%</span><span class="st">'</span>, </span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>                explode<span class="op">=</span>([<span class="fl">.05</span>]<span class="op">*</span>data[col].nunique()),</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>                pctdistance<span class="op">=</span><span class="fl">0.5</span>,</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>                wedgeprops<span class="op">=</span>{<span class="st">'linewidth'</span> : <span class="dv">1</span>, <span class="st">'edgecolor'</span> : <span class="st">'black'</span>}, </span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>                textprops<span class="op">=</span>textprops)</span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>        sns.countplot(x <span class="op">=</span> col, data<span class="op">=</span>data, palette <span class="op">=</span> <span class="st">"pastel6"</span>, hue<span class="op">=</span>col, order<span class="op">=</span>data[col].value_counts().to_dict().keys())</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>        <span class="cf">for</span> p, count <span class="kw">in</span> <span class="bu">enumerate</span>(data[col].value_counts().to_dict().values(),<span class="dv">0</span>):</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>            ax[<span class="dv">1</span>].text(p<span class="op">-</span><span class="fl">0.1</span>, count<span class="op">+</span>(np.sqrt(count)), count, color<span class="op">=</span><span class="st">'black'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>        plt.setp(ax[<span class="dv">1</span>].get_xticklabels(), fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>        plt.yticks([])</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>        plt.box()</span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a>        fig.suptitle(x<span class="op">=</span><span class="fl">0.56</span>, t<span class="op">=</span><span class="ss">f'► </span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> Distribution ◄'</span>, fontsize<span class="op">=</span><span class="dv">18</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>        plt.tight_layout()</span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>        plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="exited-distribution" class="level4">
+<h4 class="anchored" data-anchor-id="exited-distribution">“Exited” Distribution</h4>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plot_target(data,</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>            col<span class="op">=</span><span class="st">'Exited'</span>, </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>            title<span class="op">=</span><span class="st">'Exited'</span>, </span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>            pie_colors<span class="op">=</span>[<span class="st">'lightblue'</span>, <span class="st">'lightgreen'</span>, <span class="st">'orange'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-7-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The pie chart representing the distribution of customers who have exited and those who haven’t shows a clear distinction. Approximately 21% of customers have churned (Exited), while the remaining 79% have chosen to continue their relationship with the bank. This disparity indicates an imbalance in the churn behavior within the dataset.</p>
+</section>
+<section id="categorical-variable-distributions-train-and-test-sets" class="level4">
+<h4 class="anchored" data-anchor-id="categorical-variable-distributions-train-and-test-sets">Categorical Variable Distributions (Train and Test Sets)</h4>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> cat_col <span class="kw">in</span> cat_cols:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    plot_target(data<span class="op">=</span>data,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>                test_df<span class="op">=</span>test_df, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>                col<span class="op">=</span>cat_col, </span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>                title<span class="op">=</span>cat_col, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>                pie_colors<span class="op">=</span>[<span class="st">'lightblue'</span>, <span class="st">'lightgreen'</span>, <span class="st">'orange'</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-8-output-1.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-8-output-2.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-8-output-3.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-8-output-4.png" class="img-fluid"></p>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-8-output-5.png" class="img-fluid"></p>
+</div>
+</div>
+<p>The subsequent plots illustrate the distributions of various categorical columns in both the train and test datasets. Across the categorical attributes namely as Geography and Gender, the distributions remain notably similar between the train and test sets. This similarity suggests that the categorical characteristics of customers are consistent between the datasets, indicating a reliable alignment in terms of categorical attributes across both training and testing data</p>
+<div class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_numerical_comparison(train_data, test_data, num_cols):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    num_rows <span class="op">=</span> <span class="bu">len</span>(num_cols)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    fig, axes <span class="op">=</span> plt.subplots(num_rows, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">15</span>, num_rows <span class="op">*</span> <span class="dv">5</span>), gridspec_kw<span class="op">=</span>{<span class="st">'width_ratios'</span>: [<span class="dv">1</span>, <span class="dv">1</span>]})</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i, col <span class="kw">in</span> <span class="bu">enumerate</span>(num_cols):</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>        sns.kdeplot(train_data[col], ax<span class="op">=</span>axes[i][<span class="dv">0</span>], fill<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'skyblue'</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">0</span>].set_title(<span class="ss">f'Train Set - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">0</span>].set_xlabel(col, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">0</span>].set_ylabel(<span class="st">'Density'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">0</span>].tick_params(labelsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>        sns.kdeplot(test_data[col], ax<span class="op">=</span>axes[i][<span class="dv">1</span>], fill<span class="op">=</span><span class="va">True</span>, color<span class="op">=</span><span class="st">'lightgreen'</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>, edgecolor<span class="op">=</span><span class="st">'black'</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">1</span>].set_title(<span class="ss">f'Test Set - </span><span class="sc">{</span>col<span class="sc">}</span><span class="ss">'</span>, fontsize<span class="op">=</span><span class="dv">16</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">1</span>].set_xlabel(col, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">1</span>].set_ylabel(<span class="st">'Density'</span>, fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>        axes[i][<span class="dv">1</span>].tick_params(labelsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>plot_numerical_comparison(train_data<span class="op">=</span>data, test_data<span class="op">=</span>test_df, num_cols<span class="op">=</span>num_cols)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-9-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>Upon comparing the numerical feature distributions between the train and test datasets, striking similarities emerge, signifying a strong alignment in the data characteristics across both sets. The KDE plots reveal overlapping distributions for features such as <code>CreditScore</code>, <code>Age</code>, <code>Tenure</code>, <code>Balance</code>, <code>NumOfProducts</code>, and <code>EstimatedSalary</code>. The proximity and consistency in the shapes, peaks, and spread of these distributions across the train and test datasets indicate a remarkable resemblance in the statistical profiles of the numerical attributes. This similarity suggests that the statistical properties and patterns captured by these numerical features are well-preserved between the two datasets, fostering confidence in the model’s ability to generalize effectively across similar numerical feature spaces in both the training and testing phases.</p>
+</section>
+</section>
+</section>
+<section id="data-preprocessing" class="level2">
+<h2 class="anchored" data-anchor-id="data-preprocessing">Data Preprocessing</h2>
+<section id="one-hot-encoding-and-data-preparation" class="level3">
+<h3 class="anchored" data-anchor-id="one-hot-encoding-and-data-preparation">One-Hot Encoding and Data Preparation</h3>
+<section id="one-hot-encoding-categorical-variables" class="level4">
+<h4 class="anchored" data-anchor-id="one-hot-encoding-categorical-variables">One-Hot Encoding Categorical Variables</h4>
+<p>In preparation for the utilization of categorical variables within machine learning models, the process of one-hot encoding was applied to the categorical columns present in the bank customer churn dataset. One-hot encoding transforms categorical variables into a binary format, enabling the incorporation of categorical attributes into predictive models effectively.</p>
+<div class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>cat_cols <span class="op">=</span> data.drop([<span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"Exited"</span>], axis<span class="op">=</span><span class="dv">1</span>).select_dtypes(include<span class="op">=</span><span class="st">'object'</span>).columns.tolist()</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>num_cols <span class="op">=</span> data.drop([<span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"Exited"</span>], axis<span class="op">=</span><span class="dv">1</span>).select_dtypes(exclude<span class="op">=</span><span class="st">'object'</span>).columns.tolist()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>data_cat <span class="op">=</span> pd.get_dummies(data, columns<span class="op">=</span>cat_cols, drop_first<span class="op">=</span><span class="va">True</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>The <code>pd.get_dummies()</code> function from the Pandas library was used to convert categorical variables into numerical representations suitable for model training. This process expanded the categorical columns into binary columns, creating new binary features for each category within the original categorical variables. The <code>drop_first=True</code> parameter was employed to drop the first level of each categorical variable to prevent multicollinearity in the dataset, reducing the risk of introducing redundant information.</p>
+</section>
+<section id="feature-target-splitting" class="level4">
+<h4 class="anchored" data-anchor-id="feature-target-splitting">Feature-Target Splitting</h4>
+<p>Following the one-hot encoding, the dataset was prepared for machine learning modeling by splitting it into feature variables (X) and the target variable (y).</p>
+<div class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> data_cat.drop([<span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"Exited"</span>], axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> data_cat[<span class="st">"Exited"</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ul>
+<li><p><strong>Feature Variables (X):</strong> The feature variables (X) were obtained by excluding the <code>Exited</code> column, which serves as the target variable for prediction. These feature variables comprise both the encoded categorical attributes and numerical features, forming the input dataset ready for training machine learning models.</p></li>
+<li><p><strong>Target Variable (y):</strong> The <code>Exited</code> column represents the target variable containing binary labels indicating whether a customer churned (1) or not (0). The <code>y</code> variable consists of these binary labels, serving as the target for training the machine learning models. This setup enables the models to learn patterns and make predictions regarding customer churn based on the provided features.</p></li>
+</ul>
+<p>This process of segregating feature variables from the target variable establishes the foundation for subsequent model training, validation, and evaluation stages in the predictive modeling workflow.</p>
+</section>
+</section>
+<section id="scaling-using-standardscaler" class="level3">
+<h3 class="anchored" data-anchor-id="scaling-using-standardscaler">Scaling using StandardScaler</h3>
+<p>In the domain of data preprocessing, scaling serves as a critical step in standardizing numerical features, harmonizing different attributes that may possess varying scales and distributions. For this bank customer churn dataset, employing the StandardScaler technique proves beneficial in transforming the numerical features to a standardized scale without significantly affecting the underlying distribution.</p>
+<section id="standardscaler-explanation" class="level4">
+<h4 class="anchored" data-anchor-id="standardscaler-explanation">StandardScaler Explanation:</h4>
+<p>StandardScaler is a scaling technique commonly used to transform features by centering them around the mean and scaling to unit variance. It achieves this by subtracting the mean and dividing by the standard deviation of each feature. Unlike some other scaling methods, such as RobustScaler or MinMaxScaler, StandardScaler is sensitive to outliers, as it is based on mean and standard deviation normalization.</p>
+</section>
+<section id="application-of-standardscaler" class="level4">
+<h4 class="anchored" data-anchor-id="application-of-standardscaler">Application of StandardScaler:</h4>
+<p>In the context of the bank customer churn dataset, numerical attributes such as Credit Score, Age, Tenure, Balance, NumOfProducts, and EstimatedSalary may have varying scales and distributions. Applying StandardScaler to these features facilitates the transformation to a common scale, ensuring that all features contribute equally during model training. However, it’s important to note that StandardScaler may be affected by outliers, potentially impacting the scaling process if outliers are present in the dataset.</p>
+<div class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> StandardScaler</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing RobustScaler</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> StandardScaler()</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Scaling numerical features in the train dataset</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> scaler.fit_transform(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="exploratory-data-analysis-eda" class="level2">
+<h2 class="anchored" data-anchor-id="exploratory-data-analysis-eda">Exploratory Data Analysis (EDA)</h2>
+<section id="correlation-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="correlation-analysis">Correlation Analysis</h3>
+<div class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculating correlation matrix</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="op">=</span> pd.concat([pd.DataFrame(X, columns<span class="op">=</span>data_cat.drop([<span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>, <span class="st">"Exited"</span>], axis<span class="op">=</span><span class="dv">1</span>).columns), pd.DataFrame(y, columns<span class="op">=</span>[<span class="st">"Exited"</span>])], axis<span class="op">=</span><span class="dv">1</span>).corr()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Plotting a heatmap to visualize correlations</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">10</span>))</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>sns.heatmap(correlation_matrix, annot<span class="op">=</span><span class="va">True</span>, cmap<span class="op">=</span><span class="st">'coolwarm'</span>, fmt<span class="op">=</span><span class="st">'.2f'</span>, linewidths<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Correlation Heatmap of Features'</span>)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Features'</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Features'</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="bank_churn_files/figure-html/cell-14-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<section id="correlation-coefficients" class="level4">
+<h4 class="anchored" data-anchor-id="correlation-coefficients">Correlation Coefficients:</h4>
+<p>The correlation matrix provides insights into the relationships between various features and the target variable ‘Exited’ in the bank customer churn dataset. Analyzing the correlation coefficients reveals notable associations and tendencies within the dataset.</p>
+<ul>
+<li><p><strong>Age and Exited:</strong> A relatively strong positive correlation (0.341) is observed between ‘Age’ and the target variable ‘Exited’. This suggests that older customers tend to exhibit a higher likelihood of churning, indicating that age may play a significant role in customer attrition.</p></li>
+<li><p><strong>NumOfProducts and Exited:</strong> There exists a moderate negative correlation (-0.215) between the number of products (‘NumOfProducts’) a customer uses and the likelihood of churning (‘Exited’). Customers with a higher number of products seem less inclined to churn, implying potential loyalty or engagement due to multiple product use.</p></li>
+<li><p><strong>IsActiveMember and Exited:</strong> The ‘IsActiveMember’ feature displays a moderate negative correlation (-0.210) with ‘Exited’. This suggests that active members—customers who frequently engage with bank services—are less likely to churn, highlighting the importance of fostering customer engagement and activity.</p></li>
+<li><p><strong>Geography_Germany and Exited:</strong> Notably, the ‘Geography_Germany’ feature exhibits a moderate positive correlation (0.211) with ‘Exited’. Customers from Germany show a slightly higher tendency to churn compared to other geographic regions, indicating a geographical influence on churn behavior.</p></li>
+<li><p><strong>Gender_Male and Exited:</strong> While ‘Gender_Male’ displays a mild negative correlation (-0.146) with ‘Exited’, the correlation suggests a slight tendency for male customers to churn less compared to female customers. However, the correlation is relatively weak compared to other features.</p></li>
+</ul>
+</section>
+<section id="insights-and-considerations" class="level4">
+<h4 class="anchored" data-anchor-id="insights-and-considerations">Insights and Considerations:</h4>
+<ul>
+<li><p><strong>Age as a Predictor:</strong> The strong positive correlation between age and churn suggests that older customers are more likely to churn. Therefore, age can be a valuable predictive feature in models aimed at forecasting customer churn.</p></li>
+<li><p><strong>Engagement and Product Usage:</strong> The negative correlations of ‘NumOfProducts’ and ‘IsActiveMember’ with churn indicate that higher product usage and active engagement can serve as protective factors against churn, underscoring the importance of customer engagement strategies.</p></li>
+<li><p><strong>Geographic Influence:</strong> The correlation of ‘Geography_Germany’ with churn implies potential regional variations in churn behavior, warranting a deeper exploration of geographic factors impacting customer retention strategies.</p></li>
+</ul>
+<p>These correlations provide valuable insights into potential predictors of customer churn, guiding the selection of features for predictive modeling and the development of targeted retention strategies within the banking domain.</p>
+</section>
+</section>
+</section>
+<section id="model-building" class="level2">
+<h2 class="anchored" data-anchor-id="model-building">Model Building</h2>
+<section id="cross-validation-and-train-test-split" class="level3">
+<h3 class="anchored" data-anchor-id="cross-validation-and-train-test-split">Cross-validation and Train-Test Split</h3>
+<section id="stratified-k-fold-cross-validation" class="level4">
+<h4 class="anchored" data-anchor-id="stratified-k-fold-cross-validation">Stratified K-Fold Cross-Validation</h4>
+<p>Cross-validation is a crucial technique used to assess the performance and generalizability of machine learning models. Stratified K-Fold cross-validation, implemented through <code>StratifiedKFold</code>, is particularly advantageous when working with classification tasks, maintaining the distribution of the target variable’s classes across folds.</p>
+<div class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split, StratifiedKFold</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing Stratified K-Fold with 5 folds</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>skf <span class="op">=</span> StratifiedKFold(n_splits<span class="op">=</span><span class="dv">5</span>, shuffle<span class="op">=</span><span class="va">True</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>In this code snippet, the <code>StratifiedKFold</code> object is created with parameters: - <code>n_splits=5</code>: Divides the dataset into 5 folds for cross-validation. - <code>shuffle=True</code>: Shuffles the data before splitting to ensure randomness. - <code>random_state=42</code>: Sets a random seed for reproducibility.</p>
+</section>
+<section id="train-test-split" class="level4">
+<h4 class="anchored" data-anchor-id="train-test-split">Train-Test Split</h4>
+<p>The <code>train_test_split</code> function partitions the dataset into training and testing sets, facilitating model training and evaluation.</p>
+<div class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Splitting the dataset into training (80%) and testing (20%) sets</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(pd.DataFrame(X), y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">3935</span>, stratify<span class="op">=</span>y)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, <code>train_test_split</code>:</p>
+<ul>
+<li><code>X</code> and <code>y</code> are the feature and target variables, respectively.</li>
+<li><code>test_size=0.2</code>: Allocates 20% of the data for testing, leaving 80% for training.</li>
+<li><code>random_state=3935</code>: Sets a specific seed for reproducibility in random sampling.</li>
+<li><code>stratify=y</code>: Ensures that the splitting preserves the proportion of classes in the target variable ‘y’.</li>
+</ul>
+<p>Combining <code>StratifiedKFold</code> for cross-validation and <code>train_test_split</code> for initial training and testing partitions ensures robust model validation and evaluation, contributing to more reliable model performance estimation.</p>
+<p>This approach facilitates both cross-validation to assess model performance across multiple folds and the creation of distinct training and testing sets for initial model training and evaluation.</p>
+</section>
+</section>
+<section id="training-multiple-lightgbm-models-with-cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="training-multiple-lightgbm-models-with-cross-validation">Training Multiple LightGBM Models with Cross-Validation</h3>
+<p>The code snippet demonstrates the training of multiple LightGBM models using <code>StratifiedKFold</code> for cross-validation and evaluating their performance.</p>
+<div class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> lightgbm <span class="im">as</span> lgb</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> roc_auc_score</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store trained LightGBM models</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>lg_models <span class="op">=</span> []</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the LightGBM model</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'objective'</span>: <span class="st">'binary'</span>,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'metric'</span>: <span class="st">'auc'</span>,</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'boosting_type'</span>: <span class="st">'gbdt'</span>,</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'num_iterations'</span>: <span class="dv">1000</span>,</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_state'</span>: <span class="dv">42</span>,</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'verbose'</span>: <span class="op">-</span><span class="dv">1</span>,</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'lambda_l1'</span>: <span class="fl">8.585041572171024e-07</span>,</span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'lambda_l2'</span>: <span class="fl">0.15953603581592163</span>,</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'num_leaves'</span>: <span class="dv">45</span>,</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'feature_fraction'</span>: <span class="fl">0.574576430132381</span>,</span>
+<span id="cb17-21"><a href="#cb17-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'bagging_fraction'</span>: <span class="fl">0.9507639254203872</span>,</span>
+<span id="cb17-22"><a href="#cb17-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'bagging_freq'</span>: <span class="dv">10</span>,</span>
+<span id="cb17-23"><a href="#cb17-23" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_child_samples'</span>: <span class="dv">74</span>,</span>
+<span id="cb17-24"><a href="#cb17-24" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.0315188927471299</span>,</span>
+<span id="cb17-25"><a href="#cb17-25" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb17-26"><a href="#cb17-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-27"><a href="#cb17-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Training multiple LightGBM models using Stratified K-Fold</span></span>
+<span id="cb17-28"><a href="#cb17-28" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_idx, val_idx <span class="kw">in</span> skf.split(X_train, y_train):</span>
+<span id="cb17-29"><a href="#cb17-29" aria-hidden="true" tabindex="-1"></a>    LGBModel <span class="op">=</span> lgb.LGBMClassifier(<span class="op">**</span>params)</span>
+<span id="cb17-30"><a href="#cb17-30" aria-hidden="true" tabindex="-1"></a>    LGBModel.fit(X_train.iloc[x_idx, :], y_train.iloc[x_idx], eval_set<span class="op">=</span>[(X_train.iloc[val_idx, :], y_train.iloc[val_idx])])</span>
+<span id="cb17-31"><a href="#cb17-31" aria-hidden="true" tabindex="-1"></a>    lg_models.append(LGBModel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Explanation:</p>
+<ul>
+<li><strong><code>lg_models</code>:</strong> This list stores trained LightGBM models.</li>
+<li><strong><code>params</code>:</strong> Represents the hyperparameters configuration for the LightGBM model.</li>
+<li><strong><code>for x_idx, val_idx in skf.split(X_train, y_train):</code></strong> Iterates over the folds generated by Stratified K-Fold.</li>
+<li><strong><code>LGBModel.fit()</code>:</strong> Trains the LightGBM model on the training data using <code>fit()</code> method. The <code>eval_set</code> parameter enables tracking model performance on the validation set during training.</li>
+<li><strong><code>lg_score</code>:</strong> Initializes a variable to store the cumulative AUC score across all models.</li>
+<li><strong><code>for i, LGBModel in enumerate(lg_models):</code></strong> Loops through the trained models and evaluates each on the test set using <code>roc_auc_score()</code> function. It prints the ROC-AUC Score for each model.</li>
+</ul>
+<div class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluating the models on the test set</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, LGBModel <span class="kw">in</span> <span class="bu">enumerate</span>(lg_models):</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> LGBModel.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Model </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> ROC-AUC Score: '</span>, roc_auc_score(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 1 ROC-AUC Score:  0.8901894527481835
+Model 2 ROC-AUC Score:  0.8902050267982606
+Model 3 ROC-AUC Score:  0.8907646031603289
+Model 4 ROC-AUC Score:  0.8900732044729662
+Model 5 ROC-AUC Score:  0.8904569792190615</code></pre>
+</div>
+</div>
+<p>The ROC-AUC scores obtained from five LightGBM models exhibit remarkable similarity, with minimal variation among them. Models 1, 2, 3, 4, and 5 showcase highly comparable ROC-AUC scores ranging between 0.890 and 0.891. This uniformity in scores suggests consistent predictive abilities across these models in discerning between churned and non-churned customers. The closely aligned ROC-AUC scores imply a consistent performance level, signifying that these models possess similar discriminatory power in their predictions. Further exploration into potential feature importance or parameter adjustments may enhance the models’ abilities to distinguish subtle nuances in customer churn behavior.</p>
+</section>
+<section id="training-multiple-xgboost-models-with-cross-validation" class="level3">
+<h3 class="anchored" data-anchor-id="training-multiple-xgboost-models-with-cross-validation">Training Multiple XGBoost Models with Cross-Validation</h3>
+<p>The following code trains multiple XGBoost models using <code>StratifiedKFold</code> for cross-validation and evaluates their performance using ROC-AUC Score.</p>
+<div class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> xgboost <span class="im">as</span> xgb</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store trained XGBoost models</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>xgb_models <span class="op">=</span> []</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the XGBoost model</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span>{</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'eval_metric'</span>: <span class="st">'auc'</span>,</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_state'</span>: <span class="dv">42</span>,</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'use_label_encoder'</span>: <span class="va">False</span>,</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'verbose'</span>: <span class="op">-</span><span class="dv">1</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'n_estimators'</span>: <span class="dv">980</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'max_depth'</span>: <span class="dv">6</span>,</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.01758494874070708</span>,</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'subsample'</span>: <span class="fl">0.9741597683093374</span>,</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'colsample_bytree'</span>: <span class="fl">0.594454559433606</span>,</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">'gamma'</span>: <span class="fl">0.5625993189587196</span>,</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">'min_child_weight'</span>: <span class="fl">3.7532444898898</span>,</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">'reg_alpha'</span>: <span class="fl">0.5492749440306521</span>,</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">'reg_lambda'</span>: <span class="fl">3.673821292504123</span>,</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Training multiple XGBoost models using Stratified K-Fold</span></span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_idx, val_idx <span class="kw">in</span> skf.split(X_train, y_train):</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>    xgb_model <span class="op">=</span> xgb.XGBClassifier(<span class="op">**</span>params)</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>    xgb_model.fit(X_train.iloc[x_idx, :], y_train.iloc[x_idx], eval_set<span class="op">=</span>[(X_train.iloc[val_idx, :], y_train.iloc[val_idx])])</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>    xgb_models.append(xgb_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Explanation:</p>
+<ul>
+<li><strong><code>xgb_models</code>:</strong> This list stores trained XGBoost models.</li>
+<li><strong><code>params</code>:</strong> Represents the hyperparameters configuration for the XGBoost model.</li>
+<li><strong><code>for x_idx, val_idx in skf.split(X_train, y_train):</code></strong> Iterates over the folds generated by Stratified K-Fold.</li>
+<li><strong><code>xgb_model.fit()</code>:</strong> Trains the XGBoost model on the training data using <code>fit()</code> method. The <code>eval_set</code> parameter enables tracking model performance on the validation set during training.</li>
+<li><strong><code>xgb_score</code>:</strong> Initializes a variable to store the cumulative AUC score across all models.</li>
+<li><strong><code>for i, xgb_model in enumerate(xgb_models):</code></strong> Loops through the trained models and evaluates each on the test set using <code>roc_auc_score()</code> function. It prints the ROC-AUC Score for each model.</li>
+</ul>
+<div class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluating the models on the test set</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, xgb_model <span class="kw">in</span> <span class="bu">enumerate</span>(xgb_models):</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> xgb_model.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Model </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> ROC-AUC Score: '</span>, roc_auc_score(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 1 ROC-AUC Score:  0.8914294260971625
+Model 2 ROC-AUC Score:  0.891120718217416
+Model 3 ROC-AUC Score:  0.891558865958693
+Model 4 ROC-AUC Score:  0.8912372443550356
+Model 5 ROC-AUC Score:  0.8912609837081735</code></pre>
+</div>
+</div>
+<p>The ROC-AUC scores obtained from five XGBoost models highlight their consistent and closely aligned predictive performance. Models 1, 2, 3, 4, and 5 exhibit remarkably similar ROC-AUC scores, ranging between 0.891 and 0.892. This uniformity in scores underscores the robust and consistent discriminatory power of these XGBoost models in distinguishing between churned and non-churned customers. The striking similarity in ROC-AUC scores across these models signifies their cohesive predictive abilities, implying a consistent performance level in capturing nuanced patterns related to customer churn behavior. Further exploration into feature importance or fine-tuning model parameters may help refine these models for even more nuanced predictive accuracy.</p>
+</section>
+<section id="training-catboost-models-and-evaluating-performance" class="level3">
+<h3 class="anchored" data-anchor-id="training-catboost-models-and-evaluating-performance">Training CatBoost Models and Evaluating Performance</h3>
+<p>The following code trains multiple CatBoost models using Stratified K-Fold cross-validation and assesses their performance using ROC-AUC Score:</p>
+<div class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> catboost <span class="im">import</span> CatBoostClassifier</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a><span class="co"># List to store trained CatBoost models</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>cat_models <span class="op">=</span> []</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Parameters for the CatBoost model</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>params <span class="op">=</span> {</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="st">'objective'</span>: <span class="st">'Logloss'</span>,</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">'eval_metric'</span>: <span class="st">'AUC'</span>,</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">'iterations'</span>: <span class="dv">1000</span>,</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_seed'</span>: <span class="dv">42</span>,</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">'verbose'</span>: <span class="dv">0</span>,</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">'learning_rate'</span>: <span class="fl">0.09257074265362737</span>,</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">'depth'</span>: <span class="dv">4</span>,</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'l2_leaf_reg'</span>: <span class="fl">18.394210351106825</span>,</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'random_strength'</span>: <span class="fl">0.06104405239569854</span>,</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'bagging_temperature'</span>: <span class="fl">1.2698738887388927e-07</span>,</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'border_count'</span>: <span class="dv">178</span>,</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Training multiple CatBoost models using Stratified K-Fold</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> x_idx, val_idx <span class="kw">in</span> skf.split(X_train, y_train):</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>    cat_model <span class="op">=</span> CatBoostClassifier(<span class="op">**</span>params)</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>    cat_model.fit(X_train.iloc[x_idx, :], y_train.iloc[x_idx], eval_set<span class="op">=</span>[(X_train.iloc[val_idx, :], y_train.iloc[val_idx])])</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    cat_models.append(cat_model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Explanation:</p>
+<ul>
+<li><strong><code>cat_models</code>:</strong> This list stores trained CatBoost models.</li>
+<li><strong><code>params</code>:</strong> Represents the hyperparameters configuration for the CatBoost model.</li>
+<li><strong><code>for x_idx, val_idx in skf.split(X_train, y_train):</code></strong> Iterates over the folds generated by Stratified K-Fold.</li>
+<li><strong><code>CatBoostClassifier.fit()</code>:</strong> Trains the CatBoost model on the training data using <code>fit()</code> method. The <code>eval_set</code> parameter enables tracking model performance on the validation set during training.</li>
+<li><strong><code>cat_score</code>:</strong> Initializes a variable to store the cumulative ROC-AUC Score across all CatBoost models.</li>
+<li><strong><code>for i, cat_model in enumerate(cat_models):</code></strong> Loops through the trained models and evaluates each on the test set using <code>roc_auc_score()</code> function. It prints the ROC-AUC Score for each model.</li>
+</ul>
+<div class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluating the models on the test set</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i, cat_model <span class="kw">in</span> <span class="bu">enumerate</span>(cat_models):</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    y_pred <span class="op">=</span> cat_model.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f'Model </span><span class="sc">{</span>i<span class="op">+</span><span class="dv">1</span><span class="sc">}</span><span class="ss"> ROC-AUC Score: '</span>, roc_auc_score(y_test, y_pred))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Model 1 ROC-AUC Score:  0.8907765649991798
+Model 2 ROC-AUC Score:  0.8908115233906881
+Model 3 ROC-AUC Score:  0.8906539341420548
+Model 4 ROC-AUC Score:  0.8909832423551305
+Model 5 ROC-AUC Score:  0.8910059555431601</code></pre>
+</div>
+</div>
+<p>The ROC-AUC scores obtained from five CatBoost models demonstrate strikingly similar performance across the board. Models 1, 2, 3, 4, and 5 display consistent ROC-AUC scores tightly clustered between 0.891 and 0.891. This uniformity in scores underscores the robust predictive capacity of these CatBoost models in effectively discriminating between churned and non-churned customers. The closely aligned ROC-AUC scores across these models indicate their coherent and consistent predictive performance, suggesting a stable ability to capture subtle nuances associated with customer churn behavior. To further enhance predictive accuracy, future investigations may focus on feature importance analysis or model parameter fine-tuning to uncover potential refinements.</p>
+</section>
+<section id="elevating-predictive-power-with-stacked-ensemble-model" class="level3">
+<h3 class="anchored" data-anchor-id="elevating-predictive-power-with-stacked-ensemble-model">Elevating Predictive Power with Stacked Ensemble Model</h3>
+<p>Now, let’s explore the construction of a more robust predictive model through a technique called <strong>Stacking</strong>. Stacking involves combining multiple machine learning models, leveraging their diverse strengths to enhance overall predictive performance. In this section, we’ll build a Stacked Ensemble Model using an MLPClassifier as the final estimator.</p>
+<section id="model-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="model-configuration">Model Configuration:</h4>
+<ul>
+<li><strong>MLPClassifier:</strong> A Multi-layer Perceptron (MLP) neural network with 64 and 32 neurons in its hidden layers, employing the ‘relu’ activation function, ‘adam’ solver, and various hyperparameters for optimization.</li>
+</ul>
+</section>
+<section id="stackingclassifier-configuration" class="level4">
+<h4 class="anchored" data-anchor-id="stackingclassifier-configuration">StackingClassifier Configuration:</h4>
+<ul>
+<li><strong>Estimators:</strong> The StackingClassifier utilizes predictions from previously trained models, including LGBM, XGBoost, and CatBoost.</li>
+<li><strong>Final Estimator:</strong> The final estimator, an MLPClassifier, aggregates predictions from the base models.</li>
+<li><strong>Cross-Validation (cv):</strong> Employing Stratified K-Fold cross-validation ensures robustness in model evaluation and performance estimation.</li>
+</ul>
+</section>
+<section id="implementation" class="level4">
+<h4 class="anchored" data-anchor-id="implementation">Implementation:</h4>
+<div class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.ensemble <span class="im">import</span> StackingClassifier</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neural_network <span class="im">import</span> MLPClassifier</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Initializing an MLPClassifier</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>mlp <span class="op">=</span> MLPClassifier(</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    hidden_layer_sizes<span class="op">=</span>(<span class="dv">64</span>, <span class="dv">32</span>),</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    max_iter<span class="op">=</span><span class="dv">1000</span>,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    random_state<span class="op">=</span><span class="dv">42</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    activation<span class="op">=</span><span class="st">'relu'</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    learning_rate_init<span class="op">=</span><span class="fl">0.001</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    solver<span class="op">=</span><span class="st">'adam'</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    validation_fraction<span class="op">=</span><span class="fl">0.1</span>,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    momentum<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    nesterovs_momentum<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    batch_size<span class="op">=</span><span class="dv">32</span>,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    beta_1<span class="op">=</span><span class="fl">0.9</span>,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>    beta_2<span class="op">=</span><span class="fl">0.999</span></span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Creating a StackingClassifier</span></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>stacking_model <span class="op">=</span> StackingClassifier(</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>    estimators<span class="op">=</span>[</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'LGBM'</span>, LGBModel),</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'XGB'</span>, xgb_model),</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'CAT'</span>, cat_model)</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>    final_estimator<span class="op">=</span>mlp,</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>    cv<span class="op">=</span>skf</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="op">%%</span>capture</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Fitting the StackingClassifier on the training data</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>stacking_model.fit(X_train, y_train)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="explanation" class="level4">
+<h4 class="anchored" data-anchor-id="explanation">Explanation:</h4>
+<p>The StackingClassifier combines predictions from diverse base models (LGBM, XGBoost, CatBoost) and utilizes an MLPClassifier as the final layer to learn and make predictions based on the diverse outputs. This stacking technique aims to improve predictive accuracy by leveraging the collective knowledge of multiple models, potentially capturing a more nuanced understanding of the data and enhancing overall performance on unseen test data. The model fitting is conducted using the training data, and subsequent predictions are generated for evaluation and assessment of the ensemble model’s effectiveness.</p>
+</section>
+</section>
+</section>
+<section id="model-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="model-evaluation">Model Evaluation</h2>
+<section id="evaluating-stacked-ensemble-model-performance" class="level3">
+<h3 class="anchored" data-anchor-id="evaluating-stacked-ensemble-model-performance">Evaluating Stacked Ensemble Model Performance</h3>
+<section id="model-evaluation-metrics" class="level4">
+<h4 class="anchored" data-anchor-id="model-evaluation-metrics">Model Evaluation Metrics:</h4>
+<p>To assess the performance of the Stacked Ensemble Model, several evaluation metrics are computed using the model’s predictions on the test dataset.</p>
+</section>
+<section id="evaluation-metrics-computed" class="level4">
+<h4 class="anchored" data-anchor-id="evaluation-metrics-computed">Evaluation Metrics Computed:</h4>
+<ul>
+<li><strong>Log Loss:</strong> A measure of uncertainty in the model’s predictions.</li>
+<li><strong>Accuracy:</strong> Proportion of correctly predicted outcomes.</li>
+<li><strong>Precision:</strong> Measure of the model’s exactness in predicting each class.</li>
+<li><strong>Recall:</strong> Measure of the model’s completeness in capturing each class.</li>
+<li><strong>F1 Score:</strong> Harmonic mean of precision and recall, providing a balanced assessment.</li>
+</ul>
+</section>
+<section id="confusion-matrix-and-classification-report" class="level4">
+<h4 class="anchored" data-anchor-id="confusion-matrix-and-classification-report">Confusion Matrix and Classification Report:</h4>
+<ul>
+<li><strong>Confusion Matrix:</strong> Tabulation of actual vs.&nbsp;predicted class counts, aiding in understanding misclassifications.</li>
+<li><strong>Classification Report:</strong> Detailed summary showcasing precision, recall, F1 score, and support for each class.</li>
+</ul>
+</section>
+<section id="evaluation-process-and-metrics-computation" class="level4">
+<h4 class="anchored" data-anchor-id="evaluation-process-and-metrics-computation">Evaluation Process and Metrics Computation:</h4>
+<div class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> accuracy_score, precision_score, recall_score, f1_score, classification_report, confusion_matrix</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluate the model on the test data</span></span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> stacking_model.predict_proba(X_test)[:, <span class="dv">1</span>]</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate and print evaluation metrics</span></span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>auc <span class="op">=</span> roc_auc_score(y_test, y_pred)</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>y_pred <span class="op">=</span> stacking_model.predict(X_test)</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>accuracy <span class="op">=</span> accuracy_score(y_test, y_pred)</span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>precision <span class="op">=</span> precision_score(y_test, y_pred, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>recall <span class="op">=</span> recall_score(y_test, y_pred, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>f1 <span class="op">=</span> f1_score(y_test, y_pred, average<span class="op">=</span><span class="st">'weighted'</span>)</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>conf_matrix <span class="op">=</span> confusion_matrix(y_test, y_pred)</span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-17"><a href="#cb28-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"AUC: </span><span class="sc">{</span>auc<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb28-18"><a href="#cb28-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Accuracy: </span><span class="sc">{</span>accuracy<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb28-19"><a href="#cb28-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Precision: </span><span class="sc">{</span>precision<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb28-20"><a href="#cb28-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Recall: </span><span class="sc">{</span>recall<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb28-21"><a href="#cb28-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"F1 Score: </span><span class="sc">{</span>f1<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb28-22"><a href="#cb28-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-23"><a href="#cb28-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Print classification report and confusion matrix</span></span>
+<span id="cb28-24"><a href="#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Classification Report:"</span>)</span>
+<span id="cb28-25"><a href="#cb28-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(classification_report(y_test, y_pred))</span>
+<span id="cb28-26"><a href="#cb28-26" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Confusion Matrix:"</span>)</span>
+<span id="cb28-27"><a href="#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(conf_matrix)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>AUC: 0.8917
+Accuracy: 0.8659
+Precision: 0.8581
+Recall: 0.8659
+F1 Score: 0.8571
+
+Classification Report:
+              precision    recall  f1-score   support
+
+           0       0.89      0.95      0.92     26023
+           1       0.76      0.54      0.63      6984
+
+    accuracy                           0.87     33007
+   macro avg       0.82      0.75      0.77     33007
+weighted avg       0.86      0.87      0.86     33007
+
+Confusion Matrix:
+[[24817  1206]
+ [ 3221  3763]]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="insights-from-evaluation-metrics" class="level3">
+<h3 class="anchored" data-anchor-id="insights-from-evaluation-metrics">Insights from Evaluation Metrics</h3>
+<section id="performance-metrics" class="level4">
+<h4 class="anchored" data-anchor-id="performance-metrics">1. Performance Metrics:</h4>
+<ul>
+<li><strong>AUC:</strong> The Area Under the ROC Curve (AUC) of 0.8917 signifies a relatively good discriminative ability of the model in distinguishing between positive and negative instances.</li>
+<li><strong>Accuracy:</strong> The model achieved an accuracy of 0.8659, indicating the proportion of correctly predicted instances among the total predictions.</li>
+<li><strong>Precision:</strong> Precision of 0.8581 denotes the ratio of correctly predicted positive observations to the total predicted positives, reflecting the model’s ability to avoid false positives.</li>
+<li><strong>Recall:</strong> A recall score of 0.8659 demonstrates the model’s capability to identify actual positives from the total actual positives, also known as sensitivity or true positive rate.</li>
+<li><strong>F1 Score:</strong> The F1 score of 0.8571, which balances precision and recall, signifies the model’s overall accuracy in classification.</li>
+</ul>
+</section>
+<section id="classification-report-insights" class="level4">
+<h4 class="anchored" data-anchor-id="classification-report-insights">2. Classification Report Insights:</h4>
+<ul>
+<li><strong>Support:</strong> The ‘support’ column indicates the number of actual occurrences of each class in the dataset.</li>
+<li><strong>Precision, Recall, F1-Score:</strong>
+<ul>
+<li>Class 0 (Non-churned customers): The model exhibits high precision (0.89), indicating a low false positive rate. The recall (0.95) suggests effective identification of non-churned customers. The F1-score (0.92) signifies a good balance between precision and recall for this class.</li>
+<li>Class 1 (Churned customers): The model displays lower precision (0.76) and recall (0.54), indicating a higher false positive rate and missed churned customers, respectively. The F1-score (0.63) for churned customers is comparatively lower, reflecting a trade-off between precision and recall.</li>
+</ul></li>
+</ul>
+</section>
+<section id="confusion-matrix-analysis" class="level4">
+<h4 class="anchored" data-anchor-id="confusion-matrix-analysis">3. Confusion Matrix Analysis:</h4>
+<ul>
+<li><strong>True Positives (TP) and True Negatives (TN):</strong> The model correctly predicted 24,817 instances of non-churned customers (Class 0) and 3,763 instances of churned customers (Class 1).</li>
+<li><strong>False Positives (FP) and False Negatives (FN):</strong> It misclassified 1,206 instances of non-churned customers as churned (Type I error - false alarms) and 3,221 instances of churned customers as non-churned (Type II error - missed opportunities).</li>
+</ul>
+</section>
+<section id="overall-assessment" class="level4">
+<h4 class="anchored" data-anchor-id="overall-assessment">4. Overall Assessment:</h4>
+<ul>
+<li>The model demonstrates better performance in predicting non-churned customers (Class 0) compared to churned customers (Class 1).</li>
+<li>There is a trade-off between precision and recall for predicting churned customers, indicating potential room for improvement in identifying churn instances more accurately.</li>
+<li>The model’s F1-score, accuracy, and AUC indicate reasonable performance, yet there’s scope for enhancing the model’s ability to detect churned customers while minimizing false predictions.</li>
+</ul>
+</section>
+</section>
+</section>
+<section id="conclusion-and-future-steps" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-and-future-steps">Conclusion and Future Steps</h2>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>The Stacked Ensemble Model for our dataset displayed promising performance, particularly in AUC score, a critical metric for our predictive task. It achieved an impressive AUC score of 0.8917, showcasing strong discriminatory power in distinguishing between churned and non-churned customers. However, a more detailed analysis reveals areas for potential enhancement.</p>
+</section>
+<section id="key-findings" class="level3">
+<h3 class="anchored" data-anchor-id="key-findings">Key Findings</h3>
+<ul>
+<li><strong>AUC Performance:</strong> The model demonstrated a robust AUC score, indicating its ability to effectively differentiate between churned and non-churned customers.</li>
+<li><strong>Class-Specific Metrics:</strong> While the model showcased favorable metrics for non-churned customers (Class 0), there is room for improvement in accurately identifying churned customers (Class 1).</li>
+</ul>
+</section>
+<section id="insights-for-improvement" class="level3">
+<h3 class="anchored" data-anchor-id="insights-for-improvement">Insights for Improvement</h3>
+<ol type="1">
+<li><p><strong>Balancing Class Prediction:</strong> Focusing on optimizing predictions for churned customers (Class 1) could further enhance the model’s overall predictive performance.</p></li>
+<li><p><strong>Fine-Tuning and Optimization:</strong> Further refinement of model parameters and ensemble techniques could lead to improved predictions, especially for the crucial churn prediction task.</p></li>
+<li><p><strong>Feature Investigation:</strong> In-depth analysis and augmentation of features might unveil more influential factors, potentially strengthening the model’s predictive capabilities.</p></li>
+</ol>
+</section>
+<section id="future-steps" class="level3">
+<h3 class="anchored" data-anchor-id="future-steps">Future Steps</h3>
+<ol type="1">
+<li><p><strong>AUC-Oriented Model Tuning:</strong> Prioritize parameter tuning specifically aimed at enhancing AUC performance to ensure a better distinction between churn and non-churn instances.</p></li>
+<li><p><strong>Feature Enhancement:</strong> Investigate feature engineering techniques to unveil new informative features or transformations, directly impacting the AUC performance.</p></li>
+<li><p><strong>Ensemble Diversification:</strong> Explore diverse ensemble strategies or models to enhance the diversity and robustness of predictions, particularly focused on improving AUC.</p></li>
+<li><p><strong>Validation Strategies:</strong> Employ rigorous validation methods, specifically emphasizing AUC validation, to ensure consistent and robust model performance.</p></li>
+<li><p><strong>Interpreting Model Decisions:</strong> Devote efforts to interpret the model’s decisions, aiding in understanding areas where improvements can be made to optimize AUC performance.</p></li>
+</ol>
+</section>
+<section id="final-note" class="level3">
+<h3 class="anchored" data-anchor-id="final-note">Final Note</h3>
+<p>Continued refinement and exploration of tailored techniques focusing on improving AUC performance are paramount. By addressing the identified areas for enhancement and leveraging advanced methodologies, the model can evolve into an even more effective tool for precise churn prediction, crucial for real-world applications in the banking domain.</p>
+</section>
+</section>
+<section id="generating-predictions-for-test-data" class="level2">
+<h2 class="anchored" data-anchor-id="generating-predictions-for-test-data">Generating Predictions for Test Data</h2>
+<div class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.read_csv(<span class="st">"test.csv"</span>, index_col<span class="op">=</span><span class="st">'id'</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>test_df <span class="op">=</span> pd.get_dummies(test_df, columns<span class="op">=</span>cat_cols, drop_first<span class="op">=</span><span class="va">True</span>, dtype<span class="op">=</span><span class="bu">int</span>)</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>X_pred <span class="op">=</span> test_df.drop([<span class="st">"CustomerId"</span>, <span class="st">"Surname"</span>], axis<span class="op">=</span><span class="dv">1</span>).copy()</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>X_pred <span class="op">=</span> scaler.transform(X_pred)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>y_test_pred <span class="op">=</span> stacking_model.predict_proba(X_pred)[:, <span class="dv">1</span>]</span>
+<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>class_labels <span class="op">=</span> [<span class="st">'Exited'</span>]</span>
+<span id="cb30-9"><a href="#cb30-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-10"><a href="#cb30-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a DataFrame with the given output array</span></span>
+<span id="cb30-11"><a href="#cb30-11" aria-hidden="true" tabindex="-1"></a>output_df <span class="op">=</span> pd.DataFrame(y_test_pred, columns<span class="op">=</span>class_labels)</span>
+<span id="cb30-12"><a href="#cb30-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-13"><a href="#cb30-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Add ID column to the DataFrame</span></span>
+<span id="cb30-14"><a href="#cb30-14" aria-hidden="true" tabindex="-1"></a>output_df[<span class="st">'id'</span>] <span class="op">=</span> test_df.index</span>
+<span id="cb30-15"><a href="#cb30-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-16"><a href="#cb30-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Reorder columns to have 'id' as the first column</span></span>
+<span id="cb30-17"><a href="#cb30-17" aria-hidden="true" tabindex="-1"></a>output_df <span class="op">=</span> output_df[[<span class="st">'id'</span>] <span class="op">+</span> class_labels]</span>
+<span id="cb30-18"><a href="#cb30-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-19"><a href="#cb30-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Create csv of y_test with columns "id" and "Hardness"</span></span>
+<span id="cb30-20"><a href="#cb30-20" aria-hidden="true" tabindex="-1"></a>output_df.to_csv(<span class="st">'submission.csv'</span>, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const disableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'prefetch';
+    }
+  }
+  const enableStylesheet = (stylesheets) => {
+    for (let i=0; i < stylesheets.length; i++) {
+      const stylesheet = stylesheets[i];
+      stylesheet.rel = 'stylesheet';
+    }
+  }
+  const manageTransitions = (selector, allowTransitions) => {
+    const els = window.document.querySelectorAll(selector);
+    for (let i=0; i < els.length; i++) {
+      const el = els[i];
+      if (allowTransitions) {
+        el.classList.remove('notransition');
+      } else {
+        el.classList.add('notransition');
+      }
+    }
+  }
+  const toggleColorMode = (alternate) => {
+    // Switch the stylesheets
+    const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+    manageTransitions('#quarto-margin-sidebar .nav-link', false);
+    if (alternate) {
+      enableStylesheet(alternateStylesheets);
+      for (const sheetNode of alternateStylesheets) {
+        if (sheetNode.id === "quarto-bootstrap") {
+          toggleBodyColorMode(sheetNode);
+        }
+      }
+    } else {
+      disableStylesheet(alternateStylesheets);
+      toggleBodyColorPrimary();
+    }
+    manageTransitions('#quarto-margin-sidebar .nav-link', true);
+    // Switch the toggles
+    const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+    for (let i=0; i < toggles.length; i++) {
+      const toggle = toggles[i];
+      if (toggle) {
+        if (alternate) {
+          toggle.classList.add("alternate");     
+        } else {
+          toggle.classList.remove("alternate");
+        }
+      }
+    }
+    // Hack to workaround the fact that safari doesn't
+    // properly recolor the scrollbar when toggling (#1455)
+    if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+      manageTransitions("body", false);
+      window.scrollTo(0, 1);
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+        manageTransitions("body", true);
+      }, 40);  
+    }
+  }
+  const isFileUrl = () => { 
+    return window.location.protocol === 'file:';
+  }
+  const hasAlternateSentinel = () => {  
+    let styleSentinel = getColorSchemeSentinel();
+    if (styleSentinel !== null) {
+      return styleSentinel === "alternate";
+    } else {
+      return false;
+    }
+  }
+  const setStyleSentinel = (alternate) => {
+    const value = alternate ? "alternate" : "default";
+    if (!isFileUrl()) {
+      window.localStorage.setItem("quarto-color-scheme", value);
+    } else {
+      localAlternateSentinel = value;
+    }
+  }
+  const getColorSchemeSentinel = () => {
+    if (!isFileUrl()) {
+      const storageValue = window.localStorage.getItem("quarto-color-scheme");
+      return storageValue != null ? storageValue : localAlternateSentinel;
+    } else {
+      return localAlternateSentinel;
+    }
+  }
+  let localAlternateSentinel = 'default';
+  // Dark / light mode switch
+  window.quartoToggleColorScheme = () => {
+    // Read the current dark / light value 
+    let toAlternate = !hasAlternateSentinel();
+    toggleColorMode(toAlternate);
+    setStyleSentinel(toAlternate);
+  };
+  // Ensure there is a toggle, if there isn't float one in the top right
+  if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+    const a = window.document.createElement('a');
+    a.classList.add('top-right');
+    a.classList.add('quarto-color-scheme-toggle');
+    a.href = "";
+    a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+    const i = window.document.createElement("i");
+    i.classList.add('bi');
+    a.appendChild(i);
+    window.document.body.appendChild(a);
+  }
+  // Switch to dark mode if need be
+  if (hasAlternateSentinel()) {
+    toggleColorMode(true);
+  } else {
+    toggleColorMode(false);
+  }
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../pages/cirrhosis.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Predictive Modeling of Patient Status in Primary Biliary Cirrhosis</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">This page is built with ❤️ and <a href="https://quarto.org/">Quarto</a>.</div>
+  </div>
+</footer>
+
+
+
+</body></html>

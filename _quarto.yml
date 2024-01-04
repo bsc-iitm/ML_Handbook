@@ -82,6 +82,8 @@ website:
         contents:
           - href: ./pages/cirrhosis.ipynb
             text: Predictive Modeling of Patient Status in Primary Biliary Cirrhosis
+          - href: ./pages/bank_churn.ipynb
+            text: Predicting Bank Customer Churn
 
 format:
   html:
