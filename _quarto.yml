@@ -36,6 +36,8 @@ website:
       - section: "Home"
         contents:
           - href: index.qmd
+            text: Content
+          - href: about.qmd
             text: About
       - text: "---"
       - section: "Preprocessing"

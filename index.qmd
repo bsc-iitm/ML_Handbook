@@ -1,17 +1,27 @@
 ---
 title: "ML Handbook"
+toc: false
 ---
 
-**About Our Project**
+# Table of Contents
 
-Hey there, fellow learners! 🚀 We're a bunch of ML enthusiasts on a mission to make your learning journey more exciting and practical.
-
-🔍 **What We Do** We're all about breaking down those complex ML models and datasets, helping you understand the 'whys' and 'hows' in a fun way.
-
-📚 **Why We're Here** Traditional courses teach the theory, but we're here to fill in the gaps, one Colab notebook at a time.
-
-🎁 **What You Get** Explore our user-friendly notebooks, detailed reports, and a platform designed just for you.
-
-Join us in unraveling the magic of machine learning, one experiment at a time. Happy learning! 🤖📈
-
----
+| Sr. No. | Topic | Summary | Status | Link |
+|---|---|---|---|---|
+| 1 | Dealing with missing-values | The notebook explores types of missingness and techniques for imputation. | <span style="color: green;">Completed</span> | [🔗](./pages/dealing_with_missing_values.html) |
+| 2 | Comprehensive Study on the Impact of Feature Scaling on Classification Models | An Introduction to Scaling. | <span style="color: green;">Completed</span> | [🔗](./pages/Scaling%20multi-dataset%20multi-algo.html) |
+| 3 | Investigation of Standard Scaling Influence | A deep dive into Standard Scaling. | <span style="color: green;">Completed</span> | [🔗](./pages/standard.html) |
+| 4 | Visualizations for Data Science: An Overview | A general overview on how data visualization is handled. | <span style="color: green;">Completed</span> | [🔗](./pages/vis.html) |
+| 5 | Comprehensive Data Visualization with Matplotlib and Seaborn | Code and Implementation of various visualization techniques using Matplotlib and Seaborn. | <span style="color: green;">Completed</span> | [🔗](./pages/vis2.html) |
+| 6 | Accuracy | The notebook discusses accuracy in classification, its issues, calculation, and tuning using sklearn. | <span style="color: green;">Completed</span> | [🔗](./pages/accuracy.html) |
+| 7 | F1 Score | The notebook discusses F1 Score in classification metrics using sklearn. | <span style="color: green;">Completed</span> | [🔗](./pages/f1.html) |
+| 8 | Recall in Classification Metrics | The notebook explains recall in binary classification using sklearn metrics. | <span style="color: green;">Completed</span> | [🔗](./pages/recall.html) |
+| 9 | Precision in Classification Metrics | The notebook explores precision in classification, its calculation, and application. | <span style="color: green;">Completed</span> | [🔗](./pages/precision.html) |
+| 10 | Exploring the Significance of ROC AUC in Classification Models | The notebook explores ROC-AUC in classification, its calculation, and application. | <span style="color: green;">Completed</span> | [🔗](./pages/roc.html) |
+| 11 | Inductive Bias in Decision Trees and K-Nearest Neighbors | Exploring inductive bias impact on classifiers using synthetic datasets and algorithms. | <span style="color: green;">Completed</span> | [🔗](./pages/Inductive_Bias.html) |
+| 12 | Ordinal Classification | Ordinal classification explored using logistic regression and alternative encoding methods. | <span style="color: green;">Completed</span> | [🔗](./pages/Ordinal_Classification.html) |
+| 13 | EM Algorithm | The notebook demonstrates the Expectation-Maximization algorithm on a Gaussian Mixture Model. | <span style="color: green;">Completed</span> | [🔗](./pages/EM_Algorithm.html) |
+| 14 | Probabilistic PCA | The notebook explores Probabilistic PCA through generative modeling and EM algorithm. | <span style="color: green;">Completed</span> | [🔗](./pages/Probabilistic_PCA.html) |
+| 15 | Predictive Modeling of Patient Status in Primary Biliary Cirrhosis | A case study, EDA and modeling on a medical dataset. | <span style="color: green;">Completed</span> | [🔗](./pages/cirrhosis.html) |
+| 16 | Predicting Bank Customer Churn | A case study, EDA and modeling on a banking dataset. | <span style="color: green;">Completed</span> | [🔗](./pages/bank_churn.html) |
+<!-- | 17 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
+<!-- | 18 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
