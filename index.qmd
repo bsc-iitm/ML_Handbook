@@ -23,5 +23,7 @@ toc: false
 | 14 | Probabilistic PCA | The notebook explores Probabilistic PCA through generative modeling and EM algorithm. | <span style="color: green;">Completed</span> | [🔗](./pages/Probabilistic_PCA.html) |
 | 15 | Predictive Modeling of Patient Status in Primary Biliary Cirrhosis | A case study, EDA and modeling on a medical dataset. | <span style="color: green;">Completed</span> | [🔗](./pages/cirrhosis.html) |
 | 16 | Predicting Bank Customer Churn | A case study, EDA and modeling on a banking dataset. | <span style="color: green;">Completed</span> | [🔗](./pages/bank_churn.html) |
-<!-- | 17 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
+| 17 | Agglomerative Clustering | Hierarchical clustering with agglomerative approach, dendrograms, and linkage methods explored visually. | <span style="color: green;">Completed</span> | [🔗](./pages/agg.html) |
 <!-- | 18 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
+<!-- | 19 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
+<!-- | 20 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
