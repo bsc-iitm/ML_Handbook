@@ -5,25 +5,25 @@ toc: false
 
 # Table of Contents
 
-| Sr. No. | Topic | Summary | Status | Link |
+| Sr. No. | Topic | Summary | Status | Author |
 |---|---|---|---|---|
-| 1 | Dealing with missing-values | The notebook explores types of missingness and techniques for imputation. | <span style="color: green;">Completed</span> | [🔗](./pages/dealing_with_missing_values.html) |
-| 2 | Comprehensive Study on the Impact of Feature Scaling on Classification Models | An Introduction to Scaling. | <span style="color: green;">Completed</span> | [🔗](./pages/Scaling%20multi-dataset%20multi-algo.html) |
-| 3 | Investigation of Standard Scaling Influence | A deep dive into Standard Scaling. | <span style="color: green;">Completed</span> | [🔗](./pages/standard.html) |
-| 4 | Visualizations for Data Science: An Overview | A general overview on how data visualization is handled. | <span style="color: green;">Completed</span> | [🔗](./pages/vis.html) |
-| 5 | Comprehensive Data Visualization with Matplotlib and Seaborn | Code and Implementation of various visualization techniques using Matplotlib and Seaborn. | <span style="color: green;">Completed</span> | [🔗](./pages/vis2.html) |
-| 6 | Accuracy | The notebook discusses accuracy in classification, its issues, calculation, and tuning using sklearn. | <span style="color: green;">Completed</span> | [🔗](./pages/accuracy.html) |
-| 7 | F1 Score | The notebook discusses F1 Score in classification metrics using sklearn. | <span style="color: green;">Completed</span> | [🔗](./pages/f1.html) |
-| 8 | Recall in Classification Metrics | The notebook explains recall in binary classification using sklearn metrics. | <span style="color: green;">Completed</span> | [🔗](./pages/recall.html) |
-| 9 | Precision in Classification Metrics | The notebook explores precision in classification, its calculation, and application. | <span style="color: green;">Completed</span> | [🔗](./pages/precision.html) |
-| 10 | Exploring the Significance of ROC AUC in Classification Models | The notebook explores ROC-AUC in classification, its calculation, and application. | <span style="color: green;">Completed</span> | [🔗](./pages/roc.html) |
-| 11 | Inductive Bias in Decision Trees and K-Nearest Neighbors | Exploring inductive bias impact on classifiers using synthetic datasets and algorithms. | <span style="color: green;">Completed</span> | [🔗](./pages/Inductive_Bias.html) |
-| 12 | Ordinal Classification | Ordinal classification explored using logistic regression and alternative encoding methods. | <span style="color: green;">Completed</span> | [🔗](./pages/Ordinal_Classification.html) |
-| 13 | EM Algorithm | The notebook demonstrates the Expectation-Maximization algorithm on a Gaussian Mixture Model. | <span style="color: green;">Completed</span> | [🔗](./pages/EM_Algorithm.html) |
-| 14 | Probabilistic PCA | The notebook explores Probabilistic PCA through generative modeling and EM algorithm. | <span style="color: green;">Completed</span> | [🔗](./pages/Probabilistic_PCA.html) |
-| 15 | Predictive Modeling of Patient Status in Primary Biliary Cirrhosis | A case study, EDA and modeling on a medical dataset. | <span style="color: green;">Completed</span> | [🔗](./pages/cirrhosis.html) |
-| 16 | Predicting Bank Customer Churn | A case study, EDA and modeling on a banking dataset. | <span style="color: green;">Completed</span> | [🔗](./pages/bank_churn.html) |
-| 17 | Agglomerative Clustering | Hierarchical clustering with agglomerative approach, dendrograms, and linkage methods explored visually. | <span style="color: green;">Completed</span> | [🔗](./pages/agg.html) |
-<!-- | 18 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
-<!-- | 19 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
-<!-- | 20 | | | <span style="color: green;">Completed</span> | [🔗](./pages) | -->
+| 1 | [Dealing with missing-values](./pages/dealing_with_missing_values.html) | The notebook explores types of missingness and techniques for imputation. | <span style="color: green;">Completed</span> | Alape Aniruddha |
+| 2 | [Comprehensive Study on the Impact of Feature Scaling on Classification Models](./pages/Scaling%20multi-dataset%20multi-algo.html) | An Introduction to Scaling. | <span style="color: green;">Completed</span> | Sherry Thomas |
+| 3 | [Investigation of Standard Scaling Influence](./pages/standard.html) | A deep dive into Standard Scaling. | <span style="color: green;">Completed</span> | Sherry Thomas |
+| 4 | [Visualizations for Data Science: An Overview](./pages/vis.html) | A general overview on how data visualization is handled. | <span style="color: green;">Completed</span> | Sherry Thomas |
+| 5 | [Comprehensive Data Visualization with Matplotlib and Seaborn](./pages/vis2.html) | Code and Implementation of various visualization techniques using Matplotlib and Seaborn. | <span style="color: green;">Completed</span> | Sherry Thomas |
+| 6 | [Accuracy](./pages/accuracy.html) | The notebook discusses accuracy in classification, its issues, calculation, and tuning using sklearn. | <span style="color: green;">Completed</span> | Alape Aniruddha |
+| 7 | [F1 Score](./pages/f1.html) | The notebook discusses F1 Score in classification metrics using sklearn. | <span style="color: green;">Completed</span> | Alape Aniruddha |
+| 8 | [Recall in Classification Metrics](./pages/recall.html) | The notebook explains recall in binary classification using sklearn metrics. | <span style="color: green;">Completed</span> | Alape Aniruddha |
+| 9 | [Precision in Classification Metrics](./pages/precision.html) | The notebook explores precision in classification, its calculation, and application. | <span style="color: green;">Completed</span> | Alape Aniruddha |
+| 10 | [Exploring the Significance of ROC AUC in Classification Models](./pages/roc.html) | The notebook explores ROC-AUC in classification, its calculation, and application. | <span style="color: green;">Completed</span> | Sherry Thomas |
+| 11 | [Inductive Bias in Decision Trees and K-Nearest Neighbors](./pages/Inductive_Bias.html) | Exploring inductive bias impact on classifiers using synthetic datasets and algorithms. | <span style="color: green;">Completed</span> | Vivek Sivaramakrishnan |
+| 12 | [Ordinal Classification](./pages/Ordinal_Classification.html) | Ordinal classification explored using logistic regression and alternative encoding methods. | <span style="color: green;">Completed</span> | Vivek Sivaramakrishnan |
+| 13 | [EM Algorithm](./pages/EM_Algorithm.html) | The notebook demonstrates the Expectation-Maximization algorithm on a Gaussian Mixture Model. | <span style="color: green;">Completed</span> | Vivek Sivaramakrishnan |
+| 14 | [Probabilistic PCA](./pages/Probabilistic_PCA.html) | The notebook explores Probabilistic PCA through generative modeling and EM algorithm. | <span style="color: green;">Completed</span> | Vivek Sivaramakrishnan |
+| 15 | [Predictive Modeling of Patient Status in Primary Biliary Cirrhosis](./pages/bank_churn.html) | A case study, EDA and modeling on a medical dataset. | <span style="color: green;">Completed</span> | Sherry Thomas |
+| 16 | [Predicting Bank Customer Churn](./pages/bank_churn.html) | A case study, EDA and modeling on a banking dataset. | <span style="color: green;">Completed</span> | Sherry Thomas |
+| 17 | [Agglomerative Clustering](./pages/agg.html) | Hierarchical clustering with agglomerative approach, dendrograms, and linkage methods explored visually. | <span style="color: green;">Completed</span> | Vivek Sivaramakrishnan |
+<!-- | 18 | | | <span style="color: green;">Completed</span> | (./pages) | -->
+<!-- | 19 | | | <span style="color: green;">Completed</span> | (./pages) | -->
+<!-- | 20 | | | <span style="color: green;">Completed</span> | (./pages) | -->
